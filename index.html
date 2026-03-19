@@ -464,7 +464,7 @@ function setLayout(lay){
 function toggleDP(idx){document.getElementById('dp'+idx).classList.toggle('expanded');document.getElementById('dp'+idx).classList.toggle('collapsed');}
  
 // ── TV ──
-function tvUrl(sym,tf){return 'https://www.tradingview.com/widgetembed/?frameElementId=tv&symbol=BINANCE:'+sym+'&interval='+tf+'&theme=dark&style=1&locale=en&toolbar_bg=0c1210&hide_side_toolbar=0&allow_symbol_change=1&save_image=0&studies=RSI%40tv-basicstudies%1FMACD%40tv-basicstudies&timezone=Asia%2FJakarta&withdateranges=1';}
+function tvUrl(sym,tf){return 'https://www.tradingview.com/widgetembed/?frameElementId=tv&symbol=BINANCE:'+sym+'&interval='+tf+'&theme=dark&style=1&locale=en&toolbar_bg=0c1210&hide_side_toolbar=0&allow_symbol_change=1&save_image=0&timezone=Asia%2FJakarta&withdateranges=1';}
 function loadPanel(idx){
   document.getElementById('if'+idx).src=tvUrl(panels[idx].sym,panels[idx].tf);
   document.getElementById('dp'+idx+'-pair').textContent=panels[idx].disp;
