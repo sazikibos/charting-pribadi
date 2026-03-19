@@ -109,48 +109,48 @@ header{display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:1
 .dp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;min-height:220px;}
 .dp-col{display:flex;flex-direction:column;border-right:1px solid var(--border);}
 .dp-col:last-child{border-right:none;}
-.dp-col-title{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);padding:8px 14px 5px;border-bottom:1px solid var(--border);flex-shrink:0;}
-.dp-col-body{flex:1;padding:10px 14px;}
+.dp-col-title{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:10px 16px 7px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.dp-col-body{flex:1;padding:14px 16px;}
  
 /* futures card */
 .fc-item{margin-bottom:10px;}
-.fc-label{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
-.fc-value{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;line-height:1;}
+.fc-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.fc-value{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;line-height:1;}
 .fc-value.pos{color:var(--accent2);}
 .fc-value.neg{color:var(--red);}
 .fc-value.neu{color:var(--yellow);}
-.fc-sub{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-top:3px;}
+.fc-sub{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:4px;}
  
 /* liquidation bars */
 .liq-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.liq-price{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;width:80px;flex-shrink:0;}
-.liq-bar-wrap{flex:1;height:12px;background:var(--border);border-radius:3px;overflow:hidden;}
+.liq-price{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;width:88px;flex-shrink:0;}
+.liq-bar-wrap{flex:1;height:14px;background:var(--border);border-radius:3px;overflow:hidden;}
 .liq-bar{height:100%;border-radius:3px;transition:width .5s;}
-.liq-val{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);width:45px;text-align:right;flex-shrink:0;}
+.liq-val{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);width:48px;text-align:right;flex-shrink:0;}
  
 /* signal box */
 .signal-box{border-radius:8px;padding:10px 12px;margin-bottom:8px;border:1px solid;}
 .signal-box.long{background:rgba(0,230,118,.07);border-color:rgba(0,230,118,.3);}
 .signal-box.short{background:rgba(255,77,109,.07);border-color:rgba(255,77,109,.3);}
 .signal-box.neutral{background:rgba(255,209,102,.07);border-color:rgba(255,209,102,.3);}
-.sig-label{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
+.sig-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
 .sig-label.long{color:var(--accent2);}
 .sig-label.short{color:var(--red);}
 .sig-label.neutral{color:var(--yellow);}
-.sig-value{font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:800;}
-.sig-detail{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-top:4px;line-height:1.6;}
+.sig-value{font-family:'IBM Plex Mono',monospace;font-size:28px;font-weight:800;}
+.sig-detail{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:5px;line-height:1.8;}
 .sig-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:6px;}
 .sig-bar{height:100%;border-radius:3px;}
  
 /* Fear greed meter */
 .fg-wrap{text-align:center;padding:4px 0;}
-.fg-num{font-size:40px;font-weight:800;font-family:'IBM Plex Mono',monospace;line-height:1;}
-.fg-lbl{font-size:12px;font-weight:700;letter-spacing:.06em;margin-top:3px;}
-.fg-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin:10px 0 5px;}
+.fg-num{font-size:48px;font-weight:800;font-family:'IBM Plex Mono',monospace;line-height:1;}
+.fg-lbl{font-size:14px;font-weight:700;letter-spacing:.06em;margin-top:4px;}
+.fg-bar-wrap{height:8px;background:var(--border);border-radius:3px;overflow:hidden;margin:12px 0 6px;}
 .fg-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--red),var(--yellow),var(--accent2));transition:width 1s;}
-.fg-sub{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);}
-.fg-hist{margin-top:10px;}
-.fg-hist-row{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:9px;padding:3px 0;border-bottom:1px solid var(--border);}
+.fg-sub{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+.fg-hist{margin-top:12px;}
+.fg-hist-row{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 0;border-bottom:1px solid var(--border);}
  
 /* ── WATCHLIST PAGE ── */
 .wl-page{flex:1;display:flex;flex-direction:column;overflow:hidden;}
@@ -568,50 +568,151 @@ async function fetchFuturesData(idx){
  
 async function fetchRSISignal(sym,idx){
   try{
-    var r=await fetch('https://api.binance.com/api/v3/klines?symbol='+sym+'&interval=1d&limit=50');
+    var r=await fetch('https://api.binance.com/api/v3/klines?symbol='+sym+'&interval=1d&limit=60');
     var d=await r.json();
     var closes=d.map(function(k){return parseFloat(k[4]);});
-    // RSI
-    var gains=0,losses=0,period=14;
-    for(var i=closes.length-period-1;i<closes.length-1;i++){var diff=closes[i+1]-closes[i];if(diff>0)gains+=diff;else losses+=Math.abs(diff);}
-    var avgGain=gains/period,avgLoss=losses/period;
-    var rs=avgLoss===0?100:avgGain/avgLoss;
-    var rsi=100-(100/(1+rs));
-    // MACD
+    // EMA helper
     function ema(data,p){var k=2/(p+1),e=[data[0]];for(var i=1;i<data.length;i++)e.push(data[i]*k+e[i-1]*(1-k));return e;}
+    // RSI array (full series for chart)
+    var rsiArr=[];
+    for(var i=14;i<closes.length;i++){
+      var g=0,l=0;
+      for(var j=i-14;j<i;j++){var df=closes[j+1]-closes[j];if(df>0)g+=df;else l+=Math.abs(df);}
+      var ag=g/14,al=l/14;var rs=al===0?100:ag/al;rsiArr.push(100-(100/(1+rs)));
+    }
+    var rsi=rsiArr[rsiArr.length-1];
+    // MACD array (full series for chart)
     var ema12=ema(closes,12),ema26=ema(closes,26);
-    var macdLine=ema12[ema12.length-1]-ema26[ema26.length-1];
     var macdArr=ema12.map(function(v,i){return v-ema26[i];});
-    var signal9=ema(macdArr,9);
-    var signalLine=signal9[signal9.length-1];
-    var histogram=macdLine-signalLine;
-    // Score
-    var score=50;
-    if(rsi<30){score+=20;}else if(rsi<45){score+=10;}else if(rsi>70){score-=20;}else if(rsi>55){score-=5;}
-    if(macdLine>signalLine&&histogram>0){score+=15;}else if(macdLine<signalLine&&histogram<0){score-=15;}
-    // Price vs MA
+    var sig9=ema(macdArr,9);
+    var histArr=macdArr.map(function(v,i){return v-sig9[i];});
+    var macdLine=macdArr[macdArr.length-1];
+    var signalLine=sig9[sig9.length-1];
+    var histogram=histArr[histArr.length-1];
+    // MA & score
     var ma20=closes.slice(-20).reduce(function(s,v){return s+v;},0)/20;
     var ma50=closes.slice(-50).reduce(function(s,v){return s+v;},0)/50;
     var curClose=closes[closes.length-1];
-    if(curClose>ma20&&curClose>ma50){score+=10;}else if(curClose<ma20&&curClose<ma50){score-=10;}
+    var score=50;
+    if(rsi<30)score+=20;else if(rsi<45)score+=10;else if(rsi>70)score-=20;else if(rsi>55)score-=5;
+    if(macdLine>signalLine&&histogram>0)score+=15;else if(macdLine<signalLine&&histogram<0)score-=15;
+    if(curClose>ma20&&curClose>ma50)score+=10;else if(curClose<ma20&&curClose<ma50)score-=10;
     score=Math.max(0,Math.min(100,score));
     var sig,sigClass,barColor;
-    if(score>=65){sig='LONG';sigClass='long';barColor='var(--accent2)';}
-    else if(score<=35){sig='SHORT';sigClass='short';barColor='var(--red)';}
-    else{sig='NEUTRAL';sigClass='neutral';barColor='var(--yellow)';}
-    var rsiColor=rsi<30?'var(--accent2)':rsi>70?'var(--red)':'var(--text)';
-    var macdColor=histogram>0?'var(--accent2)':'var(--red)';
-    var sigHtml='<div class="signal-box '+sigClass+'">'
+    if(score>=65){sig='LONG';sigClass='long';barColor='#00e676';}
+    else if(score<=35){sig='SHORT';sigClass='short';barColor='#ff4d6d';}
+    else{sig='NEUTRAL';sigClass='neutral';barColor='#ffd166';}
+    var rsiColor=rsi<30?'#00e676':rsi>70?'#ff4d6d':'#e8f5f2';
+    var macdColor=histogram>0?'#00e676':'#ff4d6d';
+ 
+    var sigHtml=
+      '<div class="signal-box '+sigClass+'">'
       +'<div class="sig-label '+sigClass+'">SINYAL KESELURUHAN</div>'
-      +'<div class="sig-value" style="color:'+(sigClass==='long'?'var(--accent2)':sigClass==='short'?'var(--red)':'var(--yellow)')+'">'+sig+'</div>'
-      +'<div class="sig-detail">Score: '+score+'/100<br>RSI: '+rsi.toFixed(1)+' | MACD: '+(histogram>0?'+':'')+histogram.toFixed(4)+'<br>MA20: '+(curClose>ma20?'Above ▲':'Below ▼')+' | MA50: '+(curClose>ma50?'Above ▲':'Below ▼')+'</div>'
+      +'<div class="sig-value" style="color:'+(sigClass==='long'?'#00e676':sigClass==='short'?'#ff4d6d':'#ffd166')+'">'+sig+'</div>'
+      +'<div class="sig-detail">Score: <b>'+score+'</b>/100 &nbsp;|&nbsp; RSI: <b>'+rsi.toFixed(1)+'</b><br>MA20: '+(curClose>ma20?'<span style="color:#00e676">Above ▲</span>':'<span style="color:#ff4d6d">Below ▼</span>')+' &nbsp; MA50: '+(curClose>ma50?'<span style="color:#00e676">Above ▲</span>':'<span style="color:#ff4d6d">Below ▼</span>')+'</div>'
       +'<div class="sig-bar-wrap"><div class="sig-bar" style="width:'+score+'%;background:'+barColor+'"></div></div>'
       +'</div>'
-      +'<div class="fc-item"><div class="fc-label">RSI (14)</div><div class="fc-value" style="color:'+rsiColor+'">'+rsi.toFixed(1)+'</div><div class="fc-sub">'+(rsi<30?'Oversold — Potensi Reversal UP':rsi>70?'Overbought — Potensi Reversal DOWN':'Normal Range')+'</div></div>'
-      +'<div class="fc-item"><div class="fc-label">MACD Histogram</div><div class="fc-value" style="color:'+macdColor+';font-size:14px;">'+(histogram>=0?'+':'')+histogram.toFixed(4)+'</div><div class="fc-sub">'+(histogram>0?'Momentum BULLISH':'Momentum BEARISH')+'</div></div>'
-      +'<div class="fc-item"><div class="fc-label">Price vs MA</div><div class="fc-value" style="font-size:13px;">'+(curClose>ma20?'▲':'▼')+' MA20 &nbsp; '+(curClose>ma50?'▲':'▼')+' MA50</div></div>';
+ 
+      // RSI Chart
+      +'<div class="fc-label" style="margin-top:14px;">RSI (14) — Saat ini: <span style="color:'+rsiColor+';font-size:14px;font-weight:700;">'+rsi.toFixed(1)+'</span>'
+      +'<span style="margin-left:8px;font-size:10px;color:var(--muted)">'+(rsi<30?'⚠ OVERSOLD':rsi>70?'⚠ OVERBOUGHT':'Normal')+'</span></div>'
+      +'<canvas id="rsi-c-'+idx+'" style="width:100%;height:80px;display:block;margin:6px 0 14px;"></canvas>'
+ 
+      // MACD Chart
+      +'<div class="fc-label">MACD (12,26,9) — Histogram: <span style="color:'+macdColor+';font-size:14px;font-weight:700;">'+(histogram>=0?'+':'')+histogram.toFixed(2)+'</span>'
+      +'<span style="margin-left:8px;font-size:10px;color:var(--muted)">'+(histogram>0?'↑ Bullish':'↓ Bearish')+'</span></div>'
+      +'<canvas id="macd-c-'+idx+'" style="width:100%;height:80px;display:block;margin:6px 0 14px;"></canvas>'
+ 
+      // MA info
+      +'<div class="fc-item"><div class="fc-label">Price vs Moving Average</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">'
+      +'<div style="background:var(--card2);border-radius:6px;padding:8px 10px;"><div class="fc-label">MA 20</div><div style="font-family:IBM Plex Mono,monospace;font-size:16px;font-weight:700;color:'+(curClose>ma20?'#00e676':'#ff4d6d')+'">'+(curClose>ma20?'▲ Above':'▼ Below')+'</div></div>'
+      +'<div style="background:var(--card2);border-radius:6px;padding:8px 10px;"><div class="fc-label">MA 50</div><div style="font-family:IBM Plex Mono,monospace;font-size:16px;font-weight:700;color:'+(curClose>ma50?'#00e676':'#ff4d6d')+'">'+(curClose>ma50?'▲ Above':'▼ Below')+'</div></div>'
+      +'</div></div>';
+ 
     document.getElementById('dp'+idx+'-sig').innerHTML=sigHtml;
-  }catch(e){document.getElementById('dp'+idx+'-sig').innerHTML='<div style="color:var(--muted);font-size:10px;font-family:IBM Plex Mono,monospace;">Gagal hitung RSI/MACD</div>';}
+ 
+    // Draw RSI chart
+    setTimeout(function(){
+      drawRSIChart('rsi-c-'+idx, rsiArr.slice(-30));
+      drawMACDChart('macd-c-'+idx, histArr.slice(-30), macdArr.slice(-30), sig9.slice(-30));
+    },50);
+ 
+  }catch(e){document.getElementById('dp'+idx+'-sig').innerHTML='<div style="color:var(--muted);font-size:11px;font-family:IBM Plex Mono,monospace;padding:10px;">Gagal hitung RSI/MACD</div>';}
+}
+ 
+function drawRSIChart(canvasId, rsiData){
+  var canvas=document.getElementById(canvasId);
+  if(!canvas)return;
+  var W=canvas.offsetWidth||400, H=80;
+  canvas.width=W; canvas.height=H;
+  var ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  var minR=0, maxR=100;
+  // zones
+  ctx.fillStyle='rgba(255,77,109,0.06)';ctx.fillRect(0,0,W,(1-(70/100))*H);
+  ctx.fillStyle='rgba(0,230,118,0.06)';ctx.fillRect(0,(1-(30/100))*H,W,H-(1-(30/100))*H);
+  // grid lines 30, 50, 70
+  [30,50,70].forEach(function(v){
+    ctx.beginPath();ctx.strokeStyle=v===50?'rgba(255,255,255,0.1)':'rgba(255,255,255,0.07)';
+    ctx.lineWidth=1;ctx.setLineDash([3,3]);
+    var y=(1-(v/100))*H;ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='rgba(255,255,255,0.25)';ctx.font='9px IBM Plex Mono';ctx.fillText(v,2,y-2);
+  });
+  // RSI line
+  ctx.beginPath();ctx.strokeStyle='#9b59b6';ctx.lineWidth=2;ctx.setLineDash([]);
+  rsiData.forEach(function(v,i){
+    var x=(i/(rsiData.length-1))*W, y=(1-(v/100))*H;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  // current dot
+  var last=rsiData[rsiData.length-1];
+  var dotX=W, dotY=(1-(last/100))*H;
+  var dotColor=last<30?'#00e676':last>70?'#ff4d6d':'#9b59b6';
+  ctx.beginPath();ctx.arc(dotX,dotY,4,0,Math.PI*2);ctx.fillStyle=dotColor;ctx.fill();
+}
+ 
+function drawMACDChart(canvasId, histData, macdData, signalData){
+  var canvas=document.getElementById(canvasId);
+  if(!canvas)return;
+  var W=canvas.offsetWidth||400, H=80;
+  canvas.width=W; canvas.height=H;
+  var ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  var maxV=Math.max.apply(null,histData.map(Math.abs))||1;
+  var midY=H/2;
+  // zero line
+  ctx.beginPath();ctx.strokeStyle='rgba(255,255,255,0.12)';ctx.lineWidth=1;ctx.setLineDash([3,3]);
+  ctx.moveTo(0,midY);ctx.lineTo(W,midY);ctx.stroke();ctx.setLineDash([]);
+  // histogram bars
+  var bw=Math.max(2,W/histData.length-1);
+  histData.forEach(function(v,i){
+    var x=(i/(histData.length-1))*(W-bw);
+    var barH=(v/maxV)*(midY-4);
+    ctx.fillStyle=v>=0?'rgba(0,230,118,0.7)':'rgba(255,77,109,0.7)';
+    if(barH>=0)ctx.fillRect(x,midY-barH,bw,barH);
+    else ctx.fillRect(x,midY,bw,-barH);
+  });
+  // MACD line
+  ctx.beginPath();ctx.strokeStyle='#3498db';ctx.lineWidth=1.5;ctx.setLineDash([]);
+  macdData.forEach(function(v,i){
+    var x=(i/(macdData.length-1))*W, y=midY-(v/maxV)*(midY-4);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  // Signal line
+  ctx.beginPath();ctx.strokeStyle='#e74c3c';ctx.lineWidth=1.5;
+  signalData.forEach(function(v,i){
+    var x=(i/(signalData.length-1))*W, y=midY-(v/maxV)*(midY-4);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  // legend
+  ctx.font='9px IBM Plex Mono';
+  ctx.fillStyle='#3498db';ctx.fillText('MACD',4,12);
+  ctx.fillStyle='#e74c3c';ctx.fillText('Signal',44,12);
+  ctx.fillStyle='rgba(255,255,255,0.4)';ctx.fillText('Hist',88,12);
 }
  
 async function fetchFGAndSentiment(sym,idx){
