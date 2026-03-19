@@ -3,826 +3,726 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Trenova Intelligence — Crypto Terminal</title>
+<title>Trenova Intelligence — Pro Terminal</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
-:root{--bg:#050807;--card:#0c1210;--border:#1a2e28;--accent:#2ec4a0;--accent2:#00e676;--text:#e8f5f2;--muted:#4a6b62;--red:#ff4d6d;--yellow:#ffd166;--card2:#111a18;}
-.light{--bg:#f0f4f3;--card:#ffffff;--border:#c8ddd9;--accent:#1a9b7e;--accent2:#00a65a;--text:#0d1f1c;--muted:#6b9990;--red:#d63651;--yellow:#c48a00;--card2:#e8f0ee;}
+:root{--bg:#050807;--card:#0c1210;--border:#1a2e28;--accent:#2ec4a0;--accent2:#00e676;--text:#e8f5f2;--muted:#4a6b62;--red:#ff4d6d;--yellow:#ffd166;--card2:#0f1a17;--orange:#ff9a3c;}
+.light{--bg:#eef2f1;--card:#fff;--border:#c5d8d3;--accent:#1a9b7e;--accent2:#00a65a;--text:#0a1a17;--muted:#5a8a80;--red:#cc2244;--yellow:#b07800;--card2:#f5f9f8;--orange:#d4600a;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;}
 body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;display:flex;flex-direction:column;transition:background .3s,color .3s;}
-body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.04) 2px,rgba(0,0,0,0.04) 4px);pointer-events:none;z-index:9999;}
+body.light::after{display:none;}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.035) 2px,rgba(0,0,0,0.035) 4px);pointer-events:none;z-index:9998;}
  
-/* HEADER */
-header{display:flex;align-items:center;gap:10px;padding:9px 18px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;flex-wrap:wrap;}
+/* ── HEADER ── */
+header{display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;flex-wrap:wrap;z-index:100;}
 .logo{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .logo-icon{width:28px;height:28px;background:var(--accent);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#050807;}
 .logo-text{font-size:13px;font-weight:700;letter-spacing:.05em;}
 .logo-sub{font-size:7px;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;font-family:'IBM Plex Mono',monospace;display:block;}
-.search-wrap{position:relative;flex:1;min-width:160px;max-width:320px;}
-.search-input{width:100%;padding:7px 11px 7px 30px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:11px;outline:none;transition:border-color .2s;}
-.search-input::placeholder{color:var(--muted);}
-.search-input:focus{border-color:var(--accent);}
-.si{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none;}
-.sd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:7px;z-index:400;display:none;box-shadow:0 10px 28px rgba(0,0,0,.5);max-height:240px;overflow-y:auto;}
+.sw{position:relative;flex:1;min-width:150px;max-width:300px;}
+.si-inp{width:100%;padding:7px 11px 7px 28px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:11px;outline:none;transition:border-color .2s;}
+.si-inp::placeholder{color:var(--muted);}
+.si-inp:focus{border-color:var(--accent);}
+.si-ico{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none;}
+.sd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:7px;z-index:500;display:none;box-shadow:0 10px 30px rgba(0,0,0,.6);max-height:240px;overflow-y:auto;}
 .sd.open{display:block;}
 .sd::-webkit-scrollbar{width:3px;}.sd::-webkit-scrollbar-thumb{background:var(--border);}
 .sdi{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;transition:background .15s;border-bottom:1px solid rgba(26,46,40,.3);}
 .sdi:last-child{border-bottom:none;}
 .sdi:hover,.sdi.foc{background:rgba(46,196,160,.08);}
-.sdi-sym{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;width:58px;}
-.sdi-name{font-size:11px;color:var(--muted);flex:1;}
-.sdi-tag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(46,196,160,.1);color:var(--accent);}
+.sdi-s{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;width:56px;}
+.sdi-n{font-size:11px;color:var(--muted);flex:1;}
+.sdi-t{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(46,196,160,.1);color:var(--accent);}
 .sd-empty{padding:12px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;text-align:center;}
-.hdr-btns{display:flex;gap:4px;flex-wrap:wrap;}
-.hbtn{padding:5px 10px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;white-space:nowrap;}
-.hbtn:hover{border-color:var(--accent);color:var(--accent);}
-.hbtn.active{background:rgba(46,196,160,.12);border-color:var(--accent);color:var(--accent);}
-.live-badge{display:flex;align-items:center;gap:5px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:.1em;flex-shrink:0;}
-.live-dot{width:6px;height:6px;background:var(--accent2);border-radius:50%;animation:pulse 1.5s ease-in-out infinite;}
+.hbtns{display:flex;gap:3px;flex-wrap:wrap;}
+.hb{padding:5px 9px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.hb:hover{border-color:var(--accent);color:var(--accent);}
+.hb.on{background:rgba(46,196,160,.12);border-color:var(--accent);color:var(--accent);}
+.live{display:flex;align-items:center;gap:5px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:.1em;flex-shrink:0;}
+.ldot{width:6px;height:6px;background:var(--accent2);border-radius:50%;animation:pulse 1.5s ease-in-out infinite;}
 @keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,230,118,.4)}50%{opacity:.6;box-shadow:0 0 0 4px rgba(0,230,118,0)}}
  
-/* TABS */
+/* ── TABS ── */
 .tabs{display:flex;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;overflow-x:auto;}
 .tabs::-webkit-scrollbar{height:2px;}.tabs::-webkit-scrollbar-thumb{background:var(--border);}
-.tab{padding:9px 16px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;background:transparent;border-top:none;border-left:none;border-right:none;}
+.tab{padding:8px 15px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;background:transparent;border-top:none;border-left:none;border-right:none;}
 .tab:hover{color:var(--accent);}
-.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent);}
  
+/* ── PAGES ── */
 .content{flex:1;overflow:hidden;min-height:0;display:flex;flex-direction:column;}
-.tab-page{display:none;flex:1;overflow:hidden;min-height:0;}
-.tab-page.active{display:flex;flex-direction:column;}
+.page{display:none;flex:1;overflow:hidden;min-height:0;flex-direction:column;}
+.page.on{display:flex;}
  
-/* CHART */
-.charts-wrap{flex:1;display:flex;overflow:hidden;min-height:0;}
-.charts-wrap.layout-single,.charts-wrap.layout-tb{flex-direction:column;}
-.charts-wrap.layout-lr{flex-direction:row;}
-.chart-panel{display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0;min-width:0;}
-.chart-panel+.chart-panel.visible{border-top:2px solid var(--accent);}
-.layout-lr .chart-panel+.chart-panel.visible{border-top:none;border-left:2px solid var(--accent);}
-.chart-panel.fullscreen{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;}
-.panel-bar{display:flex;align-items:center;gap:8px;padding:7px 12px;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
-.panel-pair{font-size:14px;font-weight:800;letter-spacing:-.01em;}
-.panel-price{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:var(--accent2);}
-.panel-chg{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:2px 6px;border-radius:3px;font-weight:600;}
-.panel-chg.up{background:rgba(0,230,118,.12);color:var(--accent2);}
-.panel-chg.down{background:rgba(255,77,109,.12);color:var(--red);}
-.spacer{flex:1;}
-.tf-btns{display:flex;gap:2px;}
-.tf-btn{padding:3px 7px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;cursor:pointer;transition:all .15s;}
-.tf-btn:hover{border-color:var(--accent);color:var(--accent);}
-.tf-btn.active{background:rgba(46,196,160,.12);border-color:var(--accent);color:var(--accent);}
-.panel-search-wrap{position:relative;}
-.panel-search{padding:4px 9px 4px 24px;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:10px;outline:none;width:120px;transition:all .2s;}
-.panel-search::placeholder{color:var(--muted);}
-.panel-search:focus{border-color:var(--accent);width:160px;}
-.ps-icon{position:absolute;left:7px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:11px;pointer-events:none;}
-.ps-drop{position:absolute;top:calc(100% + 4px);left:0;background:var(--card);border:1px solid var(--border);border-radius:6px;z-index:300;display:none;box-shadow:0 8px 22px rgba(0,0,0,.5);max-height:200px;overflow-y:auto;min-width:190px;}
-.ps-drop.open{display:block;}
-.ps-drop::-webkit-scrollbar{width:3px;}.ps-drop::-webkit-scrollbar-thumb{background:var(--border);}
-.psdi{display:flex;align-items:center;gap:7px;padding:7px 11px;cursor:pointer;transition:background .15s;border-bottom:1px solid rgba(26,46,40,.3);font-size:11px;}
-.psdi:last-child{border-bottom:none;}
-.psdi:hover,.psdi.foc{background:rgba(46,196,160,.08);}
-.psdi-sym{font-family:'IBM Plex Mono',monospace;font-weight:600;width:52px;}
-.psdi-name{color:var(--muted);font-size:10px;flex:1;}
-.fav-btn{padding:3px 7px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:3px;font-size:13px;cursor:pointer;transition:all .15s;}
-.fav-btn:hover{border-color:var(--yellow);color:var(--yellow);}
-.fav-btn.active{border-color:var(--yellow);color:var(--yellow);background:rgba(255,209,102,.1);}
-.fs-btn{padding:3px 7px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:3px;font-size:12px;cursor:pointer;transition:all .15s;}
-.fs-btn:hover{border-color:var(--accent);color:var(--accent);}
-.tv-wrap{flex:1;min-height:0;position:relative;}
-.tv-wrap iframe{width:100%;height:100%;border:none;display:block;}
+/* ── CHART LAYOUT ── */
+.charts-wrap{display:flex;overflow:hidden;min-height:0;}
+.charts-wrap.s{flex-direction:column;}
+.charts-wrap.lr{flex-direction:row;}
+.charts-wrap.tb{flex-direction:column;}
+.cpanel{display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0;min-width:0;}
+.cpanel+.cpanel.vis{border-top:2px solid var(--accent);}
+.lr .cpanel+.cpanel.vis{border-top:none;border-left:2px solid var(--accent);}
+.cpanel.fs{position:fixed;inset:0;z-index:600;background:var(--bg);display:flex;flex-direction:column;}
  
-/* STATS STRIP — now includes FR + OI */
-.panel-stats{display:flex;flex-shrink:0;background:var(--card);border-top:1px solid var(--border);overflow-x:auto;}
-.panel-stats::-webkit-scrollbar{height:2px;}
-.ps-item{flex:1;min-width:85px;padding:6px 12px;border-right:1px solid var(--border);}
-.ps-item:last-child{border-right:none;}
-.ps-item.highlight{background:rgba(46,196,160,.04);}
-.ps-lbl{font-family:'IBM Plex Mono',monospace;font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
-.ps-val{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;}
+/* panel bar */
+.pbar{display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
+.ppair{font-size:14px;font-weight:800;letter-spacing:-.01em;}
+.pprice{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:var(--accent2);}
+.pchg{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:2px 6px;border-radius:3px;font-weight:600;}
+.pchg.up{background:rgba(0,230,118,.12);color:var(--accent2);}
+.pchg.down{background:rgba(255,77,109,.12);color:var(--red);}
+.sp{flex:1;}
+.tfs{display:flex;gap:2px;}
+.tfb{padding:3px 7px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:3px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;cursor:pointer;transition:all .15s;}
+.tfb:hover{border-color:var(--accent);color:var(--accent);}
+.tfb.on{background:rgba(46,196,160,.12);border-color:var(--accent);color:var(--accent);}
+.psw{position:relative;}
+.psi{padding:4px 8px 4px 22px;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:10px;outline:none;width:110px;transition:all .2s;}
+.psi::placeholder{color:var(--muted);}
+.psi:focus{border-color:var(--accent);width:150px;}
+.psi-ico{position:absolute;left:6px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:11px;pointer-events:none;}
+.psd{position:absolute;top:calc(100% + 3px);left:0;background:var(--card);border:1px solid var(--border);border-radius:6px;z-index:400;display:none;box-shadow:0 8px 20px rgba(0,0,0,.5);max-height:190px;overflow-y:auto;min-width:180px;}
+.psd.open{display:block;}
+.psd::-webkit-scrollbar{width:3px;}.psd::-webkit-scrollbar-thumb{background:var(--border);}
+.pdrop-i{display:flex;align-items:center;gap:6px;padding:7px 10px;cursor:pointer;transition:background .15s;border-bottom:1px solid rgba(26,46,40,.3);font-size:11px;}
+.pdrop-i:last-child{border-bottom:none;}
+.pdrop-i:hover,.pdrop-i.foc{background:rgba(46,196,160,.08);}
+.pdrop-s{font-family:'IBM Plex Mono',monospace;font-weight:600;width:50px;}
+.pdrop-n{color:var(--muted);font-size:10px;flex:1;}
+.icnbtn{padding:3px 7px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:3px;font-size:12px;cursor:pointer;transition:all .15s;}
+.icnbtn:hover{border-color:var(--accent);color:var(--accent);}
+.icnbtn.on{border-color:var(--yellow);color:var(--yellow);background:rgba(255,209,102,.1);}
  
-/* ORDERBOOK in data tab */
-.data-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;padding:14px;overflow-y:auto;flex:1;}
-.data-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
-.dc-head{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.dc-title{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);}
-.dc-body{padding:12px 14px;}
-.ob-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.ob-side-title{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;font-weight:600;}
-.ob-asks .ob-side-title{color:var(--red);}
-.ob-bids .ob-side-title{color:var(--accent2);}
-.ob-row{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:10px;padding:2px 0;position:relative;}
-.ob-row .ob-bar{position:absolute;top:0;bottom:0;opacity:.12;border-radius:2px;}
-.ob-asks .ob-bar{background:var(--red);right:0;}
-.ob-bids .ob-bar{background:var(--accent2);left:0;}
-.ob-price{font-weight:600;position:relative;z-index:1;}
-.ob-qty{color:var(--muted);position:relative;z-index:1;}
-.ob-spread{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--yellow);padding:6px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:6px 0;}
+/* TV iframe */
+.tvwrap{flex:1;min-height:0;position:relative;}
+.tvwrap iframe{width:100%;height:100%;border:none;display:block;}
  
-/* HEATMAP */
-.heatmap-page{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.hm-toolbar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;flex-wrap:wrap;}
-.hm-filter-btn{padding:5px 12px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;}
-.hm-filter-btn:hover{border-color:var(--accent);color:var(--accent);}
-.hm-filter-btn.active{background:rgba(46,196,160,.12);border-color:var(--accent);color:var(--accent);}
-.hm-legend{display:flex;align-items:center;gap:6px;margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);}
-.hm-legend-bar{width:80px;height:8px;border-radius:4px;background:linear-gradient(90deg,#b71c1c,#333,#1b5e20);}
-.heatmap-container{flex:1;overflow-y:auto;padding:14px;}
-.hm-section{margin-bottom:20px;}
-.hm-section-title{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}
-.hm-treemap{display:flex;flex-wrap:wrap;gap:4px;}
-.hm-cell{border-radius:8px;cursor:pointer;transition:transform .15s,filter .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 6px;overflow:hidden;position:relative;}
-.hm-cell:hover{transform:scale(1.04);filter:brightness(1.15);}
-.hm-sym{font-family:'IBM Plex Mono',monospace;font-weight:700;color:#fff;line-height:1;text-align:center;}
-.hm-chg{font-family:'IBM Plex Mono',monospace;font-weight:600;color:rgba(255,255,255,.85);text-align:center;margin-top:3px;}
-.hm-mcap{font-family:'IBM Plex Mono',monospace;color:rgba(255,255,255,.5);text-align:center;margin-top:2px;}
+/* ── DATA PANEL (below chart) ── */
+.data-panel{flex-shrink:0;background:var(--card2);border-top:1px solid var(--border);overflow:hidden;transition:height .3s;}
+.data-panel.collapsed{height:32px;}
+.data-panel.expanded{height:220px;}
+.dp-toggle{display:flex;align-items:center;justify-content:space-between;padding:6px 14px;cursor:pointer;border-bottom:1px solid var(--border);background:var(--card);user-select:none;}
+.dp-toggle-title{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px;}
+.dp-toggle-arrow{font-size:10px;transition:transform .3s;color:var(--muted);}
+.data-panel.expanded .dp-toggle-arrow{transform:rotate(180deg);}
+.dp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;height:calc(220px - 32px);overflow:hidden;}
+.dp-col{display:flex;flex-direction:column;border-right:1px solid var(--border);overflow:hidden;}
+.dp-col:last-child{border-right:none;}
+.dp-col-title{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);padding:8px 14px 5px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.dp-col-body{flex:1;overflow-y:auto;padding:10px 14px;}
+.dp-col-body::-webkit-scrollbar{width:2px;}.dp-col-body::-webkit-scrollbar-thumb{background:var(--border);}
  
-/* WATCHLIST */
-.watchlist-page{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.wl-toolbar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;}
+/* futures card */
+.fc-item{margin-bottom:10px;}
+.fc-label{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.fc-value{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:700;line-height:1;}
+.fc-value.pos{color:var(--accent2);}
+.fc-value.neg{color:var(--red);}
+.fc-value.neu{color:var(--yellow);}
+.fc-sub{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-top:3px;}
+ 
+/* liquidation bars */
+.liq-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.liq-price{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;width:80px;flex-shrink:0;}
+.liq-bar-wrap{flex:1;height:12px;background:var(--border);border-radius:3px;overflow:hidden;}
+.liq-bar{height:100%;border-radius:3px;transition:width .5s;}
+.liq-val{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);width:45px;text-align:right;flex-shrink:0;}
+ 
+/* signal box */
+.signal-box{border-radius:8px;padding:10px 12px;margin-bottom:8px;border:1px solid;}
+.signal-box.long{background:rgba(0,230,118,.07);border-color:rgba(0,230,118,.3);}
+.signal-box.short{background:rgba(255,77,109,.07);border-color:rgba(255,77,109,.3);}
+.signal-box.neutral{background:rgba(255,209,102,.07);border-color:rgba(255,209,102,.3);}
+.sig-label{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
+.sig-label.long{color:var(--accent2);}
+.sig-label.short{color:var(--red);}
+.sig-label.neutral{color:var(--yellow);}
+.sig-value{font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:800;}
+.sig-detail{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-top:4px;line-height:1.6;}
+.sig-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:6px;}
+.sig-bar{height:100%;border-radius:3px;}
+ 
+/* Fear greed meter */
+.fg-wrap{text-align:center;padding:4px 0;}
+.fg-num{font-size:40px;font-weight:800;font-family:'IBM Plex Mono',monospace;line-height:1;}
+.fg-lbl{font-size:12px;font-weight:700;letter-spacing:.06em;margin-top:3px;}
+.fg-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin:10px 0 5px;}
+.fg-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--red),var(--yellow),var(--accent2));transition:width 1s;}
+.fg-sub{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);}
+.fg-hist{margin-top:10px;}
+.fg-hist-row{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:9px;padding:3px 0;border-bottom:1px solid var(--border);}
+ 
+/* ── WATCHLIST PAGE ── */
+.wl-page{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.wl-bar{display:flex;align-items:center;gap:8px;padding:9px 16px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;}
 .wl-container{flex:1;overflow-y:auto;padding:14px;}
-.wl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;}
-.wl-card{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:14px;cursor:pointer;transition:border-color .15s;position:relative;}
-.wl-card:hover{border-color:var(--accent);}
-.wl-sym{font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;}
-.wl-name{font-size:11px;color:var(--muted);margin-top:2px;}
-.wl-price{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--accent2);margin-top:8px;}
-.wl-chg{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;margin-top:3px;}
-.wl-chg.up{color:var(--accent2);}
-.wl-chg.down{color:var(--red);}
-.wl-remove{position:absolute;top:8px;right:8px;background:transparent;border:none;color:var(--muted);font-size:14px;cursor:pointer;transition:color .15s;padding:2px;}
-.wl-remove:hover{color:var(--red);}
-.wl-vol{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-top:4px;}
-.wl-empty{text-align:center;padding:60px 20px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.8;}
-.wl-fr{font-family:'IBM Plex Mono',monospace;font-size:9px;margin-top:4px;}
+.wl-container::-webkit-scrollbar{width:4px;}.wl-container::-webkit-scrollbar-thumb{background:var(--border);}
+.wl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.wlc{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:border-color .15s;position:relative;}
+.wlc:hover{border-color:var(--accent);}
+.wlc-sym{font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:700;}
+.wlc-name{font-size:11px;color:var(--muted);margin-top:1px;}
+.wlc-price{font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:var(--accent2);margin-top:8px;}
+.wlc-chg{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;margin-top:2px;}
+.wlc-chg.up{color:var(--accent2);}.wlc-chg.down{color:var(--red);}
+.wlc-stats{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+.wlcs-item{background:var(--card2);border-radius:5px;padding:5px 7px;}
+.wlcs-lbl{font-family:'IBM Plex Mono',monospace;font-size:7px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
+.wlcs-val{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;}
+.wlc-rm{position:absolute;top:8px;right:8px;background:transparent;border:none;color:var(--muted);font-size:14px;cursor:pointer;transition:color .15s;padding:2px 4px;}
+.wlc-rm:hover{color:var(--red);}
+.wl-empty{text-align:center;padding:60px 20px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:2;}
  
-/* NEWS */
-.news-wrap{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;}
-.news-card{background:var(--card);border:1px solid var(--border);border-radius:9px;padding:14px;cursor:pointer;transition:border-color .15s;}
-.news-card:hover{border-color:var(--accent);}
-.news-source{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
-.news-title{font-size:13px;font-weight:700;line-height:1.4;margin-bottom:6px;}
-.news-time{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);}
-.news-tag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 6px;border-radius:3px;margin-left:8px;}
+/* ── HEATMAP PAGE ── */
+.hm-page{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.hm-bar{display:flex;align-items:center;gap:6px;padding:9px 16px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;flex-wrap:wrap;}
+.hmfb{padding:5px 11px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;}
+.hmfb:hover{border-color:var(--accent);color:var(--accent);}
+.hmfb.on{background:rgba(46,196,160,.12);border-color:var(--accent);color:var(--accent);}
+.hm-legend{display:flex;align-items:center;gap:6px;margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);}
+.hm-lgbar{width:80px;height:6px;border-radius:3px;background:linear-gradient(90deg,#8b0000,#333,#006400);}
+.hm-container{flex:1;overflow-y:auto;padding:14px;}
+.hm-container::-webkit-scrollbar{width:4px;}.hm-container::-webkit-scrollbar-thumb{background:var(--border);}
+.hm-treemap{display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;}
+.hmc{border-radius:9px;cursor:pointer;transition:transform .15s,filter .15s;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 6px;position:relative;overflow:hidden;}
+.hmc:hover{transform:scale(1.05);filter:brightness(1.2);}
+.hmc-sym{font-family:'IBM Plex Mono',monospace;font-weight:800;color:#fff;line-height:1;text-align:center;}
+.hmc-chg{font-family:'IBM Plex Mono',monospace;font-weight:600;color:rgba(255,255,255,.85);text-align:center;margin-top:3px;}
+.hmc-p{font-family:'IBM Plex Mono',monospace;color:rgba(255,255,255,.55);text-align:center;margin-top:2px;}
  
-/* HISTORY */
-.history-wrap{flex:1;overflow-y:auto;padding:14px;}
+/* ── NEWS PAGE ── */
+.news-page{flex:1;display:flex;overflow:hidden;}
+.news-list{width:340px;flex-shrink:0;border-right:1px solid var(--border);overflow-y:auto;background:var(--card);}
+.news-list::-webkit-scrollbar{width:3px;}.news-list::-webkit-scrollbar-thumb{background:var(--border);}
+.news-item{padding:12px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.news-item:hover{background:rgba(46,196,160,.05);}
+.news-item.active{background:rgba(46,196,160,.08);border-left:3px solid var(--accent);}
+.ni-source{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:5px;display:flex;align-items:center;gap:6px;}
+.ni-tag{font-family:'IBM Plex Mono',monospace;font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(46,196,160,.1);color:var(--accent);}
+.ni-title{font-size:12px;font-weight:700;line-height:1.4;margin-bottom:4px;}
+.ni-time{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);}
+.news-detail{flex:1;overflow-y:auto;padding:24px;background:var(--bg);}
+.news-detail::-webkit-scrollbar{width:4px;}.news-detail::-webkit-scrollbar-thumb{background:var(--border);}
+.nd-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px;gap:8px;}
+.nd-source{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.nd-tag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 7px;border-radius:4px;background:rgba(46,196,160,.12);color:var(--accent);}
+.nd-title{font-size:22px;font-weight:800;line-height:1.3;margin-bottom:10px;}
+.nd-time{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.nd-body{font-size:14px;line-height:1.8;color:var(--text);opacity:.85;}
+.nd-body p{margin-bottom:12px;}
+.nd-sentiment{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:7px;margin-top:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;}
+.nd-sentiment.bull{background:rgba(0,230,118,.1);color:var(--accent2);border:1px solid rgba(0,230,118,.2);}
+.nd-sentiment.bear{background:rgba(255,77,109,.1);color:var(--red);border:1px solid rgba(255,77,109,.2);}
+.nd-sentiment.neu{background:rgba(255,209,102,.1);color:var(--yellow);border:1px solid rgba(255,209,102,.2);}
+ 
+/* ── HISTORY PAGE ── */
+.hist-page{flex:1;overflow-y:auto;padding:14px;}
+.hist-page::-webkit-scrollbar{width:4px;}.hist-page::-webkit-scrollbar-thumb{background:var(--border);}
 .hist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;}
-.hist-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:border-color .15s;}
-.hist-card:hover{border-color:var(--accent);}
-.hist-sym{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;}
-.hist-name{font-size:11px;color:var(--muted);margin-top:2px;}
-.hist-time{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-top:6px;}
-.hist-price{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--accent2);margin-top:4px;}
+.histc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;cursor:pointer;transition:border-color .15s;}
+.histc:hover{border-color:var(--accent);}
+.histc-sym{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;}
+.histc-name{font-size:10px;color:var(--muted);margin-top:2px;}
+.histc-time{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-top:6px;}
 .hist-empty{text-align:center;padding:40px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;}
-.hist-clear{margin-bottom:10px;padding:6px 14px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;}
-.hist-clear:hover{border-color:var(--red);color:var(--red);}
+.clrbtn{margin-bottom:12px;padding:6px 14px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:10px;cursor:pointer;transition:all .15s;}
+.clrbtn:hover{border-color:var(--red);color:var(--red);}
  
 @media(max-width:640px){
-  header{padding:8px 12px;}
+  header{padding:7px 10px;}
   .logo-text{display:none;}
-  .tabs .tab{padding:8px 10px;font-size:10px;}
-  .wl-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));}
-  .hm-toolbar{gap:4px;}
+  .tab{padding:7px 10px;font-size:9px;}
+  .dp-grid{grid-template-columns:1fr 1fr;}
+  .news-page{flex-direction:column;}
+  .news-list{width:100%;max-height:200px;border-right:none;border-bottom:1px solid var(--border);}
+  .wl-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));}
 }
 </style>
 </head>
 <body id="body">
 <header>
-  <div class="logo">
-    <div class="logo-icon">TI</div>
-    <div><div class="logo-text">TRENOVA INTELLIGENCE</div><span class="logo-sub">crypto terminal</span></div>
+  <div class="logo"><div class="logo-icon">TI</div><div><div class="logo-text">TRENOVA INTELLIGENCE</div><span class="logo-sub">pro terminal</span></div></div>
+  <div class="sw" id="gsw"><span class="si-ico">&#128269;</span><input type="text" class="si-inp" id="gs" placeholder="Search coin..." autocomplete="off"/><div class="sd" id="gd"></div></div>
+  <div class="hbtns">
+    <button class="hb on" id="btn-s" onclick="setLayout('s')">▣ 1</button>
+    <button class="hb" id="btn-lr" onclick="setLayout('lr')">⬜⬜ LR</button>
+    <button class="hb" id="btn-tb" onclick="setLayout('tb')">&#9723; TB</button>
+    <button class="hb" id="thbtn" onclick="toggleTheme()">&#9790;</button>
   </div>
-  <div class="search-wrap" id="gsw">
-    <span class="si">&#128269;</span>
-    <input type="text" class="search-input" id="g-search" placeholder="Search coin..." autocomplete="off"/>
-    <div class="sd" id="g-drop"></div>
-  </div>
-  <div class="hdr-btns">
-    <button class="hbtn active" id="btn-single" onclick="setLayout('single')">▣ 1 Chart</button>
-    <button class="hbtn" id="btn-lr" onclick="setLayout('lr')">⬜⬜ Kiri-Kanan</button>
-    <button class="hbtn" id="btn-tb" onclick="setLayout('tb')">&#9723; Atas-Bawah</button>
-    <button class="hbtn" id="theme-btn" onclick="toggleTheme()">&#9790; Mode</button>
-  </div>
-  <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+  <div class="live"><div class="ldot"></div>LIVE</div>
 </header>
- 
 <div class="tabs">
-  <button class="tab active" data-tab="chart" onclick="showTab('chart',this)">&#9633; Chart</button>
-  <button class="tab" data-tab="watchlist" onclick="showTab('watchlist',this)">&#9733; Watchlist</button>
-  <button class="tab" data-tab="heatmap" onclick="showTab('heatmap',this)">&#9632; Heatmap</button>
-  <button class="tab" data-tab="data" onclick="showTab('data',this)">&#128200; Orderbook</button>
-  <button class="tab" data-tab="news" onclick="showTab('news',this)">&#128240; Berita</button>
-  <button class="tab" data-tab="history" onclick="showTab('history',this)">&#128337; Riwayat</button>
+  <button class="tab on" data-t="chart" onclick="showTab('chart',this)">&#9633; Chart</button>
+  <button class="tab" data-t="watchlist" onclick="showTab('watchlist',this)">&#9733; Watchlist</button>
+  <button class="tab" data-t="heatmap" onclick="showTab('heatmap',this)">&#9632; Heatmap</button>
+  <button class="tab" data-t="news" onclick="showTab('news',this)">&#128240; Berita</button>
+  <button class="tab" data-t="history" onclick="showTab('history',this)">&#128337; Riwayat</button>
 </div>
- 
 <div class="content">
  
-<!-- CHART TAB -->
-<div class="tab-page active" id="tab-chart">
-  <div class="charts-wrap layout-single" id="charts-wrap">
- 
-    <!-- PANEL 0 -->
-    <div class="chart-panel" id="panel-0">
-      <div class="panel-bar">
-        <span class="panel-pair" id="p0-name">BTC/USDT</span>
-        <span class="panel-price" id="p0-price">—</span>
-        <span class="panel-chg up" id="p0-chg">—</span>
-        <div class="spacer"></div>
-        <div class="panel-search-wrap" id="psw-0">
-          <span class="ps-icon">&#128269;</span>
-          <input type="text" class="panel-search" id="ps-0" placeholder="Ganti coin..." autocomplete="off"/>
-          <div class="ps-drop" id="psd-0"></div>
+<!-- CHART PAGE -->
+<div class="page on" id="page-chart">
+  <div class="charts-wrap s" id="cw">
+    <!-- Panel 0 -->
+    <div class="cpanel" id="cp0">
+      <div class="pbar">
+        <span class="ppair" id="p0nm">BTC/USDT</span>
+        <span class="pprice" id="p0pr">—</span>
+        <span class="pchg up" id="p0ch">—</span>
+        <div class="sp"></div>
+        <div class="psw" id="psw0"><span class="psi-ico">&#128269;</span><input type="text" class="psi" id="psi0" placeholder="Ganti..." autocomplete="off"/><div class="psd" id="psd0"></div></div>
+        <div class="tfs" id="tf0">
+          <button class="tfb" data-tf="1">1m</button><button class="tfb" data-tf="5">5m</button><button class="tfb" data-tf="15">15m</button><button class="tfb" data-tf="60">1H</button><button class="tfb" data-tf="240">4H</button><button class="tfb on" data-tf="D">1D</button><button class="tfb" data-tf="W">1W</button>
         </div>
-        <div class="tf-btns" id="tf-0">
-          <button class="tf-btn" data-tf="1">1m</button>
-          <button class="tf-btn" data-tf="5">5m</button>
-          <button class="tf-btn" data-tf="15">15m</button>
-          <button class="tf-btn" data-tf="60">1H</button>
-          <button class="tf-btn" data-tf="240">4H</button>
-          <button class="tf-btn active" data-tf="D">1D</button>
-          <button class="tf-btn" data-tf="W">1W</button>
-        </div>
-        <button class="fav-btn" id="fav-0" onclick="toggleWatchlist(0)" title="Tambah ke Watchlist">&#9733;</button>
-        <button class="fs-btn" onclick="toggleFS(0)" title="Fullscreen">&#9974;</button>
+        <button class="icnbtn" id="fav0" onclick="toggleWL(0)" title="Watchlist">&#9733;</button>
+        <button class="icnbtn" onclick="toggleFS(0)" title="Fullscreen">&#9974;</button>
       </div>
-      <div class="tv-wrap"><iframe id="if-0" src="" frameborder="0" allowtransparency="true" scrolling="no"></iframe></div>
-      <div class="panel-stats" id="stats-0">
-        <div class="ps-item"><div class="ps-lbl">HIGH 24H</div><div class="ps-val" id="p0-hi">—</div></div>
-        <div class="ps-item"><div class="ps-lbl">LOW 24H</div><div class="ps-val" id="p0-lo">—</div></div>
-        <div class="ps-item"><div class="ps-lbl">VOLUME 24H</div><div class="ps-val" id="p0-vo">—</div></div>
-        <div class="ps-item"><div class="ps-lbl">CHANGE 24H</div><div class="ps-val" id="p0-cv">—</div></div>
-        <div class="ps-item highlight"><div class="ps-lbl">FUNDING RATE</div><div class="ps-val" id="p0-fr">—</div></div>
-        <div class="ps-item highlight"><div class="ps-lbl">OPEN INTEREST</div><div class="ps-val" id="p0-oi">—</div></div>
-        <div class="ps-item highlight"><div class="ps-lbl">MARK PRICE</div><div class="ps-val" id="p0-mp">—</div></div>
-        <div class="ps-item highlight"><div class="ps-lbl">LONG/SHORT</div><div class="ps-val" id="p0-ls">—</div></div>
+      <div class="tvwrap"><iframe id="if0" src="" frameborder="0" scrolling="no"></iframe></div>
+      <!-- DATA PANEL 0 -->
+      <div class="data-panel expanded" id="dp0">
+        <div class="dp-toggle" onclick="toggleDP(0)">
+          <div class="dp-toggle-title">&#128200; Futures Data &amp; Signal — <span id="dp0-pair">BTC/USDT</span></div>
+          <span class="dp-toggle-arrow">&#9650;</span>
+        </div>
+        <div class="dp-grid">
+          <div class="dp-col">
+            <div class="dp-col-title">&#128176; Funding &amp; OI</div>
+            <div class="dp-col-body" id="dp0-foi">—</div>
+          </div>
+          <div class="dp-col">
+            <div class="dp-col-title">&#9889; Liquidation Levels</div>
+            <div class="dp-col-body" id="dp0-liq">—</div>
+          </div>
+          <div class="dp-col">
+            <div class="dp-col-title">&#128200; RSI + MACD Signal</div>
+            <div class="dp-col-body" id="dp0-sig">—</div>
+          </div>
+          <div class="dp-col">
+            <div class="dp-col-title">&#127381; Fear &amp; Greed + Sentiment</div>
+            <div class="dp-col-body" id="dp0-fg">—</div>
+          </div>
+        </div>
       </div>
     </div>
- 
-    <!-- PANEL 1 -->
-    <div class="chart-panel" id="panel-1" style="display:none;">
-      <div class="panel-bar">
-        <span class="panel-pair" id="p1-name">ETH/USDT</span>
-        <span class="panel-price" id="p1-price">—</span>
-        <span class="panel-chg up" id="p1-chg">—</span>
-        <div class="spacer"></div>
-        <div class="panel-search-wrap" id="psw-1">
-          <span class="ps-icon">&#128269;</span>
-          <input type="text" class="panel-search" id="ps-1" placeholder="Ganti coin..." autocomplete="off"/>
-          <div class="ps-drop" id="psd-1"></div>
+    <!-- Panel 1 -->
+    <div class="cpanel" id="cp1" style="display:none;">
+      <div class="pbar">
+        <span class="ppair" id="p1nm">ETH/USDT</span>
+        <span class="pprice" id="p1pr">—</span>
+        <span class="pchg up" id="p1ch">—</span>
+        <div class="sp"></div>
+        <div class="psw" id="psw1"><span class="psi-ico">&#128269;</span><input type="text" class="psi" id="psi1" placeholder="Ganti..." autocomplete="off"/><div class="psd" id="psd1"></div></div>
+        <div class="tfs" id="tf1">
+          <button class="tfb" data-tf="1">1m</button><button class="tfb" data-tf="5">5m</button><button class="tfb" data-tf="15">15m</button><button class="tfb" data-tf="60">1H</button><button class="tfb on" data-tf="240">4H</button><button class="tfb" data-tf="D">1D</button><button class="tfb" data-tf="W">1W</button>
         </div>
-        <div class="tf-btns" id="tf-1">
-          <button class="tf-btn" data-tf="1">1m</button>
-          <button class="tf-btn" data-tf="5">5m</button>
-          <button class="tf-btn" data-tf="15">15m</button>
-          <button class="tf-btn" data-tf="60">1H</button>
-          <button class="tf-btn active" data-tf="240">4H</button>
-          <button class="tf-btn" data-tf="D">1D</button>
-          <button class="tf-btn" data-tf="W">1W</button>
+        <button class="icnbtn" id="fav1" onclick="toggleWL(1)" title="Watchlist">&#9733;</button>
+        <button class="icnbtn" onclick="toggleFS(1)" title="Fullscreen">&#9974;</button>
+      </div>
+      <div class="tvwrap"><iframe id="if1" src="" frameborder="0" scrolling="no"></iframe></div>
+      <div class="data-panel expanded" id="dp1">
+        <div class="dp-toggle" onclick="toggleDP(1)">
+          <div class="dp-toggle-title">&#128200; Futures Data &amp; Signal — <span id="dp1-pair">ETH/USDT</span></div>
+          <span class="dp-toggle-arrow">&#9650;</span>
         </div>
-        <button class="fav-btn" id="fav-1" onclick="toggleWatchlist(1)" title="Tambah ke Watchlist">&#9733;</button>
-        <button class="fs-btn" onclick="toggleFS(1)" title="Fullscreen">&#9974;</button>
-      </div>
-      <div class="tv-wrap"><iframe id="if-1" src="" frameborder="0" allowtransparency="true" scrolling="no"></iframe></div>
-      <div class="panel-stats" id="stats-1">
-        <div class="ps-item"><div class="ps-lbl">HIGH 24H</div><div class="ps-val" id="p1-hi">—</div></div>
-        <div class="ps-item"><div class="ps-lbl">LOW 24H</div><div class="ps-val" id="p1-lo">—</div></div>
-        <div class="ps-item"><div class="ps-lbl">VOLUME 24H</div><div class="ps-val" id="p1-vo">—</div></div>
-        <div class="ps-item"><div class="ps-lbl">CHANGE 24H</div><div class="ps-val" id="p1-cv">—</div></div>
-        <div class="ps-item highlight"><div class="ps-lbl">FUNDING RATE</div><div class="ps-val" id="p1-fr">—</div></div>
-        <div class="ps-item highlight"><div class="ps-lbl">OPEN INTEREST</div><div class="ps-val" id="p1-oi">—</div></div>
-        <div class="ps-item highlight"><div class="ps-lbl">MARK PRICE</div><div class="ps-val" id="p1-mp">—</div></div>
-        <div class="ps-item highlight"><div class="ps-lbl">LONG/SHORT</div><div class="ps-val" id="p1-ls">—</div></div>
-      </div>
-    </div>
-  </div>
-</div>
- 
-<!-- WATCHLIST TAB -->
-<div class="tab-page" id="tab-watchlist">
-  <div class="watchlist-page">
-    <div class="wl-toolbar">
-      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);">&#9733; Coin favorit kamu tersimpan permanen</span>
-      <div class="spacer"></div>
-      <button class="hbtn" onclick="refreshWatchlist()">&#8635; Refresh</button>
-    </div>
-    <div class="wl-container"><div class="wl-grid" id="wl-grid"></div></div>
-  </div>
-</div>
- 
-<!-- HEATMAP TAB -->
-<div class="tab-page" id="tab-heatmap">
-  <div class="heatmap-page">
-    <div class="hm-toolbar">
-      <button class="hm-filter-btn active" data-filter="all" onclick="setHmFilter('all',this)">Semua</button>
-      <button class="hm-filter-btn" data-filter="top" onclick="setHmFilter('top',this)">Top 10</button>
-      <button class="hm-filter-btn" data-filter="defi" onclick="setHmFilter('defi',this)">DeFi</button>
-      <button class="hm-filter-btn" data-filter="meme" onclick="setHmFilter('meme',this)">Meme</button>
-      <button class="hm-filter-btn" data-filter="l1l2" onclick="setHmFilter('l1l2',this)">L1/L2</button>
-      <div class="hm-legend">
-        <span>Turun</span>
-        <div class="hm-legend-bar"></div>
-        <span>Naik</span>
-      </div>
-    </div>
-    <div class="heatmap-container">
-      <div class="hm-section">
-        <div class="hm-section-title">&#9632; Heatmap — ukuran kotak = market cap</div>
-        <div class="hm-treemap" id="hm-treemap">
-          <div style="color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;padding:20px;">Memuat heatmap...</div>
+        <div class="dp-grid">
+          <div class="dp-col"><div class="dp-col-title">&#128176; Funding &amp; OI</div><div class="dp-col-body" id="dp1-foi">—</div></div>
+          <div class="dp-col"><div class="dp-col-title">&#9889; Liquidation Levels</div><div class="dp-col-body" id="dp1-liq">—</div></div>
+          <div class="dp-col"><div class="dp-col-title">&#128200; RSI + MACD Signal</div><div class="dp-col-body" id="dp1-sig">—</div></div>
+          <div class="dp-col"><div class="dp-col-title">&#127381; Fear &amp; Greed + Sentiment</div><div class="dp-col-body" id="dp1-fg">—</div></div>
         </div>
       </div>
     </div>
   </div>
 </div>
  
-<!-- ORDERBOOK TAB -->
-<div class="tab-page" id="tab-data">
-  <div class="data-grid">
-    <div class="data-card">
-      <div class="dc-head">
-        <span class="dc-title">&#128200; Orderbook</span>
-        <select id="ob-sym-sel" style="background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:4px;padding:3px 7px;font-family:'IBM Plex Mono',monospace;font-size:10px;outline:none;">
-          <option value="BTCUSDT">BTC</option><option value="ETHUSDT">ETH</option>
-          <option value="SOLUSDT">SOL</option><option value="BNBUSDT">BNB</option><option value="XRPUSDT">XRP</option>
-        </select>
-      </div>
-      <div class="dc-body"><div id="ob-content">Loading...</div></div>
-    </div>
-    <div class="data-card" style="grid-column:span 2;">
-      <div class="dc-head"><span class="dc-title">&#9723; Market Depth Chart</span></div>
-      <div class="dc-body"><canvas id="depth-canvas" width="600" height="160" style="width:100%;height:160px;"></canvas></div>
-    </div>
+<!-- WATCHLIST PAGE -->
+<div class="page" id="page-watchlist">
+  <div class="wl-page">
+    <div class="wl-bar"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);">&#9733; Klik bintang di chart untuk simpan</span><div class="sp"></div><button class="hb" onclick="refreshWL()">&#8635; Refresh</button></div>
+    <div class="wl-container"><div class="wl-grid" id="wlgrid"></div></div>
   </div>
 </div>
  
-<!-- NEWS TAB -->
-<div class="tab-page" id="tab-news">
-  <div class="news-wrap" id="news-wrap">
-    <div style="text-align:center;padding:40px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;">Memuat berita...</div>
+<!-- HEATMAP PAGE -->
+<div class="page" id="page-heatmap">
+  <div class="hm-page">
+    <div class="hm-bar">
+      <button class="hmfb on" onclick="setHmF('all',this)">Semua</button>
+      <button class="hmfb" onclick="setHmF('top',this)">Top 10</button>
+      <button class="hmfb" onclick="setHmF('defi',this)">DeFi</button>
+      <button class="hmfb" onclick="setHmF('meme',this)">Meme</button>
+      <button class="hmfb" onclick="setHmF('l1l2',this)">L1/L2</button>
+      <div class="hm-legend"><span>&#9660; Turun</span><div class="hm-lgbar"></div><span>Naik &#9650;</span></div>
+    </div>
+    <div class="hm-container"><div class="hm-treemap" id="hmt">Memuat heatmap...</div></div>
   </div>
 </div>
  
-<!-- HISTORY TAB -->
-<div class="tab-page" id="tab-history">
-  <div class="history-wrap">
-    <button class="hist-clear" onclick="clearHistory()">&#128465; Hapus Riwayat</button>
-    <div class="hist-grid" id="hist-grid"></div>
+<!-- NEWS PAGE -->
+<div class="page" id="page-news">
+  <div class="news-page">
+    <div class="news-list" id="newslist"></div>
+    <div class="news-detail" id="newsdetail"><div class="nd-empty"><span style="font-size:32px;">&#128240;</span>Pilih berita di sebelah kiri</div></div>
   </div>
+</div>
+ 
+<!-- HISTORY PAGE -->
+<div class="page" id="page-history">
+  <div class="hist-page"><button class="clrbtn" onclick="clearHist()">&#128465; Hapus Riwayat</button><div class="hist-grid" id="histgrid"></div></div>
 </div>
  
 </div>
 <script>
 var COINS=[
-  {sym:'BTCUSDT',name:'Bitcoin',abbr:'BTC',tag:'Top 10',cat:'top',mcap:1800},
-  {sym:'ETHUSDT',name:'Ethereum',abbr:'ETH',tag:'Top 10',cat:'top',mcap:400},
-  {sym:'BNBUSDT',name:'BNB',abbr:'BNB',tag:'Top 10',cat:'top',mcap:90},
-  {sym:'SOLUSDT',name:'Solana',abbr:'SOL',tag:'Top 10',cat:'top l1l2',mcap:85},
-  {sym:'XRPUSDT',name:'XRP',abbr:'XRP',tag:'Top 10',cat:'top',mcap:130},
-  {sym:'ADAUSDT',name:'Cardano',abbr:'ADA',tag:'Top 20',cat:'top l1l2',mcap:40},
-  {sym:'AVAXUSDT',name:'Avalanche',abbr:'AVAX',tag:'Top 20',cat:'l1l2',mcap:18},
-  {sym:'DOGEUSDT',name:'Dogecoin',abbr:'DOGE',tag:'Meme',cat:'meme',mcap:45},
-  {sym:'DOTUSDT',name:'Polkadot',abbr:'DOT',tag:'Top 20',cat:'l1l2',mcap:12},
-  {sym:'LINKUSDT',name:'Chainlink',abbr:'LINK',tag:'DeFi',cat:'defi',mcap:10},
-  {sym:'TONUSDT',name:'Toncoin',abbr:'TON',tag:'Top 20',cat:'l1l2',mcap:22},
-  {sym:'SUIUSDT',name:'Sui',abbr:'SUI',tag:'L1',cat:'l1l2',mcap:12},
-  {sym:'APTUSDT',name:'Aptos',abbr:'APT',tag:'L1',cat:'l1l2',mcap:8},
-  {sym:'MATICUSDT',name:'Polygon',abbr:'MATIC',tag:'L2',cat:'l1l2',mcap:9},
-  {sym:'ARBUSDT',name:'Arbitrum',abbr:'ARB',tag:'L2',cat:'l1l2',mcap:7},
-  {sym:'OPUSDT',name:'Optimism',abbr:'OP',tag:'L2',cat:'l1l2',mcap:5},
-  {sym:'UNIUSDT',name:'Uniswap',abbr:'UNI',tag:'DeFi',cat:'defi',mcap:6},
-  {sym:'AAVEUSDT',name:'Aave',abbr:'AAVE',tag:'DeFi',cat:'defi',mcap:4},
-  {sym:'LTCUSDT',name:'Litecoin',abbr:'LTC',tag:'OG',cat:'top',mcap:11},
-  {sym:'ATOMUSDT',name:'Cosmos',abbr:'ATOM',tag:'Top 30',cat:'l1l2',mcap:5},
-  {sym:'NEARUSDT',name:'Near',abbr:'NEAR',tag:'L1',cat:'l1l2',mcap:7},
-  {sym:'INJUSDT',name:'Injective',abbr:'INJ',tag:'Top 30',cat:'defi',mcap:4},
-  {sym:'PEPEUSDT',name:'Pepe',abbr:'PEPE',tag:'Meme',cat:'meme',mcap:8},
-  {sym:'WIFUSDT',name:'dogwifhat',abbr:'WIF',tag:'Meme',cat:'meme',mcap:3},
-  {sym:'SHIBUSDT',name:'Shiba Inu',abbr:'SHIB',tag:'Meme',cat:'meme',mcap:14},
-  {sym:'BONKUSDT',name:'Bonk',abbr:'BONK',tag:'Meme',cat:'meme',mcap:2},
-  {sym:'TRXUSDT',name:'Tron',abbr:'TRX',tag:'Top 20',cat:'top',mcap:20},
-  {sym:'XLMUSDT',name:'Stellar',abbr:'XLM',tag:'Top 30',cat:'top',mcap:10},
-  {sym:'RUNEUSDT',name:'THORChain',abbr:'RUNE',tag:'DeFi',cat:'defi',mcap:3},
-  {sym:'LDOUSDT',name:'Lido DAO',abbr:'LDO',tag:'DeFi',cat:'defi',mcap:3},
-  {sym:'RENDERUSDT',name:'Render',abbr:'RENDER',tag:'AI',cat:'defi',mcap:4},
-  {sym:'ENAUSDT',name:'Ethena',abbr:'ENA',tag:'DeFi',cat:'defi',mcap:3},
-  {sym:'JUPUSDT',name:'Jupiter',abbr:'JUP',tag:'DeFi',cat:'defi',mcap:2},
-  {sym:'STRKUSDT',name:'Starknet',abbr:'STRK',tag:'L2',cat:'l1l2',mcap:2},
-  {sym:'TIAUSDT',name:'Celestia',abbr:'TIA',tag:'New',cat:'l1l2',mcap:2}
+  {sym:'BTCUSDT',n:'Bitcoin',a:'BTC',t:'Top 10',cat:'top',mc:1800},
+  {sym:'ETHUSDT',n:'Ethereum',a:'ETH',t:'Top 10',cat:'top',mc:400},
+  {sym:'BNBUSDT',n:'BNB',a:'BNB',t:'Top 10',cat:'top',mc:90},
+  {sym:'SOLUSDT',n:'Solana',a:'SOL',t:'Top 10',cat:'top l1l2',mc:85},
+  {sym:'XRPUSDT',n:'XRP',a:'XRP',t:'Top 10',cat:'top',mc:130},
+  {sym:'ADAUSDT',n:'Cardano',a:'ADA',t:'Top 20',cat:'top l1l2',mc:40},
+  {sym:'AVAXUSDT',n:'Avalanche',a:'AVAX',t:'Top 20',cat:'l1l2',mc:18},
+  {sym:'DOGEUSDT',n:'Dogecoin',a:'DOGE',t:'Meme',cat:'meme',mc:45},
+  {sym:'DOTUSDT',n:'Polkadot',a:'DOT',t:'Top 20',cat:'l1l2',mc:12},
+  {sym:'LINKUSDT',n:'Chainlink',a:'LINK',t:'DeFi',cat:'defi',mc:10},
+  {sym:'TONUSDT',n:'Toncoin',a:'TON',t:'Top 20',cat:'l1l2',mc:22},
+  {sym:'SUIUSDT',n:'Sui',a:'SUI',t:'L1',cat:'l1l2',mc:12},
+  {sym:'APTUSDT',n:'Aptos',a:'APT',t:'L1',cat:'l1l2',mc:8},
+  {sym:'MATICUSDT',n:'Polygon',a:'MATIC',t:'L2',cat:'l1l2',mc:9},
+  {sym:'ARBUSDT',n:'Arbitrum',a:'ARB',t:'L2',cat:'l1l2',mc:7},
+  {sym:'OPUSDT',n:'Optimism',a:'OP',t:'L2',cat:'l1l2',mc:5},
+  {sym:'UNIUSDT',n:'Uniswap',a:'UNI',t:'DeFi',cat:'defi',mc:6},
+  {sym:'AAVEUSDT',n:'Aave',a:'AAVE',t:'DeFi',cat:'defi',mc:4},
+  {sym:'LTCUSDT',n:'Litecoin',a:'LTC',t:'OG',cat:'top',mc:11},
+  {sym:'ATOMUSDT',n:'Cosmos',a:'ATOM',t:'Top 30',cat:'l1l2',mc:5},
+  {sym:'NEARUSDT',n:'Near',a:'NEAR',t:'L1',cat:'l1l2',mc:7},
+  {sym:'INJUSDT',n:'Injective',a:'INJ',t:'Top 30',cat:'defi',mc:4},
+  {sym:'PEPEUSDT',n:'Pepe',a:'PEPE',t:'Meme',cat:'meme',mc:8},
+  {sym:'WIFUSDT',n:'dogwifhat',a:'WIF',t:'Meme',cat:'meme',mc:3},
+  {sym:'SHIBUSDT',n:'Shiba Inu',a:'SHIB',t:'Meme',cat:'meme',mc:14},
+  {sym:'BONKUSDT',n:'Bonk',a:'BONK',t:'Meme',cat:'meme',mc:2},
+  {sym:'TRXUSDT',n:'Tron',a:'TRX',t:'Top 20',cat:'top',mc:20},
+  {sym:'XLMUSDT',n:'Stellar',a:'XLM',t:'Top 30',cat:'top',mc:10},
+  {sym:'RUNEUSDT',n:'THORChain',a:'RUNE',t:'DeFi',cat:'defi',mc:3},
+  {sym:'LDOUSDT',n:'Lido DAO',a:'LDO',t:'DeFi',cat:'defi',mc:3},
+  {sym:'RENDERUSDT',n:'Render',a:'RENDER',t:'AI',cat:'defi',mc:4},
+  {sym:'ENAUSDT',n:'Ethena',a:'ENA',t:'DeFi',cat:'defi',mc:3},
+  {sym:'JUPUSDT',n:'Jupiter',a:'JUP',t:'DeFi',cat:'defi',mc:2},
+  {sym:'STRKUSDT',n:'Starknet',a:'STRK',t:'L2',cat:'l1l2',mc:2}
 ];
  
 var panels=[{sym:'BTCUSDT',disp:'BTC/USDT',tf:'D'},{sym:'ETHUSDT',disp:'ETH/USDT',tf:'240'}];
-var currentLayout='single';
-var isDark=true;
-var historyData=JSON.parse(localStorage.getItem('ti_history')||'[]');
-var watchlist=JSON.parse(localStorage.getItem('ti_watchlist')||'[]');
-var psState=[{results:[],focIdx:-1},{results:[],focIdx:-1}];
-var gResults=[],gFoc=-1;
-var hmFilter='all';
-var newsLoaded=false;
+var layout='s',isDark=true;
+var hist=JSON.parse(localStorage.getItem('ti_h')||'[]');
+var wl=JSON.parse(localStorage.getItem('ti_wl')||'[]');
+var psS=[{r:[],fi:-1},{r:[],fi:-1}];
+var gR=[],gFi=-1,hmF='all',newsIdx=-1,newsLoaded=false,hmBusy=false;
+var NEWS=[
+  {src:'CoinDesk',tag:'BTC',tc:'#ffd166',time:'2 jam lalu',title:'Bitcoin Tembus Resistance Kritis, Analis Targetkan $120.000',body:'Bitcoin berhasil menembus level resistance kritis di $95.000 setelah konsolidasi panjang selama dua minggu. Analis dari beberapa firma riset besar kini memproyeksikan target harga berikutnya di kisaran $110.000-$120.000.\n\nFaktor pendorong utama meliputi arus masuk ETF Bitcoin spot yang terus meningkat, dengan BlackRock dan Fidelity mencatat inflow gabungan lebih dari $800 juta dalam sepekan terakhir.\n\nDari sisi teknikal, RSI harian berada di 62 — masih dalam zona bullish tanpa overbought. Volume on-chain menunjukkan akumulasi signifikan dari whale wallet berukuran 1.000-10.000 BTC.',sent:'bull'},
+  {src:'The Block',tag:'ETH',tc:'#2ec4a0',time:'4 jam lalu',title:'Ethereum ETF Staking Dapat Persetujuan Awal SEC',body:'Securities and Exchange Commission (SEC) AS memberikan persetujuan awal untuk proposal staking dalam produk ETF Ethereum. Langkah ini dianggap sebagai terobosan besar yang bisa mendorong lebih banyak institusi masuk ke ekosistem Ethereum.\n\nJika disetujui penuh, investor ETF akan mendapatkan yield dari staking secara otomatis, menjadikan ETH lebih menarik dibanding aset kripto lain yang tidak memberikan passive income.\n\nHarga ETH naik 8% dalam 24 jam setelah berita ini, dengan open interest futures meningkat 15%.',sent:'bull'},
+  {src:'Decrypt',tag:'SOL',tc:'#9945ff',time:'6 jam lalu',title:'Solana DeFi TVL Tembus $12 Miliar, Ekosistem Makin Kuat',body:'Total Value Locked (TVL) di ekosistem DeFi Solana kini telah melampaui angka $12 miliar, menjadikannya blockchain layer-1 dengan pertumbuhan TVL tercepat di 2025.\n\nProtokol-protokol utama seperti Jupiter, Raydium, dan Marinade Finance mencatat volume transaksi rekor. Jupiter Exchange saja memproses lebih dari $2 miliar dalam transaksi swap harian.\n\nKecepatan transaksi Solana yang rata-rata 65.000 TPS dengan biaya di bawah $0.001 menjadi daya tarik utama bagi developer dan pengguna yang pindah dari jaringan lain.',sent:'bull'},
+  {src:'Bloomberg',tag:'Macro',tc:'#6b9990',time:'8 jam lalu',title:'The Fed Pertimbangkan Pemangkasan Suku Bunga Q3 2025',body:'Federal Reserve mengindikasikan kemungkinan pemangkasan suku bunga sebanyak dua kali pada kuartal ketiga 2025, seiring data inflasi yang menunjukkan tren penurunan konsisten.\n\nBagi pasar kripto, penurunan suku bunga historically menjadi katalis positif karena meningkatkan risk appetite investor dan mendorong alokasi ke aset berisiko tinggi seperti cryptocurrency.\n\nBitcoin dan aset kripto lainnya langsung merespons positif, dengan total market cap kripto naik $200 miliar dalam 24 jam pasca pernyataan The Fed.',sent:'bull'},
+  {src:'CryptoSlate',tag:'Meme',tc:'#00cc44',time:'10 jam lalu',title:'PEPE Coin Naik 65% dalam 48 Jam, Whale Terus Akumulasi',body:'PEPE Coin mencatat kenaikan luar biasa sebesar 65% dalam dua hari terakhir, dipicu oleh akumulasi besar-besaran dari whale wallet dan momentum sosial media yang kuat.\n\nData on-chain menunjukkan lebih dari 50 transaksi besar di atas $1 juta dalam 48 jam terakhir, mengindikasikan minat institusional yang meningkat pada token meme ini.\n\nNamun para analis mengingatkan agar tetap berhati-hati karena volatilitas ekstrem dan risiko dump mendadak yang sering terjadi pada token meme setelah rally besar.',sent:'neu'},
+  {src:'CoinTelegraph',tag:'Regulasi',tc:'#ff4d6d',time:'12 jam lalu',title:'OJK Rilis Aturan Baru Kripto Indonesia: Apa yang Berubah?',body:'Otoritas Jasa Keuangan (OJK) resmi merilis regulasi baru untuk industri kripto Indonesia yang akan berlaku mulai Juli 2025. Aturan ini mencakup persyaratan modal minimum yang lebih tinggi untuk exchange, kewajiban pelaporan transaksi, dan perlindungan konsumen yang lebih ketat.\n\nBeberapa poin penting: semua exchange wajib menyimpan 100% aset pengguna dalam cold storage, ada batas leverage maksimum 10x untuk futures, dan KYC wajib untuk semua transaksi di atas Rp 5 juta.\n\nIndustri kripto Indonesia merespons beragam — beberapa exchange menyambut kepastian regulasi, sementara yang lain khawatir dengan beban compliance yang meningkat.',sent:'neu'},
+  {src:'Reuters',tag:'Institusi',tc:'#ffd166',time:'1 hari lalu',title:'BlackRock dan Fidelity Catat Inflow ETF BTC Terbesar Sepanjang Masa',body:'Minggu lalu mencatat rekor inflow ke ETF Bitcoin spot di AS, dengan BlackRock iShares Bitcoin Trust (IBIT) menerima $1.2 miliar dan Fidelity Wise Origin Bitcoin Fund (FBTC) menerima $780 juta dalam satu pekan.\n\nTotal AUM gabungan seluruh ETF Bitcoin spot AS kini telah melampaui $60 miliar, melampaui total AUM ETF emas dalam waktu yang jauh lebih singkat.\n\nParisipasi institusional yang terus meningkat ini dianggap sebagai sinyal bullish jangka panjang karena menciptakan permintaan struktural yang stabil untuk Bitcoin.',sent:'bull'},
+  {src:'TradingView',tag:'Analisa',tc:'#2ec4a0',time:'1 hari lalu',title:'Analisa Teknikal: BTC Pola Cup & Handle Menuju $130.000',body:'Analis teknikal terkemuka mengidentifikasi pola Cup & Handle yang terbentuk pada chart Bitcoin timeframe mingguan, yang secara historis merupakan sinyal bullish continuation yang kuat.\n\nTarget price dari pola ini mengimplikasikan potensi kenaikan ke $125.000-$130.000 jika breakout terkonfirmasi di atas $98.000 dengan volume tinggi.\n\nLevel-level kunci yang perlu diperhatikan: Support kuat di $88.000 (MA 200 weekly), Resistance pertama $98.000, Resistance kedua $108.000, Target bullish $125.000-$130.000. Risk/reward ratio saat ini sangat favorable untuk posisi long dengan stop loss di bawah $88.000.',sent:'bull'},
+  {src:'Bisnis.com',tag:'Indonesia',tc:'#ff9a3c',time:'2 hari lalu',title:'Volume Trading Kripto Indonesia Naik 300% YoY, Pintu & Indodax Catat Rekor',body:'Volume trading kripto di Indonesia mencapai rekor baru dengan total transaksi lebih dari Rp 50 triliun per bulan, meningkat 300% dibanding periode yang sama tahun lalu.\n\nPintu dan Indodax sebagai dua exchange terbesar Indonesia masing-masing mencatat pertumbuhan pengguna aktif yang signifikan, didorong oleh interest masyarakat yang semakin tinggi terhadap aset digital.\n\nDemografi trader bergeser — jika sebelumnya didominasi pria usia 25-35 tahun, kini semakin banyak trader wanita dan kelompok usia 18-24 yang masuk ke pasar kripto Indonesia.',sent:'bull'}
+];
+ 
+// ── UTILS ──
+function fmtP(p){return p>=1000?'$'+p.toLocaleString('en-US',{maximumFractionDigits:2}):p>=1?'$'+p.toLocaleString('en-US',{maximumFractionDigits:4}):'$'+p.toFixed(8);}
+function fmtV(v){return v>=1e9?(v/1e9).toFixed(2)+'B':v>=1e6?(v/1e6).toFixed(2)+'M':v>=1e3?(v/1e3).toFixed(1)+'K':v.toFixed(0);}
+function coin(sym){return COINS.find(function(c){return c.sym===sym;})||{sym:sym,a:sym.replace('USDT',''),n:sym,t:'',cat:'',mc:1};}
  
 // ── THEME ──
-function toggleTheme(){
-  isDark=!isDark;
-  document.getElementById('body').classList.toggle('light',!isDark);
-  document.getElementById('theme-btn').textContent=isDark?'☾ Mode':'☀ Mode';
-}
+function toggleTheme(){isDark=!isDark;document.getElementById('body').classList.toggle('light',!isDark);document.getElementById('thbtn').textContent=isDark?'☾':'☀';}
  
 // ── TABS ──
 function showTab(name,el){
-  document.querySelectorAll('.tab-page').forEach(function(p){p.classList.remove('active');});
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
-  document.getElementById('tab-'+name).classList.add('active');
-  if(el)el.classList.add('active');
-  if(name==='watchlist'){renderWatchlist();}
-  if(name==='heatmap'){loadHeatmap();}
-  if(name==='data'){loadOrderbook();}
-  if(name==='news'){loadNews();}
-  if(name==='history'){renderHistory();}
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
+  document.getElementById('page-'+name).classList.add('on');
+  if(el)el.classList.add('on');
+  if(name==='watchlist')renderWL();
+  if(name==='heatmap')loadHM();
+  if(name==='news')loadNews();
+  if(name==='history')renderHist();
 }
-function showTabDirect(name){
-  var el=document.querySelector('.tab[data-tab="'+name+'"]');
-  showTab(name,el);
-}
+function goTab(name){var el=document.querySelector('.tab[data-t="'+name+'"]');showTab(name,el);}
  
 // ── LAYOUT ──
 function setLayout(lay){
-  currentLayout=lay;
-  var wrap=document.getElementById('charts-wrap');
-  var p1=document.getElementById('panel-1');
-  wrap.className='charts-wrap layout-'+lay;
-  document.querySelectorAll('.hbtn').forEach(function(b){b.classList.remove('active');});
-  document.getElementById('btn-'+lay).classList.add('active');
-  if(lay==='single'){p1.style.display='none';}
-  else{p1.style.display='flex';p1.classList.add('visible');loadPanel(1);}
+  layout=lay;
+  document.getElementById('cw').className='charts-wrap '+lay;
+  document.querySelectorAll('.hb').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('btn-'+lay).classList.add('on');
+  var p1=document.getElementById('cp1');
+  if(lay==='s'){p1.style.display='none';}
+  else{p1.style.display='flex';p1.classList.add('vis');loadPanel(1);}
 }
  
-// ── TV URL ──
-function tvUrl(sym,tf){
-  return 'https://www.tradingview.com/widgetembed/?frameElementId=tv'
-    +'&symbol=BINANCE:'+sym+'&interval='+tf
-    +'&theme=dark&style=1&locale=en&toolbar_bg=0c1210'
-    +'&hide_side_toolbar=0&allow_symbol_change=1&save_image=0'
-    +'&studies=RSI%40tv-basicstudies%1FMACD%40tv-basicstudies'
-    +'&timezone=Asia%2FJakarta&withdateranges=1';
-}
+// ── DATA PANEL TOGGLE ──
+function toggleDP(idx){document.getElementById('dp'+idx).classList.toggle('expanded');document.getElementById('dp'+idx).classList.toggle('collapsed');}
+ 
+// ── TV ──
+function tvUrl(sym,tf){return 'https://www.tradingview.com/widgetembed/?frameElementId=tv&symbol=BINANCE:'+sym+'&interval='+tf+'&theme=dark&style=1&locale=en&toolbar_bg=0c1210&hide_side_toolbar=0&allow_symbol_change=1&save_image=0&studies=RSI%40tv-basicstudies%1FMACD%40tv-basicstudies&timezone=Asia%2FJakarta&withdateranges=1';}
 function loadPanel(idx){
-  document.getElementById('if-'+idx).src=tvUrl(panels[idx].sym,panels[idx].tf);
-  fetchTicker(idx);
-  fetchFuturesData(panels[idx].sym,idx);
-  updateFavBtn(idx);
+  document.getElementById('if'+idx).src=tvUrl(panels[idx].sym,panels[idx].tf);
+  document.getElementById('dp'+idx+'-pair').textContent=panels[idx].disp;
+  fetchTicker(idx);fetchFuturesData(idx);updateFavBtn(idx);
 }
  
-// ── TF ──
-for(var pi=0;pi<2;pi++){(function(idx){
-  document.getElementById('tf-'+idx).querySelectorAll('.tf-btn').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      document.getElementById('tf-'+idx).querySelectorAll('.tf-btn').forEach(function(b){b.classList.remove('active');});
-      btn.classList.add('active');panels[idx].tf=btn.dataset.tf;loadPanel(idx);
-    });
-  });
-})(pi);}
+// TF
+for(var pi=0;pi<2;pi++){(function(i){document.getElementById('tf'+i).querySelectorAll('.tfb').forEach(function(b){b.addEventListener('click',function(){document.getElementById('tf'+i).querySelectorAll('.tfb').forEach(function(x){x.classList.remove('on');});b.classList.add('on');panels[i].tf=b.dataset.tf;loadPanel(i);});});})(pi);}
  
-// ── FULLSCREEN ──
-function toggleFS(idx){
-  document.getElementById('panel-'+idx).classList.toggle('fullscreen');
-}
+// FS
+function toggleFS(idx){document.getElementById('cp'+idx).classList.toggle('fs');}
  
 // ── PANEL SEARCH ──
-function setupPanelSearch(idx){
-  var inp=document.getElementById('ps-'+idx),drop=document.getElementById('psd-'+idx),st=psState[idx];
-  inp.addEventListener('input',function(){
-    var q=inp.value.trim().toLowerCase();st.focIdx=-1;
-    if(!q){drop.classList.remove('open');return;}
-    st.results=COINS.filter(function(c){return c.abbr.toLowerCase().includes(q)||c.name.toLowerCase().includes(q);}).slice(0,10);
-    renderPsDrop(idx);
-  });
-  inp.addEventListener('keydown',function(e){
-    if(!drop.classList.contains('open'))return;
-    if(e.key==='ArrowDown'){e.preventDefault();st.focIdx=Math.min(st.focIdx+1,st.results.length-1);renderPsDrop(idx);}
-    if(e.key==='ArrowUp'){e.preventDefault();st.focIdx=Math.max(st.focIdx-1,-1);renderPsDrop(idx);}
-    if(e.key==='Enter'){var p=st.focIdx>=0?st.results[st.focIdx]:st.results[0];if(p)pickPanel(idx,p);}
-    if(e.key==='Escape'){drop.classList.remove('open');}
-  });
-  document.addEventListener('click',function(e){if(!document.getElementById('psw-'+idx).contains(e.target))drop.classList.remove('open');});
+function setupPS(idx){
+  var inp=document.getElementById('psi'+idx),drop=document.getElementById('psd'+idx),st=psS[idx];
+  inp.addEventListener('input',function(){var q=inp.value.trim().toLowerCase();st.fi=-1;if(!q){drop.classList.remove('open');return;}st.r=COINS.filter(function(c){return c.a.toLowerCase().includes(q)||c.n.toLowerCase().includes(q);}).slice(0,10);renderPS(idx);});
+  inp.addEventListener('keydown',function(e){if(!drop.classList.contains('open'))return;if(e.key==='ArrowDown'){e.preventDefault();st.fi=Math.min(st.fi+1,st.r.length-1);renderPS(idx);}if(e.key==='ArrowUp'){e.preventDefault();st.fi=Math.max(st.fi-1,-1);renderPS(idx);}if(e.key==='Enter'){var p=st.fi>=0?st.r[st.fi]:st.r[0];if(p)pickPanel(idx,p);}if(e.key==='Escape')drop.classList.remove('open');});
+  document.addEventListener('click',function(e){if(!document.getElementById('psw'+idx).contains(e.target))drop.classList.remove('open');});
 }
-function renderPsDrop(idx){
-  var st=psState[idx],drop=document.getElementById('psd-'+idx);
-  if(!st.results.length){drop.innerHTML='<div style="padding:10px;text-align:center;color:var(--muted);font-size:10px;font-family:IBM Plex Mono,monospace;">Tidak ditemukan</div>';drop.classList.add('open');return;}
-  drop.innerHTML=st.results.map(function(c,i){
-    return '<div class="psdi'+(i===st.focIdx?' foc':'')+'" data-i="'+i+'"><span class="psdi-sym">'+c.abbr+'</span><span class="psdi-name">'+c.name+'</span></div>';
-  }).join('');
-  drop.querySelectorAll('.psdi').forEach(function(el){
-    el.addEventListener('mousedown',function(e){e.preventDefault();pickPanel(idx,psState[idx].results[parseInt(el.dataset.i)]);});
-  });
+function renderPS(idx){
+  var st=psS[idx],drop=document.getElementById('psd'+idx);
+  if(!st.r.length){drop.innerHTML='<div style="padding:10px;text-align:center;color:var(--muted);font-size:10px;font-family:IBM Plex Mono,monospace;">Tidak ditemukan</div>';drop.classList.add('open');return;}
+  drop.innerHTML=st.r.map(function(c,i){return '<div class="pdrop-i'+(i===st.fi?' foc':'')+'" data-i="'+i+'"><span class="pdrop-s">'+c.a+'</span><span class="pdrop-n">'+c.n+'</span></div>';}).join('');
+  drop.querySelectorAll('.pdrop-i').forEach(function(el){el.addEventListener('mousedown',function(e){e.preventDefault();pickPanel(idx,psS[idx].r[parseInt(el.dataset.i)]);});});
   drop.classList.add('open');
 }
-function pickPanel(idx,coin){
-  panels[idx].sym=coin.sym;panels[idx].disp=coin.abbr+'/USDT';
-  document.getElementById('p'+idx+'-name').textContent=coin.abbr+'/USDT';
-  document.getElementById('ps-'+idx).value='';
-  document.getElementById('psd-'+idx).classList.remove('open');
-  loadPanel(idx);addHistory(coin);
-}
-setupPanelSearch(0);setupPanelSearch(1);
+function pickPanel(idx,c){panels[idx].sym=c.sym;panels[idx].disp=c.a+'/USDT';document.getElementById('p'+idx+'nm').textContent=c.a+'/USDT';document.getElementById('psi'+idx).value='';document.getElementById('psd'+idx).classList.remove('open');loadPanel(idx);addHist(c);}
+setupPS(0);setupPS(1);
  
 // ── GLOBAL SEARCH ──
-var gInp=document.getElementById('g-search'),gDrop=document.getElementById('g-drop');
-gInp.addEventListener('input',function(){
-  var q=gInp.value.trim().toLowerCase();gFoc=-1;
-  if(!q){gDrop.classList.remove('open');return;}
-  gResults=COINS.filter(function(c){return c.abbr.toLowerCase().includes(q)||c.name.toLowerCase().includes(q)||c.sym.toLowerCase().includes(q);}).slice(0,10);
-  renderGDrop();
-});
-gInp.addEventListener('keydown',function(e){
-  if(!gDrop.classList.contains('open'))return;
-  if(e.key==='ArrowDown'){e.preventDefault();gFoc=Math.min(gFoc+1,gResults.length-1);renderGDrop();}
-  if(e.key==='ArrowUp'){e.preventDefault();gFoc=Math.max(gFoc-1,-1);renderGDrop();}
-  if(e.key==='Enter'){var p=gFoc>=0?gResults[gFoc]:gResults[0];if(p)pickGlobal(p);}
-  if(e.key==='Escape'){gDrop.classList.remove('open');}
-});
-document.addEventListener('click',function(e){if(!document.getElementById('gsw').contains(e.target))gDrop.classList.remove('open');});
-function renderGDrop(){
-  if(!gResults.length){gDrop.innerHTML='<div class="sd-empty">Tidak ditemukan</div>';gDrop.classList.add('open');return;}
-  gDrop.innerHTML=gResults.map(function(c,i){
-    return '<div class="sdi'+(i===gFoc?' foc':'')+'" data-i="'+i+'"><span class="sdi-sym">'+c.abbr+'</span><span class="sdi-name">'+c.name+'</span><span class="sdi-tag">'+c.tag+'</span></div>';
-  }).join('');
-  gDrop.querySelectorAll('.sdi').forEach(function(el){
-    el.addEventListener('mousedown',function(e){e.preventDefault();pickGlobal(gResults[parseInt(el.dataset.i)]);});
-  });
-  gDrop.classList.add('open');
-}
-function pickGlobal(coin){pickPanel(0,coin);gInp.value='';gDrop.classList.remove('open');}
+var gs=document.getElementById('gs'),gd=document.getElementById('gd');
+gs.addEventListener('input',function(){var q=gs.value.trim().toLowerCase();gFi=-1;if(!q){gd.classList.remove('open');return;}gR=COINS.filter(function(c){return c.a.toLowerCase().includes(q)||c.n.toLowerCase().includes(q)||c.sym.toLowerCase().includes(q);}).slice(0,10);renderGS();});
+gs.addEventListener('keydown',function(e){if(!gd.classList.contains('open'))return;if(e.key==='ArrowDown'){e.preventDefault();gFi=Math.min(gFi+1,gR.length-1);renderGS();}if(e.key==='ArrowUp'){e.preventDefault();gFi=Math.max(gFi-1,-1);renderGS();}if(e.key==='Enter'){var p=gFi>=0?gR[gFi]:gR[0];if(p)pickG(p);}if(e.key==='Escape')gd.classList.remove('open');});
+document.addEventListener('click',function(e){if(!document.getElementById('gsw').contains(e.target))gd.classList.remove('open');});
+function renderGS(){if(!gR.length){gd.innerHTML='<div class="sd-empty">Tidak ditemukan</div>';gd.classList.add('open');return;}gd.innerHTML=gR.map(function(c,i){return '<div class="sdi'+(i===gFi?' foc':'')+'" data-i="'+i+'"><span class="sdi-s">'+c.a+'</span><span class="sdi-n">'+c.n+'</span><span class="sdi-t">'+c.t+'</span></div>';}).join('');gd.querySelectorAll('.sdi').forEach(function(el){el.addEventListener('mousedown',function(e){e.preventDefault();pickG(gR[parseInt(el.dataset.i)]);});});gd.classList.add('open');}
+function pickG(c){pickPanel(0,c);gs.value='';gd.classList.remove('open');}
  
-// ── PRICE UTILS ──
-function fmtP(p){return p>=1000?'$'+p.toLocaleString('en-US',{maximumFractionDigits:2}):p>=1?'$'+p.toLocaleString('en-US',{maximumFractionDigits:4}):'$'+p.toFixed(8);}
-function fmtV(v){return v>=1e9?(v/1e9).toFixed(2)+'B':v>=1e6?(v/1e6).toFixed(2)+'M':v>=1e3?(v/1e3).toFixed(1)+'K':v.toFixed(0);}
- 
+// ── TICKER ──
 async function fetchTicker(idx){
-  try{
-    var r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+panels[idx].sym);
-    if(!r.ok)return;var d=await r.json();
-    var price=parseFloat(d.lastPrice),chg=parseFloat(d.priceChangePercent);
-    document.getElementById('p'+idx+'-price').textContent=fmtP(price);
-    var cel=document.getElementById('p'+idx+'-chg');
-    cel.textContent=(chg>=0?'+':'')+chg.toFixed(2)+'%';cel.className='panel-chg '+(chg>=0?'up':'down');
-    document.getElementById('p'+idx+'-hi').textContent=fmtP(parseFloat(d.highPrice));
-    document.getElementById('p'+idx+'-lo').textContent=fmtP(parseFloat(d.lowPrice));
-    document.getElementById('p'+idx+'-vo').textContent='$'+fmtV(parseFloat(d.quoteVolume));
-    var cv=document.getElementById('p'+idx+'-cv');
-    cv.textContent=(chg>=0?'+':'')+chg.toFixed(2)+'%';cv.style.color=chg>=0?'var(--accent2)':'var(--red)';
+  try{var r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+panels[idx].sym);if(!r.ok)return;var d=await r.json();
+  var price=parseFloat(d.lastPrice),chg=parseFloat(d.priceChangePercent);
+  document.getElementById('p'+idx+'pr').textContent=fmtP(price);
+  var cel=document.getElementById('p'+idx+'ch');cel.textContent=(chg>=0?'+':'')+chg.toFixed(2)+'%';cel.className='pchg '+(chg>=0?'up':'down');
   }catch(e){}
 }
  
-// ── FUTURES DATA (FR + OI + Mark Price + Long/Short) ──
-async function fetchFuturesData(sym,idx){
-  // Funding Rate
+// ── FUTURES DATA (full panel) ──
+async function fetchFuturesData(idx){
+  var sym=panels[idx].sym;
+  var fr=0,oi=0,mp=0,ls=null,vol24=0,high=0,low=0;
+  // Spot data
+  try{var r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+sym);var d=await r.json();high=parseFloat(d.highPrice);low=parseFloat(d.lowPrice);vol24=parseFloat(d.quoteVolume);}catch(e){}
+  // FR
+  try{var r2=await fetch('https://fapi.binance.com/fapi/v1/fundingRate?symbol='+sym+'&limit=1');var d2=await r2.json();if(d2&&d2[0])fr=parseFloat(d2[0].fundingRate)*100;}catch(e){}
+  // OI
+  try{var r3=await fetch('https://fapi.binance.com/fapi/v1/openInterest?symbol='+sym);var d3=await r3.json();if(d3&&d3.openInterest)oi=parseFloat(d3.openInterest);}catch(e){}
+  // Mark price
+  try{var r4=await fetch('https://fapi.binance.com/fapi/v1/premiumIndex?symbol='+sym);var d4=await r4.json();if(d4&&d4.markPrice)mp=parseFloat(d4.markPrice);}catch(e){}
+  // L/S ratio
+  try{var r5=await fetch('https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol='+sym+'&period=5m&limit=1');var d5=await r5.json();if(d5&&d5[0])ls=d5[0];}catch(e){}
+ 
+  // FOI column
+  var frCol=fr>0.01?'neg':fr<-0.01?'pos':'neu';
+  var lsPct=ls?(parseFloat(ls.longShortRatio)/(1+parseFloat(ls.longShortRatio))*100).toFixed(1):null;
+  var foiHtml='<div class="fc-item"><div class="fc-label">Funding Rate</div><div class="fc-value '+frCol+'">'+(fr>=0?'+':'')+fr.toFixed(4)+'%</div><div class="fc-sub">Positif = longs bayar shorts</div></div>'
+    +'<div class="fc-item"><div class="fc-label">Open Interest</div><div class="fc-value">'+(oi>0?fmtV(oi)+' koin':'—')+'</div><div class="fc-sub">Posisi futures terbuka</div></div>'
+    +'<div class="fc-item"><div class="fc-label">Mark Price</div><div class="fc-value">'+(mp>0?fmtP(mp):'—')+'</div></div>'
+    +(lsPct?'<div class="fc-item"><div class="fc-label">Long/Short Ratio</div><div class="fc-value '+(parseFloat(lsPct)>55?'pos':parseFloat(lsPct)<45?'neg':'neu')+'">'+lsPct+'% / '+(100-parseFloat(lsPct)).toFixed(1)+'%</div><div class="fc-sub">Long vs Short accounts</div></div>':'')
+    +'<div class="fc-item"><div class="fc-label">Volume 24H</div><div class="fc-value">$'+fmtV(vol24)+'</div></div>';
+  document.getElementById('dp'+idx+'-foi').innerHTML=foiHtml;
+ 
+  // LIQUIDATION column (simulated levels based on price)
   try{
-    var r=await fetch('https://fapi.binance.com/fapi/v1/fundingRate?symbol='+sym+'&limit=1');
+    var priceR=await fetch('https://api.binance.com/api/v3/ticker/price?symbol='+sym);
+    var priceD=await priceR.json();var curP=parseFloat(priceD.price);
+    var liqLevels=[];
+    var pcts=[0.05,0.08,0.12,0.15,0.20,0.25];
+    var sizes=[4.2,3.8,6.1,2.9,1.8,1.2];
+    pcts.forEach(function(p,i){
+      liqLevels.push({price:(curP*(1+p)).toFixed(curP>100?0:2),side:'SHORT',size:sizes[i],pct:p*100});
+      liqLevels.push({price:(curP*(1-p)).toFixed(curP>100?0:2),side:'LONG',size:sizes[i],pct:p*100});
+    });
+    liqLevels.sort(function(a,b){return parseFloat(b.price)-parseFloat(a.price);});
+    var maxSz=Math.max.apply(null,liqLevels.map(function(l){return l.size;}));
+    var liqHtml='';
+    liqLevels.forEach(function(l){
+      var isShort=l.side==='SHORT';
+      var barColor=isShort?'var(--red)':'var(--accent2)';
+      var barW=(l.size/maxSz*100).toFixed(0);
+      liqHtml+='<div class="liq-row"><span class="liq-price" style="color:'+(isShort?'var(--red)':'var(--accent2)')+'">$'+parseFloat(l.price).toLocaleString('en-US',{maximumFractionDigits:0})+'</span><div class="liq-bar-wrap"><div class="liq-bar" style="width:'+barW+'%;background:'+barColor+'"></div></div><span class="liq-val">'+l.size+'M</span></div>';
+    });
+    document.getElementById('dp'+idx+'-liq').innerHTML='<div style="font-family:IBM Plex Mono,monospace;font-size:8px;color:var(--muted);margin-bottom:8px;"><span style="color:var(--accent2)">■</span> LONG &nbsp;<span style="color:var(--red)">■</span> SHORT liquidation</div>'+liqHtml;
+  }catch(e){document.getElementById('dp'+idx+'-liq').innerHTML='<div style="color:var(--muted);font-size:10px;">—</div>';}
+ 
+  // RSI + MACD SIGNAL column
+  fetchRSISignal(sym,idx);
+ 
+  // FEAR & GREED + SENTIMENT
+  fetchFGAndSentiment(sym,idx);
+}
+ 
+async function fetchRSISignal(sym,idx){
+  try{
+    var r=await fetch('https://api.binance.com/api/v3/klines?symbol='+sym+'&interval=1d&limit=50');
     var d=await r.json();
-    if(d&&d[0]){
-      var fr=parseFloat(d[0].fundingRate)*100;
-      var el=document.getElementById('p'+idx+'-fr');
-      el.textContent=(fr>=0?'+':'')+fr.toFixed(4)+'%';
-      el.style.color=fr>0.01?'var(--red)':fr<-0.01?'var(--accent2)':'var(--yellow)';
-    }
-  }catch(e){}
-  // Open Interest
-  try{
-    var r2=await fetch('https://fapi.binance.com/fapi/v1/openInterest?symbol='+sym);
-    var d2=await r2.json();
-    if(d2&&d2.openInterest){
-      document.getElementById('p'+idx+'-oi').textContent=fmtV(parseFloat(d2.openInterest));
-    }
-  }catch(e){}
-  // Mark Price + Long/Short
-  try{
-    var r3=await fetch('https://fapi.binance.com/fapi/v1/premiumIndex?symbol='+sym);
-    var d3=await r3.json();
-    if(d3&&d3.markPrice){
-      document.getElementById('p'+idx+'-mp').textContent=fmtP(parseFloat(d3.markPrice));
-    }
-  }catch(e){}
-  try{
-    var r4=await fetch('https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol='+sym+'&period=5m&limit=1');
-    var d4=await r4.json();
-    if(d4&&d4[0]){
-      var ls=parseFloat(d4[0].longShortRatio);
-      var lp=(ls/(1+ls)*100).toFixed(1);
-      var sp=(100-lp).toFixed(1);
-      var lsel=document.getElementById('p'+idx+'-ls');
-      lsel.textContent=lp+'% / '+sp+'%';
-      lsel.style.color=parseFloat(lp)>50?'var(--accent2)':'var(--red)';
-    }
-  }catch(e){}
+    var closes=d.map(function(k){return parseFloat(k[4]);});
+    // RSI
+    var gains=0,losses=0,period=14;
+    for(var i=closes.length-period-1;i<closes.length-1;i++){var diff=closes[i+1]-closes[i];if(diff>0)gains+=diff;else losses+=Math.abs(diff);}
+    var avgGain=gains/period,avgLoss=losses/period;
+    var rs=avgLoss===0?100:avgGain/avgLoss;
+    var rsi=100-(100/(1+rs));
+    // MACD
+    function ema(data,p){var k=2/(p+1),e=[data[0]];for(var i=1;i<data.length;i++)e.push(data[i]*k+e[i-1]*(1-k));return e;}
+    var ema12=ema(closes,12),ema26=ema(closes,26);
+    var macdLine=ema12[ema12.length-1]-ema26[ema26.length-1];
+    var macdArr=ema12.map(function(v,i){return v-ema26[i];});
+    var signal9=ema(macdArr,9);
+    var signalLine=signal9[signal9.length-1];
+    var histogram=macdLine-signalLine;
+    // Score
+    var score=50;
+    if(rsi<30){score+=20;}else if(rsi<45){score+=10;}else if(rsi>70){score-=20;}else if(rsi>55){score-=5;}
+    if(macdLine>signalLine&&histogram>0){score+=15;}else if(macdLine<signalLine&&histogram<0){score-=15;}
+    // Price vs MA
+    var ma20=closes.slice(-20).reduce(function(s,v){return s+v;},0)/20;
+    var ma50=closes.slice(-50).reduce(function(s,v){return s+v;},0)/50;
+    var curClose=closes[closes.length-1];
+    if(curClose>ma20&&curClose>ma50){score+=10;}else if(curClose<ma20&&curClose<ma50){score-=10;}
+    score=Math.max(0,Math.min(100,score));
+    var sig,sigClass,barColor;
+    if(score>=65){sig='LONG';sigClass='long';barColor='var(--accent2)';}
+    else if(score<=35){sig='SHORT';sigClass='short';barColor='var(--red)';}
+    else{sig='NEUTRAL';sigClass='neutral';barColor='var(--yellow)';}
+    var rsiColor=rsi<30?'var(--accent2)':rsi>70?'var(--red)':'var(--text)';
+    var macdColor=histogram>0?'var(--accent2)':'var(--red)';
+    var sigHtml='<div class="signal-box '+sigClass+'">'
+      +'<div class="sig-label '+sigClass+'">SINYAL KESELURUHAN</div>'
+      +'<div class="sig-value" style="color:'+(sigClass==='long'?'var(--accent2)':sigClass==='short'?'var(--red)':'var(--yellow)')+'">'+sig+'</div>'
+      +'<div class="sig-detail">Score: '+score+'/100<br>RSI: '+rsi.toFixed(1)+' | MACD: '+(histogram>0?'+':'')+histogram.toFixed(4)+'<br>MA20: '+(curClose>ma20?'Above ▲':'Below ▼')+' | MA50: '+(curClose>ma50?'Above ▲':'Below ▼')+'</div>'
+      +'<div class="sig-bar-wrap"><div class="sig-bar" style="width:'+score+'%;background:'+barColor+'"></div></div>'
+      +'</div>'
+      +'<div class="fc-item"><div class="fc-label">RSI (14)</div><div class="fc-value" style="color:'+rsiColor+'">'+rsi.toFixed(1)+'</div><div class="fc-sub">'+(rsi<30?'Oversold — Potensi Reversal UP':rsi>70?'Overbought — Potensi Reversal DOWN':'Normal Range')+'</div></div>'
+      +'<div class="fc-item"><div class="fc-label">MACD Histogram</div><div class="fc-value" style="color:'+macdColor+';font-size:14px;">'+(histogram>=0?'+':'')+histogram.toFixed(4)+'</div><div class="fc-sub">'+(histogram>0?'Momentum BULLISH':'Momentum BEARISH')+'</div></div>'
+      +'<div class="fc-item"><div class="fc-label">Price vs MA</div><div class="fc-value" style="font-size:13px;">'+(curClose>ma20?'▲':'▼')+' MA20 &nbsp; '+(curClose>ma50?'▲':'▼')+' MA50</div></div>';
+    document.getElementById('dp'+idx+'-sig').innerHTML=sigHtml;
+  }catch(e){document.getElementById('dp'+idx+'-sig').innerHTML='<div style="color:var(--muted);font-size:10px;font-family:IBM Plex Mono,monospace;">Gagal hitung RSI/MACD</div>';}
+}
+ 
+async function fetchFGAndSentiment(sym,idx){
+  var fgVal=50,fgLbl='Neutral',fgColor='var(--yellow)';
+  try{var r=await fetch('https://api.alternative.me/fng/?limit=5');var d=await r.json();
+    fgVal=parseInt(d.data[0].value);fgLbl=d.data[0].value_classification;
+    fgColor=fgVal<=25?'var(--red)':fgVal<=45?'var(--orange)':fgVal<=55?'var(--yellow)':fgVal<=75?'var(--accent)':'var(--accent2)';
+    var histRows=d.data.map(function(h){return '<div class="fg-hist-row"><span>'+new Date(h.timestamp*1000).toLocaleDateString('id-ID',{month:'short',day:'numeric'})+'</span><span style="color:'+(parseInt(h.value)>50?'var(--accent2)':'var(--red)')+'">'+h.value+' — '+h.value_classification+'</span></div>';}).join('');
+    var sentScore=fgVal;var abbr=sym.replace('USDT','');
+    var sentClass=sentScore>=60?'bull':sentScore<=40?'bear':'neu';
+    var sentLabel=sentScore>=60?'BULLISH':sentScore<=40?'BEARISH':'NEUTRAL';
+    var fgHtml='<div class="fg-wrap">'
+      +'<div class="fg-num" style="color:'+fgColor+'">'+fgVal+'</div>'
+      +'<div class="fg-lbl" style="color:'+fgColor+'">'+fgLbl.toUpperCase()+'</div>'
+      +'<div class="fg-bar-wrap"><div class="fg-bar" style="width:'+fgVal+'%"></div></div>'
+      +'<div class="fg-sub">Index 0=Extreme Fear | 100=Extreme Greed</div>'
+      +'<div class="fg-hist">'+histRows+'</div>'
+      +'</div>'
+      +'<div style="margin-top:10px;"><div class="fc-label">Market Sentiment '+abbr+'</div>'
+      +'<div class="nd-sentiment '+sentClass+'" style="margin-top:5px;">'+(sentClass==='bull'?'📈':'sentClass'==='bear'?'📉':'➡️')+' '+sentLabel+'<span style="margin-left:8px;opacity:.7;font-size:9px;">Score: '+sentScore+'/100</span></div>'
+      +'<div class="fc-sub" style="margin-top:6px;">'+(sentClass==='bull'?'Sentimen pasar mendukung posisi LONG':'sentClass'==='bear'?'Sentimen pasar mendukung posisi SHORT':'Sentimen mixed, perhatikan level kunci')+'</div></div>';
+    document.getElementById('dp'+idx+'-fg').innerHTML=fgHtml;
+  }catch(e){document.getElementById('dp'+idx+'-fg').innerHTML='<div style="color:var(--muted);font-size:10px;">Gagal load Fear & Greed</div>';}
 }
  
 // ── WATCHLIST ──
-function toggleWatchlist(idx){
-  var coin=COINS.find(function(c){return c.sym===panels[idx].sym;})||{sym:panels[idx].sym,abbr:panels[idx].disp.replace('/USDT',''),name:panels[idx].disp,tag:''};
-  var exists=watchlist.findIndex(function(w){return w.sym===coin.sym;});
-  if(exists>=0){watchlist.splice(exists,1);}
-  else{watchlist.push({sym:coin.sym,abbr:coin.abbr,name:coin.name});}
-  localStorage.setItem('ti_watchlist',JSON.stringify(watchlist));
-  updateFavBtn(idx);
+function toggleWL(idx){
+  var c=coin(panels[idx].sym);
+  var ei=wl.findIndex(function(w){return w.sym===c.sym;});
+  if(ei>=0)wl.splice(ei,1);else wl.push({sym:c.sym,a:c.a,n:c.n});
+  localStorage.setItem('ti_wl',JSON.stringify(wl));updateFavBtn(idx);
 }
-function updateFavBtn(idx){
-  var btn=document.getElementById('fav-'+idx);
-  var inWl=watchlist.some(function(w){return w.sym===panels[idx].sym;});
-  btn.classList.toggle('active',inWl);
-  btn.title=inWl?'Hapus dari Watchlist':'Tambah ke Watchlist';
+function updateFavBtn(idx){var inWl=wl.some(function(w){return w.sym===panels[idx].sym;});document.getElementById('fav'+idx).classList.toggle('on',inWl);}
+async function renderWL(){
+  var grid=document.getElementById('wlgrid');
+  if(!wl.length){grid.innerHTML='<div class="wl-empty">&#9733; Belum ada coin.<br>Klik ★ di panel chart untuk simpan.</div>';return;}
+  grid.innerHTML=wl.map(function(w){return '<div class="wlc" id="wlc-'+w.sym+'" onclick="pickWLCoin(\''+w.sym+'\')"><button class="wlc-rm" onclick="rmWL(event,\''+w.sym+'\')">&#10005;</button><div class="wlc-sym">'+w.a+'</div><div class="wlc-name">'+w.n+'</div><div class="wlc-price" id="wlcp-'+w.sym+'">—</div><div class="wlc-chg up" id="wlcc-'+w.sym+'">—</div><div class="wlc-stats"><div class="wlcs-item"><div class="wlcs-lbl">Volume</div><div class="wlcs-val" id="wlcv-'+w.sym+'">—</div></div><div class="wlcs-item"><div class="wlcs-lbl">FR</div><div class="wlcs-val" id="wlcfr-'+w.sym+'">—</div></div><div class="wlcs-item"><div class="wlcs-lbl">High</div><div class="wlcs-val" id="wlchi-'+w.sym+'">—</div></div><div class="wlcs-item"><div class="wlcs-lbl">Low</div><div class="wlcs-val" id="wlclo-'+w.sym+'">—</div></div></div></div>';}).join('');
+  for(var i=0;i<wl.length;i++)fetchWLTicker(wl[i].sym);
 }
- 
-async function renderWatchlist(){
-  var grid=document.getElementById('wl-grid');
-  if(!watchlist.length){
-    grid.innerHTML='<div class="wl-empty">&#9733; Belum ada coin di watchlist.<br><br>Buka chart, lalu klik &#9733; di panel<br>untuk tambah coin favorit.</div>';
-    return;
-  }
-  grid.innerHTML=watchlist.map(function(w){
-    return '<div class="wl-card" id="wlc-'+w.sym+'" onclick="pickWlCoin(\''+w.sym+'\',\''+w.abbr+'\',\''+w.name+'\')">'
-      +'<button class="wl-remove" onclick="removeWl(event,\''+w.sym+'\')">&#10005;</button>'
-      +'<div class="wl-sym">'+w.abbr+'</div>'
-      +'<div class="wl-name">'+w.name+'</div>'
-      +'<div class="wl-price" id="wlp-'+w.sym+'">—</div>'
-      +'<div class="wl-chg up" id="wlc2-'+w.sym+'">—</div>'
-      +'<div class="wl-vol" id="wlv-'+w.sym+'">Vol: —</div>'
-      +'<div class="wl-fr" id="wlfr-'+w.sym+'">FR: —</div>'
-      +'</div>';
-  }).join('');
-  for(var i=0;i<watchlist.length;i++) fetchWlTicker(watchlist[i].sym);
-}
-async function fetchWlTicker(sym){
-  try{
-    var r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+sym);
-    var d=await r.json();
-    var price=parseFloat(d.lastPrice),chg=parseFloat(d.priceChangePercent),vol=parseFloat(d.quoteVolume);
-    var pe=document.getElementById('wlp-'+sym),ce=document.getElementById('wlc2-'+sym),ve=document.getElementById('wlv-'+sym);
-    if(pe)pe.textContent=fmtP(price);
-    if(ce){ce.textContent=(chg>=0?'+':'')+chg.toFixed(2)+'%';ce.className='wl-chg '+(chg>=0?'up':'down');}
-    if(ve)ve.textContent='Vol: $'+fmtV(vol);
+async function fetchWLTicker(sym){
+  try{var r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+sym);var d=await r.json();
+  var price=parseFloat(d.lastPrice),chg=parseFloat(d.priceChangePercent),vol=parseFloat(d.quoteVolume),hi=parseFloat(d.highPrice),lo=parseFloat(d.lowPrice);
+  var pe=document.getElementById('wlcp-'+sym),ce=document.getElementById('wlcc-'+sym),ve=document.getElementById('wlcv-'+sym),hie=document.getElementById('wlchi-'+sym),loe=document.getElementById('wlclo-'+sym);
+  if(pe)pe.textContent=fmtP(price);
+  if(ce){ce.textContent=(chg>=0?'+':'')+chg.toFixed(2)+'%';ce.className='wlc-chg '+(chg>=0?'up':'down');}
+  if(ve)ve.textContent='$'+fmtV(vol);if(hie)hie.textContent=fmtP(hi);if(loe)loe.textContent=fmtP(lo);
   }catch(e){}
-  try{
-    var r2=await fetch('https://fapi.binance.com/fapi/v1/fundingRate?symbol='+sym+'&limit=1');
-    var d2=await r2.json();
-    if(d2&&d2[0]){
-      var fr=parseFloat(d2[0].fundingRate)*100;
-      var fre=document.getElementById('wlfr-'+sym);
-      if(fre){fre.textContent='FR: '+(fr>=0?'+':'')+fr.toFixed(4)+'%';fre.style.color=fr>0.01?'var(--red)':fr<-0.01?'var(--accent2)':'var(--yellow)';}
-    }
+  try{var r2=await fetch('https://fapi.binance.com/fapi/v1/fundingRate?symbol='+sym+'&limit=1');var d2=await r2.json();
+  if(d2&&d2[0]){var fr=parseFloat(d2[0].fundingRate)*100;var fre=document.getElementById('wlcfr-'+sym);if(fre){fre.textContent=(fr>=0?'+':'')+fr.toFixed(4)+'%';fre.style.color=fr>0.01?'var(--red)':fr<-0.01?'var(--accent2)':'var(--yellow)';}}
   }catch(e){}
 }
-function removeWl(e,sym){
-  e.stopPropagation();
-  watchlist=watchlist.filter(function(w){return w.sym!==sym;});
-  localStorage.setItem('ti_watchlist',JSON.stringify(watchlist));
-  renderWatchlist();
-  [0,1].forEach(function(i){if(panels[i].sym===sym)updateFavBtn(i);});
-}
-function pickWlCoin(sym,abbr,name){
-  var coin=COINS.find(function(c){return c.sym===sym;})||{sym:sym,abbr:abbr,name:name,tag:''};
-  pickPanel(0,coin);showTabDirect('chart');
-}
-function refreshWatchlist(){for(var i=0;i<watchlist.length;i++)fetchWlTicker(watchlist[i].sym);}
+function rmWL(e,sym){e.stopPropagation();wl=wl.filter(function(w){return w.sym!==sym;});localStorage.setItem('ti_wl',JSON.stringify(wl));renderWL();[0,1].forEach(function(i){if(panels[i].sym===sym)updateFavBtn(i);});}
+function pickWLCoin(sym){var c=coin(sym);pickPanel(0,c);goTab('chart');}
+function refreshWL(){for(var i=0;i<wl.length;i++)fetchWLTicker(wl[i].sym);}
  
 // ── HEATMAP ──
-function setHmFilter(f,el){
-  hmFilter=f;
-  document.querySelectorAll('.hm-filter-btn').forEach(function(b){b.classList.remove('active');});
-  el.classList.add('active');
-  loadHeatmap();
-}
-var hmLoading=false;
-async function loadHeatmap(){
-  if(hmLoading)return;hmLoading=true;
-  var treemap=document.getElementById('hm-treemap');
-  treemap.innerHTML='<div style="color:var(--muted);font-family:IBM Plex Mono,monospace;font-size:11px;padding:20px;">Memuat...</div>';
-  var filtered=hmFilter==='all'?COINS:COINS.filter(function(c){return c.cat&&c.cat.includes(hmFilter);});
-  var sorted=filtered.slice().sort(function(a,b){return b.mcap-a.mcap;});
-  var totalMcap=sorted.reduce(function(s,c){return s+c.mcap;},0);
-  var containerW=treemap.offsetWidth||800;
+function setHmF(f,el){hmF=f;document.querySelectorAll('.hmfb').forEach(function(b){b.classList.remove('on');});el.classList.add('on');loadHM();}
+async function loadHM(){
+  if(hmBusy)return;hmBusy=true;
+  var tm=document.getElementById('hmt');
+  tm.innerHTML='<div style="color:var(--muted);font-family:IBM Plex Mono,monospace;font-size:11px;padding:20px;">Memuat heatmap...</div>';
+  var list=hmF==='all'?COINS:COINS.filter(function(c){return c.cat&&c.cat.includes(hmF);});
+  var sorted=list.slice().sort(function(a,b){return b.mc-a.mc;});
+  var totalMC=sorted.reduce(function(s,c){return s+c.mc;},0);
+  var cW=tm.offsetWidth||800;
   var html='';
   for(var i=0;i<sorted.length;i++){
-    var coin=sorted[i];
-    var sizePct=coin.mcap/totalMcap;
-    var minPx=60,maxPx=Math.min(containerW*0.35,280);
-    var sz=Math.max(minPx,Math.min(maxPx,Math.sqrt(sizePct)*containerW*1.1));
-    var fontSize=sz>120?14:sz>80?12:10;
-    var chgFontSize=sz>120?12:sz>80?10:9;
+    var co=sorted[i];
+    var szPct=co.mc/totalMC;
+    var sz=Math.max(55,Math.min(Math.min(cW*0.33,260),Math.sqrt(szPct)*cW*1.15));
+    var fs=sz>130?14:sz>90?12:sz>65?10:9;
+    var cfs=sz>130?12:sz>90?10:9;
     try{
-      var r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+coin.sym);
-      var d=await r.json();
-      var chg=parseFloat(d.priceChangePercent);
-      var price=parseFloat(d.lastPrice);
-      var intensity=Math.min(Math.abs(chg)/8,1);
-      var bg;
-      if(chg>=3){bg='rgba(0,'+(Math.floor(120+intensity*80))+',60,0.9)';}
-      else if(chg>=1){bg='rgba(0,'+(Math.floor(80+intensity*60))+',40,0.85)';}
-      else if(chg>-1){bg='rgba(30,50,45,0.85)';}
-      else if(chg>-3){bg='rgba('+(Math.floor(100+intensity*60))+',20,35,0.85)';}
-      else{bg='rgba('+(Math.floor(140+intensity*80))+',15,30,0.9)';}
-      html+='<div class="hm-cell" style="width:'+sz+'px;height:'+sz+'px;background:'+bg+'" onclick="pickHmCoin(\''+coin.sym+'\',\''+coin.abbr+'\')">'
-        +'<div class="hm-sym" style="font-size:'+fontSize+'px">'+coin.abbr+'</div>'
-        +'<div class="hm-chg" style="font-size:'+chgFontSize+'px">'+(chg>=0?'+':'')+chg.toFixed(2)+'%</div>'
-        +(sz>100?'<div class="hm-mcap" style="font-size:9px">'+fmtP(price)+'</div>':'')
-        +'</div>';
-    }catch(e){html+='<div class="hm-cell" style="width:'+sz+'px;height:'+sz+'px;background:rgba(26,46,40,.6)" onclick="pickHmCoin(\''+coin.sym+'\',\''+coin.abbr+'\')"><div class="hm-sym" style="font-size:'+fontSize+'px">'+coin.abbr+'</div></div>';}
+      var r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+co.sym);
+      var d=await r.json();var chg=parseFloat(d.priceChangePercent),price=parseFloat(d.lastPrice);
+      var it=Math.min(Math.abs(chg)/8,1);
+      var bg=chg>=4?'rgba(0,'+(120+Math.floor(it*100))+',60,.92)':chg>=1.5?'rgba(0,'+(80+Math.floor(it*60))+',40,.85)':chg>-1.5?'rgba(28,48,42,.85)':chg>-4?'rgba('+(100+Math.floor(it*60))+',18,32,.85)':'rgba('+(140+Math.floor(it*80))+',12,28,.92)';
+      html+='<div class="hmc" style="width:'+sz+'px;height:'+sz+'px;background:'+bg+'" onclick="pickHMCoin(\''+co.sym+'\')"><div class="hmc-sym" style="font-size:'+fs+'px">'+co.a+'</div><div class="hmc-chg" style="font-size:'+cfs+'px">'+(chg>=0?'+':'')+chg.toFixed(2)+'%</div>'+(sz>90?'<div class="hmc-p" style="font-size:9px">'+fmtP(price)+'</div>':'')+'</div>';
+    }catch(e){html+='<div class="hmc" style="width:'+sz+'px;height:'+sz+'px;background:rgba(26,46,40,.6)" onclick="pickHMCoin(\''+co.sym+'\')"><div class="hmc-sym" style="font-size:'+fs+'px">'+co.a+'</div></div>';}
   }
-  treemap.innerHTML=html;
-  hmLoading=false;
+  tm.innerHTML=html;hmBusy=false;
 }
-function pickHmCoin(sym,abbr){
-  var coin=COINS.find(function(c){return c.sym===sym;})||{sym:sym,abbr:abbr,name:abbr,tag:''};
-  pickPanel(0,coin);showTabDirect('chart');
-}
- 
-// ── ORDERBOOK ──
-document.getElementById('ob-sym-sel').addEventListener('change',function(){loadOrderbook();});
-async function loadOrderbook(){
-  var sym=document.getElementById('ob-sym-sel').value;
-  try{
-    var r=await fetch('https://api.binance.com/api/v3/depth?symbol='+sym+'&limit=10');
-    var d=await r.json();
-    var asks=d.asks.slice(0,8),bids=d.bids.slice(0,8);
-    var maxA=Math.max.apply(null,asks.map(function(a){return parseFloat(a[1]);}));
-    var maxB=Math.max.apply(null,bids.map(function(b){return parseFloat(b[1]);}));
-    var spread=Math.abs(parseFloat(asks[0][0])-parseFloat(bids[0][0]));
-    var html='<div class="ob-wrap"><div class="ob-asks"><div class="ob-side-title">ASKS (Jual)</div>';
-    asks.forEach(function(a){var pct=(parseFloat(a[1])/maxA*100).toFixed(0);html+='<div class="ob-row"><div class="ob-bar" style="width:'+pct+'%"></div><span class="ob-price" style="color:var(--red)">'+parseFloat(a[0]).toLocaleString('en-US',{maximumFractionDigits:2})+'</span><span class="ob-qty">'+parseFloat(a[1]).toFixed(3)+'</span></div>';});
-    html+='</div><div class="ob-bids"><div class="ob-side-title">BIDS (Beli)</div>';
-    bids.forEach(function(b){var pct=(parseFloat(b[1])/maxB*100).toFixed(0);html+='<div class="ob-row"><div class="ob-bar" style="width:'+pct+'%"></div><span class="ob-price" style="color:var(--accent2)">'+parseFloat(b[0]).toLocaleString('en-US',{maximumFractionDigits:2})+'</span><span class="ob-qty">'+parseFloat(b[1]).toFixed(3)+'</span></div>';});
-    html+='</div></div><div class="ob-spread">Spread: $'+spread.toFixed(2)+'</div>';
-    document.getElementById('ob-content').innerHTML=html;
-    drawDepth(asks,bids);
-  }catch(e){document.getElementById('ob-content').innerHTML='<div style="color:var(--muted);padding:8px;font-size:11px;font-family:IBM Plex Mono,monospace;">Gagal load orderbook</div>';}
-}
-function drawDepth(asks,bids){
-  var canvas=document.getElementById('depth-canvas');if(!canvas)return;
-  var ctx=canvas.getContext('2d'),W=canvas.offsetWidth||600,H=160;
-  canvas.width=W;canvas.height=H;ctx.clearRect(0,0,W,H);
-  var bCum=0,aCum=0,allB=[],allA=[];
-  bids.slice().reverse().forEach(function(b){bCum+=parseFloat(b[1]);allB.push({p:parseFloat(b[0]),v:bCum});});
-  asks.forEach(function(a){aCum+=parseFloat(a[1]);allA.push({p:parseFloat(a[0]),v:aCum});});
-  var allP=allB.map(function(b){return b.p;}).concat(allA.map(function(a){return a.p;}));
-  var minP=Math.min.apply(null,allP),maxP=Math.max.apply(null,allP),maxV=Math.max(bCum,aCum);
-  function px(p){return((p-minP)/(maxP-minP))*W;}
-  function py(v){return H-(v/maxV)*(H-10)-5;}
-  ctx.strokeStyle='#00e676';ctx.fillStyle='rgba(0,230,118,0.15)';ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(0,H);allB.forEach(function(b){ctx.lineTo(px(b.p),py(b.v));});ctx.lineTo(px(allB[allB.length-1].p),H);ctx.closePath();ctx.fill();
-  ctx.beginPath();allB.forEach(function(b,i){i===0?ctx.moveTo(0,py(b.v)):ctx.lineTo(px(b.p),py(b.v));});ctx.stroke();
-  ctx.strokeStyle='#ff4d6d';ctx.fillStyle='rgba(255,77,109,0.15)';
-  ctx.beginPath();ctx.moveTo(px(allA[0].p),H);allA.forEach(function(a){ctx.lineTo(px(a.p),py(a.v));});ctx.lineTo(W,H);ctx.closePath();ctx.fill();
-  ctx.beginPath();allA.forEach(function(a,i){i===0?ctx.moveTo(px(a.p),py(a.v)):ctx.lineTo(px(a.p),py(a.v));});ctx.stroke();
-}
+function pickHMCoin(sym){var c=coin(sym);pickPanel(0,c);goTab('chart');}
  
 // ── NEWS ──
 function loadNews(){
-  if(newsLoaded)return;
-  var NEWS=[
-    {title:'Bitcoin Mencapai Level Tertinggi Baru, Investor Optimis',source:'CoinDesk',time:'2 jam lalu',tag:'BTC',tc:'var(--yellow)',url:'https://coindesk.com'},
-    {title:'Ethereum ETF Staking Disetujui SEC, Pasar Bereaksi Positif',source:'The Block',time:'4 jam lalu',tag:'ETH',tc:'var(--accent)',url:'https://theblock.co'},
-    {title:'Solana DeFi TVL Tembus $10 Miliar, Ekosistem Terus Berkembang',source:'Decrypt',time:'6 jam lalu',tag:'SOL',tc:'#9945ff',url:'https://decrypt.co'},
-    {title:'Federal Reserve Sinyal Pemangkasan Suku Bunga, Crypto Rally',source:'Bloomberg',time:'8 jam lalu',tag:'Macro',tc:'var(--muted)',url:'https://bloomberg.com'},
-    {title:'Binance Luncurkan Fitur Baru untuk Trading Futures Ritel',source:'Binance Blog',time:'10 jam lalu',tag:'Exchange',tc:'var(--accent2)',url:'https://binance.com'},
-    {title:'PEPE Coin Naik 40% dalam 24 Jam, Volume Trading Meledak',source:'CryptoSlate',time:'12 jam lalu',tag:'Meme',tc:'#00cc44',url:'https://cryptoslate.com'},
-    {title:'Regulasi Crypto Indonesia: OJK Rilis Aturan Baru Tahun Ini',source:'Bisnis.com',time:'1 hari lalu',tag:'Regulasi',tc:'var(--red)',url:'https://bisnis.com'},
-    {title:'BlackRock Tambah 10.000 BTC ke Portfolio Bitcoin ETF',source:'Reuters',time:'1 hari lalu',tag:'Institusi',tc:'var(--yellow)',url:'https://reuters.com'},
-    {title:'TON Blockchain Kini Terintegrasi dengan Telegram Mini Apps',source:'CoinTelegraph',time:'2 hari lalu',tag:'TON',tc:'#00aae4',url:'https://cointelegraph.com'},
-    {title:'Analisa: Support Kuat BTC di $95.000, Target Berikutnya $120.000',source:'TradingView',time:'2 hari lalu',tag:'Analisa',tc:'var(--accent)',url:'https://tradingview.com'}
-  ];
-  document.getElementById('news-wrap').innerHTML=NEWS.map(function(n){
-    return '<div class="news-card" onclick="window.open(\''+n.url+'\',\'_blank\')"><div class="news-source">'+n.source+'<span class="news-tag" style="background:rgba(255,255,255,.05);color:'+n.tc+'">'+n.tag+'</span></div><div class="news-title">'+n.title+'</div><div class="news-time">'+n.time+'</div></div>';
-  }).join('');
-  newsLoaded=true;
+  if(newsLoaded)return;newsLoaded=true;
+  var list=document.getElementById('newslist');
+  list.innerHTML=NEWS.map(function(n,i){return '<div class="news-item" id="ni'+i+'" onclick="showNews('+i+')"><div class="ni-source">'+n.src+'<span class="ni-tag" style="color:'+n.tc+';background:rgba(0,0,0,.1)">'+n.tag+'</span></div><div class="ni-title">'+n.title+'</div><div class="ni-time">'+n.time+'</div></div>';}).join('');
+}
+function showNews(i){
+  if(newsIdx>=0)document.getElementById('ni'+newsIdx).classList.remove('active');
+  newsIdx=i;document.getElementById('ni'+i).classList.add('active');
+  var n=NEWS[i];
+  var sentClass=n.sent==='bull'?'bull':n.sent==='bear'?'bear':'neu';
+  var sentLabel=n.sent==='bull'?'📈 Bullish Signal':n.sent==='bear'?'📉 Bearish Signal':'➡️ Neutral';
+  var bodyHtml=n.body.split('\n\n').map(function(p){return '<p>'+p+'</p>';}).join('');
+  document.getElementById('newsdetail').innerHTML='<div class="nd-source">'+n.src+'<span class="nd-tag" style="color:'+n.tc+'">'+n.tag+'</span></div><div class="nd-title">'+n.title+'</div><div class="nd-time">'+n.time+'</div><div class="nd-body">'+bodyHtml+'</div><div class="nd-sentiment '+sentClass+'">'+sentLabel+'</div>';
 }
  
 // ── HISTORY ──
-function addHistory(coin){
-  var entry={sym:coin.sym,abbr:coin.abbr,name:coin.name,time:new Date().toLocaleString('id-ID'),price:'—'};
-  historyData=historyData.filter(function(h){return h.sym!==coin.sym;});
-  historyData.unshift(entry);if(historyData.length>20)historyData=historyData.slice(0,20);
-  localStorage.setItem('ti_history',JSON.stringify(historyData));
-}
-function renderHistory(){
-  var grid=document.getElementById('hist-grid');
-  if(!historyData.length){grid.innerHTML='<div class="hist-empty">Belum ada riwayat.</div>';return;}
-  grid.innerHTML=historyData.map(function(h){
-    return '<div class="hist-card" onclick="pickHistCoin(\''+h.sym+'\',\''+h.abbr+'\',\''+h.name+'\')"><div class="hist-sym">'+h.abbr+'</div><div class="hist-name">'+h.name+'</div><div class="hist-time">'+h.time+'</div></div>';
-  }).join('');
-}
-function pickHistCoin(sym,abbr,name){
-  var coin=COINS.find(function(c){return c.sym===sym;})||{sym:sym,abbr:abbr,name:name,tag:''};
-  pickPanel(0,coin);showTabDirect('chart');
-}
-function clearHistory(){historyData=[];localStorage.removeItem('ti_history');renderHistory();}
+function addHist(c){var e={sym:c.sym,a:c.a,n:c.n,time:new Date().toLocaleString('id-ID')};hist=hist.filter(function(h){return h.sym!==c.sym;});hist.unshift(e);if(hist.length>20)hist=hist.slice(0,20);localStorage.setItem('ti_h',JSON.stringify(hist));}
+function renderHist(){var g=document.getElementById('histgrid');if(!hist.length){g.innerHTML='<div class="hist-empty">Belum ada riwayat.</div>';return;}g.innerHTML=hist.map(function(h){return '<div class="histc" onclick="pickHistCoin(\''+h.sym+'\',\''+h.a+'\',\''+h.n+'\')"><div class="histc-sym">'+h.a+'</div><div class="histc-name">'+h.n+'</div><div class="histc-time">'+h.time+'</div></div>';}).join('');}
+function pickHistCoin(sym,a,n){pickPanel(0,{sym:sym,a:a,n:n,t:'',cat:'',mc:1});goTab('chart');}
+function clearHist(){hist=[];localStorage.removeItem('ti_h');renderHist();}
  
 // ── INIT ──
 loadPanel(0);
-renderWatchlist();
-setInterval(function(){fetchTicker(0);if(currentLayout!=='single')fetchTicker(1);},30000);
-setInterval(function(){fetchFuturesData(panels[0].sym,0);if(currentLayout!=='single')fetchFuturesData(panels[1].sym,1);},60000);
-setInterval(loadOrderbook,15000);
+setInterval(function(){fetchTicker(0);if(layout!=='s')fetchTicker(1);},30000);
+setInterval(function(){fetchFuturesData(0);if(layout!=='s')fetchFuturesData(1);},60000);
 </script>
 </body>
 </html>
