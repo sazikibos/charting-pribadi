@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Trenova Intelligence — Crypto Chart</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#050807;--card:#0c1210;--border:#1a2e28;--accent:#2ec4a0;--accent2:#00e676;--text:#e8f5f2;--muted:#4a6b62;--red:#ff4d6d;--yellow:#ffd166;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;display:flex;flex-direction:column;}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.05) 2px,rgba(0,0,0,0.05) 4px);pointer-events:none;z-index:9999;}
+
+/* ── HEADER ── */
+header{display:flex;align-items:center;gap:14px;padding:11px 20px;border-bottom:1px solid var(--border);background:var(--card);flex-shrink:0;flex-wrap:wrap;}
+.logo{display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.logo-icon{width:30px;height:30px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#050807;}
+.logo-text{font-size:13px;font-weight:700;letter-spacing:0.06em;}
+.logo-sub{font-size:8px;letter-spacing:0.2em;color:var(--accent);text-transform:uppercase;font-family:'IBM Plex Mono',monospace;display:block;}
+
+/* search */
+.search-wrap{position:relative;flex:1;min-width:180px;max-width:380px;}
+.search-input{width:100%;padding:8px 12px 8px 34px;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:12px;outline:none;transition:border-color .2s;}
+.search-input::placeholder{color:var(--muted);}
+.search-input:focus{border-color:var(--accent);}
+.si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;pointer-events:none;}
+.sd{position:absolute;top:calc(100% + 5px);left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:8px;z-index:300;display:none;box-shadow:0 10px 30px rgba(0,0,0,.6);max-height:260px;overflow-y:auto;}
+.sd.open{display:block;}
+.sd::-webkit-scrollbar{width:3px;}.sd::-webkit-scrollbar-thumb{background:var(--border);}
+.sdi{display:flex;align-items:center;gap:10px;padding:9px 13px;cursor:pointer;transition:background .15s;border-bottom:1px solid rgba(26,46,40,.4);}
+.sdi:last-child{border-bottom:none;}
+.sdi:hover,.sdi.foc{background:rgba(46,196,160,.08);}
+.sdi-sym{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;width:60px;}
+.sdi-name{font-size:11px;color:var(--muted);flex:1;}
+.sdi-tag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 5px;border-radius:3px;background:rgba(46,196,160,.1);color:var(--accent);}
+.sd-empty{padding:14px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:11px;text-align:center;}
+
+/* layout toggle btns */
+.layout-btns{display:flex;gap:4px;flex-shrink:0;}
+.lay-btn{padding:6px 12px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px;}
+.lay-btn:hover{border-color:var(--accent);color:var(--accent);}
+.lay-btn.active{background:rgba(46,196,160,.12);border-color:var(--accent);color:var(--accent);}
+.lay-icon{font-size:13px;line-height:1;}
+
+.live-badge{display:flex;align-items:center;gap:5px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:.1em;flex-shrink:0;}
+.live-dot{width:6px;height:6px;background:var(--accent2);border-radius:50%;animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,230,118,.4)}50%{opacity:.6;box-shadow:0 0 0 4px rgba(0,230,118,0)}}
+
+/* ── CHARTS CONTAINER ── */
+.charts-wrap{flex:1;display:flex;overflow:hidden;min-height:0;transition:all .3s;}
+.charts-wrap.layout-single{flex-direction:column;}
+.charts-wrap.layout-lr{flex-direction:row;}
+.charts-wrap.layout-tb{flex-direction:column;}
+
+/* ── CHART PANEL ── */
+.chart-panel{display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0;min-width:0;}
+.chart-panel+.chart-panel{border-top:2px solid var(--accent);} 
+.charts-wrap.layout-lr .chart-panel+.chart-panel{border-top:none;border-left:2px solid var(--accent);}
+
+/* toolbar per panel */
+.panel-bar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--card);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
+.panel-pair{font-size:15px;font-weight:800;letter-spacing:-.01em;}
+.panel-price{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--accent2);}
+.panel-chg{font-family:'IBM Plex Mono',monospace;font-size:11px;padding:2px 6px;border-radius:4px;font-weight:600;}
+.panel-chg.up{background:rgba(0,230,118,.12);color:var(--accent2);}
+.panel-chg.down{background:rgba(255,77,109,.12);color:var(--red);}
+.spacer{flex:1;}
+.tf-btns{display:flex;gap:2px;}
+.tf-btn{padding:3px 8px;border:1px solid var(--border);background:transparent;color:var(--muted);border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;cursor:pointer;transition:all .15s;}
+.tf-btn:hover{border-color:var(--accent);color:var(--accent);}
+.tf-btn.active{background:rgba(46,196,160,.12);border-color:var(--accent);color:var(--accent);}
+
+/* coin search inside panel bar */
+.panel-search-wrap{position:relative;}
+.panel-search{padding:5px 10px 5px 28px;background:var(--bg);border:1px solid var(--border);border-radius:5px;color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:11px;outline:none;width:140px;transition:border-color .2s;}
+.panel-search::placeholder{color:var(--muted);}
+.panel-search:focus{border-color:var(--accent);width:180px;}
+.ps-icon{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:12px;pointer-events:none;}
+.ps-drop{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:6px;z-index:200;display:none;box-shadow:0 8px 24px rgba(0,0,0,.5);max-height:200px;overflow-y:auto;min-width:200px;}
+.ps-drop.open{display:block;}
+.ps-drop::-webkit-scrollbar{width:3px;}.ps-drop::-webkit-scrollbar-thumb{background:var(--border);}
+.psdi{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;transition:background .15s;border-bottom:1px solid rgba(26,46,40,.4);font-size:12px;}
+.psdi:last-child{border-bottom:none;}
+.psdi:hover,.psdi.foc{background:rgba(46,196,160,.08);}
+.psdi-sym{font-family:'IBM Plex Mono',monospace;font-weight:600;width:56px;}
+.psdi-name{color:var(--muted);font-size:11px;flex:1;}
+
+/* iframe */
+.tv-wrap{flex:1;min-height:0;position:relative;}
+.tv-wrap iframe{width:100%;height:100%;border:none;display:block;}
+
+/* stats under each chart */
+.panel-stats{display:flex;flex-shrink:0;background:var(--card);border-top:1px solid var(--border);overflow-x:auto;}
+.panel-stats::-webkit-scrollbar{height:2px;}
+.ps-item{flex:1;min-width:90px;padding:7px 12px;border-right:1px solid var(--border);}
+.ps-item:last-child{border-right:none;}
+.ps-lbl{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.ps-val{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">TI</div>
+    <div>
+      <div class="logo-text">TRENOVA INTELLIGENCE</div>
+      <span class="logo-sub">crypto market terminal</span>
+    </div>
+  </div>
+
+  <!-- Global search (optional shortcut) -->
+  <div class="search-wrap" id="gsw">
+    <span class="si">&#128269;</span>
+    <input type="text" class="search-input" id="g-search" placeholder="Search &amp; load ke Chart 1..." autocomplete="off"/>
+    <div class="sd" id="g-drop"></div>
+  </div>
+
+  <!-- Layout toggle -->
+  <div class="layout-btns">
+    <button class="lay-btn active" id="btn-single" onclick="setLayout('single')">
+      <span class="lay-icon">▣</span> 1 Chart
+    </button>
+    <button class="lay-btn" id="btn-lr" onclick="setLayout('lr')">
+      <span class="lay-icon">⬜⬜</span> 2 Kiri-Kanan
+    </button>
+    <button class="lay-btn" id="btn-tb" onclick="setLayout('tb')">
+      <span class="lay-icon">⬜<br style="line-height:0">⬜</span> 2 Atas-Bawah
+    </button>
+  </div>
+
+  <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+</header>
+
+<!-- CHARTS CONTAINER -->
+<div class="charts-wrap layout-single" id="charts-wrap">
+
+  <!-- PANEL 1 -->
+  <div class="chart-panel" id="panel-0">
+    <div class="panel-bar">
+      <span class="panel-pair" id="p0-name">BTC/USDT</span>
+      <span class="panel-price" id="p0-price">—</span>
+      <span class="panel-chg up" id="p0-chg">—</span>
+      <div class="spacer"></div>
+      <!-- search inside panel -->
+      <div class="panel-search-wrap" id="psw-0">
+        <span class="ps-icon">&#128269;</span>
+        <input type="text" class="panel-search" id="ps-0" placeholder="Ganti coin..." autocomplete="off"/>
+        <div class="ps-drop" id="psd-0"></div>
+      </div>
+      <div class="tf-btns" id="tf-0">
+        <button class="tf-btn" data-tf="1">1m</button>
+        <button class="tf-btn" data-tf="5">5m</button>
+        <button class="tf-btn" data-tf="15">15m</button>
+        <button class="tf-btn" data-tf="60">1H</button>
+        <button class="tf-btn" data-tf="240">4H</button>
+        <button class="tf-btn active" data-tf="D">1D</button>
+        <button class="tf-btn" data-tf="W">1W</button>
+      </div>
+    </div>
+    <div class="tv-wrap"><iframe id="if-0" src="" frameborder="0" allowtransparency="true" scrolling="no"></iframe></div>
+    <div class="panel-stats">
+      <div class="ps-item"><div class="ps-lbl">HIGH 24H</div><div class="ps-val" id="p0-hi">—</div></div>
+      <div class="ps-item"><div class="ps-lbl">LOW 24H</div><div class="ps-val" id="p0-lo">—</div></div>
+      <div class="ps-item"><div class="ps-lbl">VOLUME</div><div class="ps-val" id="p0-vo">—</div></div>
+      <div class="ps-item"><div class="ps-lbl">CHANGE</div><div class="ps-val" id="p0-cv">—</div></div>
+    </div>
+  </div>
+
+  <!-- PANEL 2 -->
+  <div class="chart-panel" id="panel-1" style="display:none;">
+    <div class="panel-bar">
+      <span class="panel-pair" id="p1-name">ETH/USDT</span>
+      <span class="panel-price" id="p1-price">—</span>
+      <span class="panel-chg up" id="p1-chg">—</span>
+      <div class="spacer"></div>
+      <div class="panel-search-wrap" id="psw-1">
+        <span class="ps-icon">&#128269;</span>
+        <input type="text" class="panel-search" id="ps-1" placeholder="Ganti coin..." autocomplete="off"/>
+        <div class="ps-drop" id="psd-1"></div>
+      </div>
+      <div class="tf-btns" id="tf-1">
+        <button class="tf-btn" data-tf="1">1m</button>
+        <button class="tf-btn" data-tf="5">5m</button>
+        <button class="tf-btn" data-tf="15">15m</button>
+        <button class="tf-btn" data-tf="60">1H</button>
+        <button class="tf-btn active" data-tf="240">4H</button>
+        <button class="tf-btn" data-tf="D">1D</button>
+        <button class="tf-btn" data-tf="W">1W</button>
+      </div>
+    </div>
+    <div class="tv-wrap"><iframe id="if-1" src="" frameborder="0" allowtransparency="true" scrolling="no"></iframe></div>
+    <div class="panel-stats">
+      <div class="ps-item"><div class="ps-lbl">HIGH 24H</div><div class="ps-val" id="p1-hi">—</div></div>
+      <div class="ps-item"><div class="ps-lbl">LOW 24H</div><div class="ps-val" id="p1-lo">—</div></div>
+      <div class="ps-item"><div class="ps-lbl">VOLUME</div><div class="ps-val" id="p1-vo">—</div></div>
+      <div class="ps-item"><div class="ps-lbl">CHANGE</div><div class="ps-val" id="p1-cv">—</div></div>
+    </div>
+  </div>
+
+</div><!-- /charts-wrap -->
+
+<script>
+var COINS=[
+  {sym:'BTCUSDT',name:'Bitcoin',abbr:'BTC',tag:'Top 10'},
+  {sym:'ETHUSDT',name:'Ethereum',abbr:'ETH',tag:'Top 10'},
+  {sym:'BNBUSDT',name:'BNB',abbr:'BNB',tag:'Top 10'},
+  {sym:'SOLUSDT',name:'Solana',abbr:'SOL',tag:'Top 10'},
+  {sym:'XRPUSDT',name:'XRP',abbr:'XRP',tag:'Top 10'},
+  {sym:'ADAUSDT',name:'Cardano',abbr:'ADA',tag:'Top 20'},
+  {sym:'AVAXUSDT',name:'Avalanche',abbr:'AVAX',tag:'Top 20'},
+  {sym:'DOGEUSDT',name:'Dogecoin',abbr:'DOGE',tag:'Meme'},
+  {sym:'DOTUSDT',name:'Polkadot',abbr:'DOT',tag:'Top 20'},
+  {sym:'LINKUSDT',name:'Chainlink',abbr:'LINK',tag:'DeFi'},
+  {sym:'TONUSDT',name:'Toncoin',abbr:'TON',tag:'Top 20'},
+  {sym:'SUIUSDT',name:'Sui',abbr:'SUI',tag:'L1'},
+  {sym:'APTUSDT',name:'Aptos',abbr:'APT',tag:'L1'},
+  {sym:'MATICUSDT',name:'Polygon',abbr:'MATIC',tag:'L2'},
+  {sym:'ARBUSDT',name:'Arbitrum',abbr:'ARB',tag:'L2'},
+  {sym:'OPUSDT',name:'Optimism',abbr:'OP',tag:'L2'},
+  {sym:'UNIUSDT',name:'Uniswap',abbr:'UNI',tag:'DeFi'},
+  {sym:'AAVEUSDT',name:'Aave',abbr:'AAVE',tag:'DeFi'},
+  {sym:'LTCUSDT',name:'Litecoin',abbr:'LTC',tag:'OG'},
+  {sym:'BCHUSDT',name:'Bitcoin Cash',abbr:'BCH',tag:'OG'},
+  {sym:'ATOMUSDT',name:'Cosmos',abbr:'ATOM',tag:'Top 30'},
+  {sym:'NEARUSDT',name:'Near Protocol',abbr:'NEAR',tag:'L1'},
+  {sym:'INJUSDT',name:'Injective',abbr:'INJ',tag:'Top 30'},
+  {sym:'SEIUSDT',name:'Sei',abbr:'SEI',tag:'L1'},
+  {sym:'RENDERUSDT',name:'Render',abbr:'RENDER',tag:'AI'},
+  {sym:'FETUSDT',name:'Fetch.ai',abbr:'FET',tag:'AI'},
+  {sym:'WLDUSDT',name:'Worldcoin',abbr:'WLD',tag:'AI'},
+  {sym:'PEPEUSDT',name:'Pepe',abbr:'PEPE',tag:'Meme'},
+  {sym:'WIFUSDT',name:'dogwifhat',abbr:'WIF',tag:'Meme'},
+  {sym:'SHIBUSDT',name:'Shiba Inu',abbr:'SHIB',tag:'Meme'},
+  {sym:'BONKUSDT',name:'Bonk',abbr:'BONK',tag:'Meme'},
+  {sym:'FLOKIUSDT',name:'Floki',abbr:'FLOKI',tag:'Meme'},
+  {sym:'TRXUSDT',name:'Tron',abbr:'TRX',tag:'Top 20'},
+  {sym:'XLMUSDT',name:'Stellar',abbr:'XLM',tag:'Top 30'},
+  {sym:'SANDUSDT',name:'The Sandbox',abbr:'SAND',tag:'Meta'},
+  {sym:'AXSUSDT',name:'Axie Infinity',abbr:'AXS',tag:'Gaming'},
+  {sym:'RUNEUSDT',name:'THORChain',abbr:'RUNE',tag:'DeFi'},
+  {sym:'LDOUSDT',name:'Lido DAO',abbr:'LDO',tag:'DeFi'},
+  {sym:'ICPUSDT',name:'Internet Computer',abbr:'ICP',tag:'Top 30'},
+  {sym:'TIAUSDT',name:'Celestia',abbr:'TIA',tag:'New'},
+  {sym:'STRKUSDT',name:'Starknet',abbr:'STRK',tag:'L2'},
+  {sym:'FTMUSDT',name:'Fantom',abbr:'FTM',tag:'L1'},
+  {sym:'ALGOUSDT',name:'Algorand',abbr:'ALGO',tag:'Top 50'},
+  {sym:'VETUSDT',name:'VeChain',abbr:'VET',tag:'Top 50'},
+  {sym:'GRTUSDT',name:'The Graph',abbr:'GRT',tag:'DeFi'},
+  {sym:'ENAUSDT',name:'Ethena',abbr:'ENA',tag:'New'},
+  {sym:'JUPUSDT',name:'Jupiter',abbr:'JUP',tag:'DeFi'},
+  {sym:'PYTHUSDT',name:'Pyth Network',abbr:'PYTH',tag:'New'},
+  {sym:'WUSDT',name:'Wormhole',abbr:'W',tag:'New'}
+];
+
+// Panel state
+var panels=[
+  {sym:'BTCUSDT',disp:'BTC/USDT',tf:'D'},
+  {sym:'ETHUSDT',disp:'ETH/USDT',tf:'240'}
+];
+
+var currentLayout='single';
+
+// ── BUILD TV URL ──
+function tvUrl(sym,tf){
+  return 'https://www.tradingview.com/widgetembed/?frameElementId=tv-iframe'
+    +'&symbol=BINANCE:'+sym
+    +'&interval='+tf
+    +'&theme=dark&style=1&locale=en'
+    +'&toolbar_bg=0c1210'
+    +'&hide_side_toolbar=0'
+    +'&allow_symbol_change=1'
+    +'&save_image=0'
+    +'&studies=RSI%40tv-basicstudies%1FMACD%40tv-basicstudies'
+    +'&timezone=Asia%2FJakarta'
+    +'&withdateranges=1';
+}
+
+function loadPanel(idx){
+  var p=panels[idx];
+  document.getElementById('if-'+idx).src=tvUrl(p.sym,p.tf);
+  fetchTicker(idx);
+}
+
+// ── LAYOUT ──
+function setLayout(lay){
+  currentLayout=lay;
+  var wrap=document.getElementById('charts-wrap');
+  var p1=document.getElementById('panel-1');
+  wrap.className='charts-wrap layout-'+lay;
+  document.querySelectorAll('.lay-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('btn-'+lay).classList.add('active');
+  if(lay==='single'){
+    p1.style.display='none';
+  } else {
+    p1.style.display='flex';
+    loadPanel(1);
+  }
+}
+
+// ── TF BUTTONS ──
+for(var pi=0;pi<2;pi++){
+  (function(idx){
+    document.getElementById('tf-'+idx).querySelectorAll('.tf-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        document.getElementById('tf-'+idx).querySelectorAll('.tf-btn').forEach(function(b){b.classList.remove('active');});
+        btn.classList.add('active');
+        panels[idx].tf=btn.dataset.tf;
+        loadPanel(idx);
+      });
+    });
+  })(pi);
+}
+
+// ── PANEL SEARCH ──
+var psState=[
+  {results:[],focIdx:-1},
+  {results:[],focIdx:-1}
+];
+
+function setupPanelSearch(idx){
+  var inp=document.getElementById('ps-'+idx);
+  var drop=document.getElementById('psd-'+idx);
+  var st=psState[idx];
+
+  inp.addEventListener('input',function(){
+    var q=inp.value.trim().toLowerCase();
+    st.focIdx=-1;
+    if(!q){drop.classList.remove('open');return;}
+    st.results=COINS.filter(function(c){
+      return c.abbr.toLowerCase().includes(q)||c.name.toLowerCase().includes(q);
+    }).slice(0,10);
+    renderPanelDrop(idx);
+  });
+
+  inp.addEventListener('keydown',function(e){
+    if(!drop.classList.contains('open'))return;
+    if(e.key==='ArrowDown'){e.preventDefault();st.focIdx=Math.min(st.focIdx+1,st.results.length-1);renderPanelDrop(idx);}
+    if(e.key==='ArrowUp'){e.preventDefault();st.focIdx=Math.max(st.focIdx-1,-1);renderPanelDrop(idx);}
+    if(e.key==='Enter'){var p=st.focIdx>=0?st.results[st.focIdx]:st.results[0];if(p)pickPanel(idx,p);}
+    if(e.key==='Escape'){drop.classList.remove('open');inp.blur();}
+  });
+
+  document.addEventListener('click',function(e){
+    if(!document.getElementById('psw-'+idx).contains(e.target)) drop.classList.remove('open');
+  });
+}
+
+function renderPanelDrop(idx){
+  var st=psState[idx];
+  var drop=document.getElementById('psd-'+idx);
+  if(!st.results.length){drop.innerHTML='<div class="sd-empty" style="padding:12px;text-align:center;color:var(--muted);font-size:11px;font-family:IBM Plex Mono,monospace;">Tidak ditemukan</div>';drop.classList.add('open');return;}
+  drop.innerHTML=st.results.map(function(c,i){
+    return '<div class="psdi'+(i===st.focIdx?' foc':'')+'" data-i="'+i+'">'
+      +'<span class="psdi-sym">'+c.abbr+'</span>'
+      +'<span class="psdi-name">'+c.name+'</span>'
+      +'<span class="sdi-tag" style="font-family:IBM Plex Mono,monospace;font-size:9px;padding:2px 5px;border-radius:3px;background:rgba(46,196,160,.1);color:var(--accent);">'+c.tag+'</span>'
+      +'</div>';
+  }).join('');
+  drop.querySelectorAll('.psdi').forEach(function(el){
+    el.addEventListener('mousedown',function(e){e.preventDefault();pickPanel(idx,st.results[parseInt(el.dataset.i)]);});
+  });
+  drop.classList.add('open');
+}
+
+function pickPanel(idx,coin){
+  panels[idx].sym=coin.sym;
+  panels[idx].disp=coin.abbr+'/USDT';
+  document.getElementById('p'+idx+'-name').textContent=coin.abbr+'/USDT';
+  document.getElementById('ps-'+idx).value='';
+  document.getElementById('psd-'+idx).classList.remove('open');
+  loadPanel(idx);
+}
+
+setupPanelSearch(0);
+setupPanelSearch(1);
+
+// ── GLOBAL HEADER SEARCH → Panel 1 ──
+var gInp=document.getElementById('g-search');
+var gDrop=document.getElementById('g-drop');
+var gResults=[],gFoc=-1;
+
+gInp.addEventListener('input',function(){
+  var q=gInp.value.trim().toLowerCase();
+  gFoc=-1;
+  if(!q){gDrop.classList.remove('open');return;}
+  gResults=COINS.filter(function(c){
+    return c.abbr.toLowerCase().includes(q)||c.name.toLowerCase().includes(q)||c.sym.toLowerCase().includes(q);
+  }).slice(0,10);
+  renderGDrop();
+});
+gInp.addEventListener('keydown',function(e){
+  if(!gDrop.classList.contains('open'))return;
+  if(e.key==='ArrowDown'){e.preventDefault();gFoc=Math.min(gFoc+1,gResults.length-1);renderGDrop();}
+  if(e.key==='ArrowUp'){e.preventDefault();gFoc=Math.max(gFoc-1,-1);renderGDrop();}
+  if(e.key==='Enter'){var p=gFoc>=0?gResults[gFoc]:gResults[0];if(p)pickGlobal(p);}
+  if(e.key==='Escape'){gDrop.classList.remove('open');gInp.blur();}
+});
+document.addEventListener('click',function(e){if(!document.getElementById('gsw').contains(e.target))gDrop.classList.remove('open');});
+
+function renderGDrop(){
+  if(!gResults.length){gDrop.innerHTML='<div class="sd-empty">Tidak ditemukan</div>';gDrop.classList.add('open');return;}
+  gDrop.innerHTML=gResults.map(function(c,i){
+    return '<div class="sdi'+(i===gFoc?' foc':'')+'" data-i="'+i+'">'
+      +'<span class="sdi-sym">'+c.abbr+'</span>'
+      +'<span class="sdi-name">'+c.name+'</span>'
+      +'<span class="sdi-tag">'+c.tag+'</span>'
+      +'</div>';
+  }).join('');
+  gDrop.querySelectorAll('.sdi').forEach(function(el){
+    el.addEventListener('mousedown',function(e){e.preventDefault();pickGlobal(gResults[parseInt(el.dataset.i)]);});
+  });
+  gDrop.classList.add('open');
+}
+
+function pickGlobal(coin){
+  pickPanel(0,coin);
+  gInp.value='';
+  gDrop.classList.remove('open');
+}
+
+// ── TICKER / PRICE ──
+function fmtP(p){return p>=1000?'$'+p.toLocaleString('en-US',{maximumFractionDigits:2}):p>=1?'$'+p.toLocaleString('en-US',{maximumFractionDigits:4}):'$'+p.toFixed(8);}
+function fmtV(v){return v>=1e9?(v/1e9).toFixed(2)+'B':v>=1e6?(v/1e6).toFixed(2)+'M':v>=1e3?(v/1e3).toFixed(1)+'K':v.toFixed(0);}
+
+async function fetchTicker(idx){
+  var sym=panels[idx].sym;
+  try{
+    var r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+sym);
+    if(!r.ok)return;
+    var d=await r.json();
+    var price=parseFloat(d.lastPrice),chg=parseFloat(d.priceChangePercent);
+    var high=parseFloat(d.highPrice),low=parseFloat(d.lowPrice),vol=parseFloat(d.quoteVolume);
+    document.getElementById('p'+idx+'-price').textContent=fmtP(price);
+    var cel=document.getElementById('p'+idx+'-chg');
+    cel.textContent=(chg>=0?'+':'')+chg.toFixed(2)+'%';
+    cel.className='panel-chg '+(chg>=0?'up':'down');
+    document.getElementById('p'+idx+'-hi').textContent=fmtP(high);
+    document.getElementById('p'+idx+'-lo').textContent=fmtP(low);
+    document.getElementById('p'+idx+'-vo').textContent='$'+fmtV(vol);
+    var cv=document.getElementById('p'+idx+'-cv');
+    cv.textContent=(chg>=0?'+':'')+chg.toFixed(2)+'%';
+    cv.style.color=chg>=0?'var(--accent2)':'var(--red)';
+  }catch(e){}
+}
+
+// ── INIT ──
+loadPanel(0);
+setInterval(function(){
+  fetchTicker(0);
+  if(currentLayout!=='single') fetchTicker(1);
+},30000);
+</script>
+</body>
+</html>
