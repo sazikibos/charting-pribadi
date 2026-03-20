@@ -854,10 +854,12 @@ async function searchTV(q,idx){
   drop.classList.add('open');
  
   try{
-    // TradingView symbol search API
-    var url='https://symbol-search.tradingview.com/symbol_search/v3/?text='+encodeURIComponent(q)+'&hl=1&exchange=&lang=en&search_type=undefined&domain=production&sort_by_country=ID';
-    var r=await fetch(url);
-    var d=await r.json();
+    // Use allorigins proxy to bypass CORS
+    var tvUrl='https://symbol-search.tradingview.com/symbol_search/v3/?text='+encodeURIComponent(q)+'&hl=0&exchange=&lang=en&search_type=undefined&domain=production&sort_by_country=ID';
+    var proxyUrl='https://api.allorigins.win/get?url='+encodeURIComponent(tvUrl);
+    var r=await fetch(proxyUrl);
+    var outer=await r.json();
+    var d=JSON.parse(outer.contents);
     var symbols=d.symbols||[];
  
     if(!symbols.length){
@@ -965,8 +967,12 @@ gs.addEventListener('input',function(){
   clearTimeout(gsTimer);
   gsTimer=setTimeout(async function(){
     try{
-      var url='https://symbol-search.tradingview.com/symbol_search/v3/?text='+encodeURIComponent(q)+'&hl=1&exchange=&lang=en&search_type=undefined&domain=production&sort_by_country=ID';
-      var r=await fetch(url);var d=await r.json();var symbols=(d.symbols||[]).slice(0,10);
+      var tvUrl2='https://symbol-search.tradingview.com/symbol_search/v3/?text='+encodeURIComponent(q)+'&hl=0&exchange=&lang=en&search_type=undefined&domain=production&sort_by_country=ID';
+      var proxyUrl2='https://api.allorigins.win/get?url='+encodeURIComponent(tvUrl2);
+      var r=await fetch(proxyUrl2);
+      var outer2=await r.json();
+      var d=JSON.parse(outer2.contents);
+      var symbols=(d.symbols||[]).slice(0,10);
       if(!symbols.length){gd.innerHTML='<div class="sd-empty">Tidak ditemukan</div>';gd.classList.add('open');return;}
       gd.innerHTML=symbols.map(function(s,i){
         var sym=(s.symbol||'').replace(/<[^>]*>/g,'');
