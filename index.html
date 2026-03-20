@@ -558,6 +558,7 @@ body.compact #compactbtn{background:rgba(46,196,160,.12);border-color:var(--acce
  
 </div>
 <script>
+// COINS starts with top coins, gets expanded from Binance API on load
 var COINS=[
   {sym:'BTCUSDT',n:'Bitcoin',a:'BTC',t:'Top 10',cat:'top',mc:1800},
   {sym:'ETHUSDT',n:'Ethereum',a:'ETH',t:'Top 10',cat:'top',mc:400},
@@ -594,6 +595,37 @@ var COINS=[
   {sym:'BONKUSDT',n:'Bonk',a:'BONK',t:'Meme',cat:'meme',mc:2},
   {sym:'LDOUSDT',n:'Lido DAO',a:'LDO',t:'DeFi',cat:'defi',mc:3}
 ];
+ 
+// Load ALL Binance USDT pairs dynamically — expands COINS to 400+ symbols
+async function loadAllBinanceCoins(){
+  try{
+    var r=await fetch('https://api.binance.com/api/v3/exchangeInfo');
+    var d=await r.json();
+    var existing=new Set(COINS.map(function(c){return c.sym;}));
+    var newCoins=[];
+    d.symbols.forEach(function(s){
+      if(s.quoteAsset==='USDT'&&s.status==='TRADING'&&!existing.has(s.symbol)){
+        var abbr=s.baseAsset;
+        newCoins.push({
+          sym:s.symbol,
+          n:abbr, // no full name from exchangeInfo, use abbr
+          a:abbr,
+          t:'Altcoin',
+          cat:'alt',
+          mc:0
+        });
+      }
+    });
+    // Sort alphabetically
+    newCoins.sort(function(a,b){return a.a.localeCompare(b.a);});
+    COINS=COINS.concat(newCoins);
+    // Also refresh alert selector with new coins
+    populateAlertSym();
+  }catch(e){
+    console.log('Failed to load full coin list:',e);
+  }
+}
+ 
  
 var TF_MAP={'1':'1m','3':'3m','5':'5m','15':'15m','60':'1h','240':'4h','D':'1d','W':'1w'};
 var TF_LIMIT={'1':100,'3':100,'5':100,'15':80,'60':80,'240':80,'D':60,'W':40};
@@ -670,7 +702,15 @@ async function loadTickerBar(){
  
 // ── MARKET BAR ──
 async function loadMarketBar(){
-  // Fear & Greed
+  // Run all fetches in parallel for speed
+  var [fgResult, binanceResult, rsiResult] = await Promise.allSettled([
+    fetchFearGreedData(),
+    fetchBinanceMarketData(),
+    fetchAvgRSI()
+  ]);
+}
+ 
+async function fetchFearGreedData(){
   try{
     var r=await fetch('https://api.alternative.me/fng/?limit=7');
     var d=await r.json();
@@ -681,84 +721,111 @@ async function loadMarketBar(){
     document.getElementById('mb-fg-lbl').textContent=lbl;
     document.getElementById('mb-fg-lbl').style.color=col;
     drawGaugeMini(v,col);
-    var hist=d.data.map(function(h){return parseInt(h.value);}).reverse();
-    drawSparkline('sp-rsi',hist,'#9b59b6');
   }catch(e){}
+}
  
-  // Global data (Market Cap, Dominance, Altcoin Season proxy)
+async function fetchBinanceMarketData(){
   try{
-    var r2=await fetch('https://api.coingecko.com/api/v3/global');
-    var d2=await r2.json();
-    var mcap=d2.data.total_market_cap.usd;
-    var mcapChg=d2.data.market_cap_change_percentage_24h_usd;
-    var btcDom=d2.data.market_cap_percentage.btc;
-    // Altcoin Season: if BTC dom < 50 = altseason
-    var altIdx=Math.round((1-btcDom/100)*100);
-    document.getElementById('mb-mcap').textContent='$'+(mcap/1e12).toFixed(2)+'T';
-    document.getElementById('mb-mcap-chg').textContent=(mcapChg>=0?'+':'')+mcapChg.toFixed(2)+'%';
-    document.getElementById('mb-mcap-chg').className='mb-chg '+(mcapChg>=0?'up':'down');
-    document.getElementById('mb-alt').textContent=altIdx+'/100';
-    var altLbl=altIdx>=75?'Altcoin Season':altIdx>=50?'Altcoin':altIdx>=25?'Bitcoin':' BTC Season';
-    document.getElementById('mb-alt-lbl').textContent=altLbl;
-    document.getElementById('mb-alt-lbl').style.color=altIdx>=75?'#00e676':altIdx>=50?'#2ec4a0':'#f7931a';
-    document.getElementById('alt-bar').style.width=altIdx+'%';
-    // CMC200 approximation from top coin avg
-    document.getElementById('mb-cmc').textContent='Loading...';
-  }catch(e){}
+    // Use Binance ticker for top coins to calculate market metrics
+    var TOP=['BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','XRPUSDT','ADAUSDT','AVAXUSDT','DOGEUSDT','DOTUSDT','LINKUSDT','LTCUSDT','ATOMUSDT','MATICUSDT','NEARUSDT','UNIUSDT','TONUSDT','TRXUSDT','XLMUSDT'];
+    var r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=['+TOP.map(function(s){return '"'+s+'"';}).join(',')+']');
+    var tickers=await r.json();
  
-  // Average RSI of major coins (sample 8 coins)
-  try{
-    var rsiSample=['BTCUSDT','ETHUSDT','SOLUSDT','BNBUSDT','XRPUSDT','ADAUSDT','DOGEUSDT','AVAXUSDT'];
-    var totalRsi=0,count=0;
-    for(var i=0;i<rsiSample.length;i++){
-      try{
-        var kr=await fetch('https://api.binance.com/api/v3/klines?symbol='+rsiSample[i]+'&interval=1d&limit=20');
-        var kd=await kr.json();
-        var cl=kd.map(function(k){return parseFloat(k[4]);});
-        var g=0,l=0;
-        for(var j=0;j<cl.length-1;j++){var df=cl[j+1]-cl[j];if(df>0)g+=df;else l+=Math.abs(df);}
-        var ag=g/(cl.length-1),al=l/(cl.length-1);
-        totalRsi+=(al===0?100:100-(100/(1+ag/al)));count++;
-      }catch(e){}
-    }
-    var avgRsi=count>0?totalRsi/count:50;
-    document.getElementById('mb-rsi').textContent=avgRsi.toFixed(1);
-    var rsiLbl=avgRsi<35?'Oversold':avgRsi>65?'Overbought':'Normal';
-    var rsiCol=avgRsi<35?'#00e676':avgRsi>65?'#ff4d6d':'#e8f5f2';
-    document.getElementById('mb-rsi-lbl').textContent=rsiLbl;
-    document.getElementById('mb-rsi-lbl').style.color=rsiCol;
-    document.getElementById('mb-rsi').style.color=rsiCol;
-  }catch(e){}
+    // Total volume as market cap proxy
+    var totalQuoteVol=tickers.reduce(function(s,t){return s+parseFloat(t.quoteVolume);},0);
+    var avgChg=tickers.reduce(function(s,t){return s+parseFloat(t.priceChangePercent);},0)/tickers.length;
  
-  // BTC Exchange Netflow (approximated from OI change direction)
-  try{
-    var nfr=await fetch('https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT');
-    var nfd=await nfr.json();
-    var oi=parseFloat(nfd.openInterest);
-    // Simulated netflow based on OI
-    var nfVal=(Math.random()-0.48)*500;
-    var nfSign=nfVal>=0?'+':'';
-    document.getElementById('mb-nf').textContent=nfSign+nfVal.toFixed(0)+' BTC';
-    document.getElementById('mb-nf').style.color=nfVal>=0?'var(--accent2)':'var(--red)';
-    document.getElementById('mb-nf-lbl').textContent=nfVal>=0?'Inflow (Bullish)':'Outflow (Bearish)';
-    document.getElementById('mb-nf-lbl').style.color=nfVal>=0?'var(--accent2)':'var(--red)';
-  }catch(e){}
+    // Market Cap — fetch BTC dominance via BTC market cap proxy
+    var btcTicker=tickers.find(function(t){return t.symbol==='BTCUSDT';});
+    var btcPrice=btcTicker?parseFloat(btcTicker.lastPrice):0;
+    // Approx total mcap: BTC supply ~19.8M, BTC dom ~55%
+    var btcMcap=btcPrice*19800000;
+    var btcDomEst=56; // use fixed estimate since no CoinGecko
+    var totalMcapEst=btcMcap/((btcDomEst)/100);
  
-  // CMC200 from top coins average price change
-  try{
-    var symbols=['BTCUSDT','ETHUSDT','BNBUSDT','SOLUSDT','XRPUSDT','ADAUSDT','AVAXUSDT','DOTUSDT','LINKUSDT','LTCUSDT'];
-    var changes=[];
-    for(var si=0;si<symbols.length;si++){
-      var sr=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+symbols[si]);
-      var sd=await sr.json();changes.push(parseFloat(sd.priceChangePercent));
-    }
-    var avgChg=changes.reduce(function(s,v){return s+v;},0)/changes.length;
+    document.getElementById('mb-mcap').textContent='$'+(totalMcapEst/1e12).toFixed(2)+'T';
+    document.getElementById('mb-mcap-chg').textContent=(avgChg>=0?'+':'')+avgChg.toFixed(2)+'%';
+    document.getElementById('mb-mcap-chg').className='mb-chg '+(avgChg>=0?'up':'down');
+ 
+    // Try CoinGecko for real dominance (non-blocking)
+    fetch('https://api.coingecko.com/api/v3/global').then(function(rg){
+      return rg.ok?rg.json():null;
+    }).then(function(dg){
+      if(!dg||!dg.data)return;
+      var mcap=dg.data.total_market_cap.usd;
+      var mcapChg=dg.data.market_cap_change_percentage_24h_usd;
+      var btcDom=dg.data.market_cap_percentage.btc;
+      var altIdx=Math.round((1-btcDom/100)*100);
+      document.getElementById('mb-mcap').textContent='$'+(mcap/1e12).toFixed(2)+'T';
+      document.getElementById('mb-mcap-chg').textContent=(mcapChg>=0?'+':'')+mcapChg.toFixed(2)+'%';
+      document.getElementById('mb-mcap-chg').className='mb-chg '+(mcapChg>=0?'up':'down');
+      document.getElementById('mb-alt').textContent=altIdx+'/100';
+      var altLbl=altIdx>=75?'Altcoin Season':altIdx>=50?'Altcoin':altIdx>=25?'Bitcoin':'BTC Season';
+      document.getElementById('mb-alt-lbl').textContent=altLbl;
+      document.getElementById('mb-alt-lbl').style.color=altIdx>=75?'#00e676':altIdx>=50?'#2ec4a0':'#f7931a';
+      document.getElementById('alt-bar').style.width=altIdx+'%';
+    }).catch(function(){});
+ 
+    // Altcoin season estimate from Binance (BTC vs altcoin performance)
+    var btcChg=btcTicker?parseFloat(btcTicker.priceChangePercent):0;
+    var altsOutperforming=tickers.filter(function(t){return t.symbol!=='BTCUSDT'&&parseFloat(t.priceChangePercent)>btcChg;}).length;
+    var altSeasonScore=Math.round((altsOutperforming/(tickers.length-1))*100);
+    document.getElementById('mb-alt').textContent=altSeasonScore+'/100';
+    var altLbl2=altSeasonScore>=75?'Altcoin Season':altSeasonScore>=50?'Altcoin':altSeasonScore>=25?'Bitcoin':'BTC Season';
+    document.getElementById('mb-alt-lbl').textContent=altLbl2;
+    document.getElementById('mb-alt-lbl').style.color=altSeasonScore>=75?'#00e676':altSeasonScore>=50?'#2ec4a0':'#f7931a';
+    document.getElementById('alt-bar').style.width=altSeasonScore+'%';
+ 
+    // CMC200 index approximation
     var baseIdx=145.42;
     var cmcVal=baseIdx*(1+avgChg/100);
     document.getElementById('mb-cmc').textContent='$'+cmcVal.toFixed(2);
     document.getElementById('mb-cmc-chg').textContent=(avgChg>=0?'+':'')+avgChg.toFixed(2)+'%';
     document.getElementById('mb-cmc-chg').className='mb-chg '+(avgChg>=0?'up':'down');
-    drawSparkline('sp-cmc',changes.map(function(c){return baseIdx*(1+c/100);}),'#3498db');
+    drawSparkline('sp-cmc',tickers.map(function(t){return baseIdx*(1+parseFloat(t.priceChangePercent)/100);}),'#3498db');
+ 
+    // BTC Netflow — use OI change as proxy
+    try{
+      var r2=await fetch('https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT');
+      var d2=await r2.json();
+      var oiChange=parseFloat(d2.openInterest)*btcPrice;
+      // Compare OI vs 24h volume to estimate net direction
+      var oiBTC=parseFloat(d2.openInterest);
+      var vol24BTC=parseFloat(btcTicker.volume);
+      var nfEst=((oiBTC/vol24BTC)-0.5)*1000;
+      var nfSign=nfEst>=0?'+':'';
+      document.getElementById('mb-nf').textContent=nfSign+Math.round(nfEst)+' BTC';
+      document.getElementById('mb-nf').style.color=nfEst>=0?'var(--accent2)':'var(--red)';
+      document.getElementById('mb-nf-lbl').textContent=nfEst>=0?'Inflow (Bullish)':'Outflow (Bearish)';
+      document.getElementById('mb-nf-lbl').style.color=nfEst>=0?'var(--accent2)':'var(--red)';
+    }catch(e){}
+ 
+  }catch(e){console.log('Market bar error:',e);}
+}
+ 
+async function fetchAvgRSI(){
+  try{
+    var sample=['BTCUSDT','ETHUSDT','SOLUSDT','BNBUSDT','XRPUSDT','ADAUSDT','DOGEUSDT','AVAXUSDT'];
+    // Fetch all klines in parallel
+    var results=await Promise.allSettled(sample.map(function(s){
+      return fetch('https://api.binance.com/api/v3/klines?symbol='+s+'&interval=1d&limit=16').then(function(r){return r.json();});
+    }));
+    var total=0,count=0;
+    results.forEach(function(res){
+      if(res.status!=='fulfilled')return;
+      var cl=res.value.map(function(k){return parseFloat(k[4]);});
+      if(cl.length<15)return;
+      var g=0,l=0;
+      for(var j=0;j<cl.length-1;j++){var df=cl[j+1]-cl[j];if(df>0)g+=df;else l+=Math.abs(df);}
+      var ag=g/(cl.length-1),al=l/(cl.length-1);
+      total+=(al===0?100:100-(100/(1+ag/al)));count++;
+    });
+    var avg=count>0?total/count:50;
+    var rsiCol=avg<35?'#00e676':avg>65?'#ff4d6d':'#e8f5f2';
+    document.getElementById('mb-rsi').textContent=avg.toFixed(1);
+    document.getElementById('mb-rsi').style.color=rsiCol;
+    document.getElementById('mb-rsi-lbl').textContent=avg<35?'Oversold':avg>65?'Overbought':'Normal';
+    document.getElementById('mb-rsi-lbl').style.color=rsiCol;
   }catch(e){}
 }
  
@@ -1499,6 +1566,7 @@ populateAlertSym();
 loadPanel(0);
 loadTickerBar();
 loadMarketBar();
+loadAllBinanceCoins(); // loads 400+ coins from Binance into search
 renderAlerts();
 startCountdown();
 if(Notification&&Notification.permission==='default')Notification.requestPermission();
