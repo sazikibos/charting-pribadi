@@ -304,6 +304,13 @@ header{display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1p
 /* CVD */
 .cvd-bar{height:14px;border-radius:3px;margin-bottom:5px;transition:width .4s;}
  
+/* COMPACT MODE */
+body.compact .data-panel{display:none !important;}
+body.compact .tvwrap{height:calc(100vh - 200px) !important;}
+body.compact .market-bar{display:none;}
+body.compact .ticker-bar{display:none;}
+body.compact #compactbtn{background:rgba(46,196,160,.12);border-color:var(--accent);color:var(--accent);}
+ 
 @media(max-width:640px){
   header{padding:6px 10px;}
   .logo-text{display:none;}
@@ -362,6 +369,7 @@ header{display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1p
     <button class="hb" id="btn-lr" onclick="setLayout('lr')">⬜⬜ LR</button>
     <button class="hb" id="btn-tb" onclick="setLayout('tb')">&#9723; TB</button>
     <button class="hb" id="thbtn" onclick="toggleTheme()">&#9790;</button>
+    <button class="hb" id="compactbtn" onclick="toggleCompact()" title="Compact Mode — sembunyikan data panel">&#9633; Compact</button>
   </div>
   <div class="refresh-wrap">
     <div class="refresh-ring"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7"/><circle class="prog" id="rprog" cx="9" cy="9" r="7"/></svg></div>
@@ -390,7 +398,7 @@ header{display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1p
         <span class="pprice" id="p0pr">—</span>
         <span class="pchg up" id="p0ch">—</span>
         <div class="sp"></div>
-        <div class="psw" id="psw0"><span class="psi-ico">&#128269;</span><input type="text" class="psi" id="psi0" placeholder="Ganti..." autocomplete="off"/><div class="psd" id="psd0"></div></div>
+        <div class="psw" id="psw0"><span class="psi-ico">&#128269;</span><input type="text" class="psi" id="psi0" placeholder="Search coin, perp..." autocomplete="off"/><div class="psd" id="psd0"></div></div>
         <div class="tfs" id="tf0">
           <button class="tfb" data-tf="1">1m</button><button class="tfb" data-tf="3">3m</button><button class="tfb" data-tf="5">5m</button><button class="tfb" data-tf="15">15m</button><button class="tfb" data-tf="60">1H</button><button class="tfb" data-tf="240">4H</button><button class="tfb on" data-tf="D">1D</button><button class="tfb" data-tf="W">1W</button>
         </div>
@@ -419,7 +427,7 @@ header{display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1p
         <span class="pprice" id="p1pr">—</span>
         <span class="pchg up" id="p1ch">—</span>
         <div class="sp"></div>
-        <div class="psw" id="psw1"><span class="psi-ico">&#128269;</span><input type="text" class="psi" id="psi1" placeholder="Ganti..." autocomplete="off"/><div class="psd" id="psd1"></div></div>
+        <div class="psw" id="psw1"><span class="psi-ico">&#128269;</span><input type="text" class="psi" id="psi1" placeholder="Search coin, perp..." autocomplete="off"/><div class="psd" id="psd1"></div></div>
         <div class="tfs" id="tf1">
           <button class="tfb" data-tf="1">1m</button><button class="tfb" data-tf="3">3m</button><button class="tfb" data-tf="5">5m</button><button class="tfb" data-tf="15">15m</button><button class="tfb" data-tf="60">1H</button><button class="tfb on" data-tf="240">4H</button><button class="tfb" data-tf="D">1D</button><button class="tfb" data-tf="W">1W</button>
         </div>
@@ -509,24 +517,9 @@ header{display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1p
         <div id="econ-cal"></div>
       </div>
     </div>
-    <!-- Right: Risk Calc + MTF + Correlation -->
+    <!-- Right: MTF + Correlation -->
     <div style="width:360px;flex-shrink:0;overflow-y:auto;padding:12px;background:var(--card2);border-left:1px solid var(--border);">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">&#127919; Risk Calculator</div>
-      <div class="calc-grid">
-        <div class="calc-field"><div class="calc-label">Modal (USDT)</div><input type="number" class="calc-input" id="c-capital" value="1000"/></div>
-        <div class="calc-field"><div class="calc-label">Risk (%)</div><input type="number" class="calc-input" id="c-risk" value="1"/></div>
-        <div class="calc-field"><div class="calc-label">Entry Price</div><input type="number" class="calc-input" id="c-entry" placeholder="70000"/></div>
-        <div class="calc-field"><div class="calc-label">Stop Loss</div><input type="number" class="calc-input" id="c-sl" placeholder="68000"/></div>
-        <div class="calc-field"><div class="calc-label">Take Profit 1</div><input type="number" class="calc-input" id="c-tp1" placeholder="73000"/></div>
-        <div class="calc-field"><div class="calc-label">Take Profit 2</div><input type="number" class="calc-input" id="c-tp2" placeholder="76000"/></div>
-      </div>
-      <select id="c-dir" style="width:100%;padding:6px 9px;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:11px;outline:none;margin-bottom:5px;">
-        <option value="long">&#128200; LONG</option><option value="short">&#128201; SHORT</option>
-      </select>
-      <button class="calc-btn" onclick="calcRisk()">&#9881; Hitung Risk</button>
-      <div class="calc-result" id="calc-result" style="display:none;margin-top:10px;"></div>
- 
-      <div style="margin-top:18px;">
+      <div style="margin-top:0;">
         <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">&#128201; Multi-Timeframe Signal — <span id="mtf-coin" style="color:var(--accent)">BTC/USDT</span></div>
         <div class="mtf-grid" id="mtf-grid"><div style="color:var(--muted);font-size:10px;font-family:IBM Plex Mono,monospace;"><span class="loading-spin"></span></div></div>
       </div>
@@ -591,17 +584,6 @@ var alerts=JSON.parse(localStorage.getItem('ti_alerts')||'[]');
 var psS=[{r:[],fi:-1},{r:[],fi:-1}];
 var gR=[],gFi=-1,hmF='all',newsIdx=-1,newsLoaded=false,hmBusy=false,corrLoaded=false;
 var refreshCountdown=30;
- 
-var NEWS=[
-  {src:'CoinDesk',tag:'BTC',tc:'#ffd166',time:'2 jam lalu',title:'Bitcoin Tembus Resistance Kritis, Analis Targetkan $120.000',body:'Bitcoin berhasil menembus level resistance kritis di $95.000 setelah konsolidasi panjang selama dua minggu. Analis dari beberapa firma riset besar kini memproyeksikan target harga berikutnya di kisaran $110.000-$120.000.\n\nFaktor pendorong utama meliputi arus masuk ETF Bitcoin spot yang terus meningkat, dengan BlackRock dan Fidelity mencatat inflow gabungan lebih dari $800 juta dalam sepekan terakhir.\n\nDari sisi teknikal, RSI harian berada di 62 — masih dalam zona bullish tanpa overbought.',sent:'bull'},
-  {src:'The Block',tag:'ETH',tc:'#2ec4a0',time:'4 jam lalu',title:'Ethereum ETF Staking Dapat Persetujuan Awal SEC',body:'Securities and Exchange Commission (SEC) AS memberikan persetujuan awal untuk proposal staking dalam produk ETF Ethereum. Ini dianggap sebagai terobosan besar yang bisa mendorong lebih banyak institusi masuk ke ekosistem Ethereum.\n\nJika disetujui penuh, investor ETF akan mendapatkan yield dari staking secara otomatis.\n\nHarga ETH naik 8% dalam 24 jam setelah berita ini.',sent:'bull'},
-  {src:'Decrypt',tag:'SOL',tc:'#9945ff',time:'6 jam lalu',title:'Solana DeFi TVL Tembus $12 Miliar, Ekosistem Makin Kuat',body:'Total Value Locked di ekosistem DeFi Solana kini melampaui $12 miliar, menjadikannya blockchain layer-1 dengan pertumbuhan TVL tercepat di 2025.\n\nProtokol-protokol utama seperti Jupiter dan Raydium mencatat volume transaksi rekor.\n\nKecepatan Solana yang rata-rata 65.000 TPS dengan biaya di bawah $0.001 menjadi daya tarik utama.',sent:'bull'},
-  {src:'Bloomberg',tag:'Macro',tc:'#6b9990',time:'8 jam lalu',title:'The Fed Pertimbangkan Pemangkasan Suku Bunga Q3 2025',body:'Federal Reserve mengindikasikan kemungkinan pemangkasan suku bunga sebanyak dua kali pada kuartal ketiga 2025.\n\nBagi pasar kripto, ini historically menjadi katalis positif karena meningkatkan risk appetite investor.\n\nBitcoin dan aset kripto lainnya langsung merespons positif.',sent:'bull'},
-  {src:'CoinTelegraph',tag:'Regulasi',tc:'#ff4d6d',time:'12 jam lalu',title:'OJK Rilis Aturan Baru Kripto Indonesia: Apa yang Berubah?',body:'Otoritas Jasa Keuangan (OJK) resmi merilis regulasi baru untuk industri kripto Indonesia yang berlaku Juli 2025.\n\nPoin penting: exchange wajib simpan 100% aset pengguna dalam cold storage, batas leverage maksimum 10x, dan KYC wajib untuk transaksi di atas Rp 5 juta.\n\nIndustri kripto Indonesia merespons beragam.',sent:'neu'},
-  {src:'Reuters',tag:'Institusi',tc:'#ffd166',time:'1 hari lalu',title:'BlackRock dan Fidelity Catat Inflow ETF BTC Terbesar',body:'Minggu lalu mencatat rekor inflow ke ETF Bitcoin spot di AS, dengan BlackRock iShares Bitcoin Trust menerima $1.2 miliar dan Fidelity $780 juta dalam satu pekan.\n\nTotal AUM gabungan seluruh ETF Bitcoin spot AS kini melampaui $60 miliar.\n\nPartisipasi institusional yang terus meningkat dianggap sebagai sinyal bullish jangka panjang.',sent:'bull'},
-  {src:'TradingView',tag:'Analisa',tc:'#2ec4a0',time:'1 hari lalu',title:'Analisa Teknikal: BTC Pola Cup & Handle Menuju $130.000',body:'Analis teknikal mengidentifikasi pola Cup & Handle pada chart Bitcoin timeframe mingguan.\n\nTarget price mengimplikasikan potensi kenaikan ke $125.000-$130.000 jika breakout terkonfirmasi di atas $98.000.\n\nLevel kunci: Support $88.000, Resistance $98.000, Target $125.000-$130.000.',sent:'bull'},
-  {src:'Bisnis.com',tag:'Indonesia',tc:'#ff9a3c',time:'2 hari lalu',title:'Volume Trading Kripto Indonesia Naik 300% YoY',body:'Volume trading kripto di Indonesia mencapai rekor baru dengan total transaksi lebih dari Rp 50 triliun per bulan, meningkat 300% YoY.\n\nPintu dan Indodax mencatat pertumbuhan pengguna aktif yang signifikan.\n\nDemografi trader bergeser — semakin banyak trader muda usia 18-24 masuk ke pasar kripto Indonesia.',sent:'bull'}
-];
  
 var ECON_EVENTS=[
   {date:'Mar 19',title:'FOMC Meeting Minutes',impact:'high',actual:'Hawkish',prev:'Neutral',badge:'Fed'},
@@ -804,41 +786,213 @@ function setLayout(lay){
 function toggleDP(idx){document.getElementById('dp'+idx).classList.toggle('dp-collapsed');}
  
 // ── TV ──
-function tvUrl(sym,tf){return 'https://www.tradingview.com/widgetembed/?frameElementId=tv&symbol=BINANCE:'+sym+'&interval='+tf+'&theme=dark&style=1&locale=en&toolbar_bg=0c1210&hide_side_toolbar=0&allow_symbol_change=1&save_image=0&timezone=Asia%2FJakarta&withdateranges=1';}
+function tvUrl(sym,tf){
+  var tvSym=panels[0]&&panels[0].tvSym?panels[0].tvSym:'BINANCE:'+sym;
+  return tvUrlFull(tvSym,tf);
+}
+function tvUrlFull(tvSym,tf){
+  // If no exchange prefix, default to BINANCE
+  if(tvSym.indexOf(':')<0)tvSym='BINANCE:'+tvSym;
+  return 'https://www.tradingview.com/widgetembed/?frameElementId=tv&symbol='+encodeURIComponent(tvSym)+'&interval='+tf+'&theme=dark&style=1&locale=en&toolbar_bg=0c1210&hide_side_toolbar=0&allow_symbol_change=0&save_image=0&timezone=Asia%2FJakarta&withdateranges=1';
+}
 function loadPanel(idx){
   var p=panels[idx];
-  document.getElementById('if'+idx).src=tvUrl(p.sym,p.tf);
+  var tvSym=p.tvSym||('BINANCE:'+p.sym);
+  document.getElementById('if'+idx).src=tvUrlFull(tvSym,p.tf);
   document.getElementById('dp'+idx+'-pair').textContent=p.disp;
   fetchTicker(idx);loadDataPanel(idx);updateFavBtn(idx);
   if(idx===0)document.getElementById('mtf-coin').textContent=p.disp;
 }
-for(var pi=0;pi<2;pi++){(function(i){document.getElementById('tf'+i).querySelectorAll('.tfb').forEach(function(b){b.addEventListener('click',function(){document.getElementById('tf'+i).querySelectorAll('.tfb').forEach(function(x){x.classList.remove('on');});b.classList.add('on');panels[i].tf=b.dataset.tf;loadPanel(i);});});})(pi);}
+for(var pi=0;pi<2;pi++){(function(i){document.getElementById('tf'+i).querySelectorAll('.tfb').forEach(function(b){b.addEventListener('click',function(){document.getElementById('tf'+i).querySelectorAll('.tfb').forEach(function(x){x.classList.remove('on');});b.classList.add('on');panels[i].tf=b.dataset.tf;var tvSym=panels[i].tvSym||('BINANCE:'+panels[i].sym);document.getElementById('if'+i).src=tvUrlFull(tvSym,panels[i].tf);fetchTicker(i);loadDataPanel(i);});});})(pi);}
 function toggleFS(idx){document.getElementById('cp'+idx).classList.toggle('fs');}
  
-// ── PANEL SEARCH ──
+ 
+// ── UNIFIED TV-CONNECTED SEARCH ──
+// Queries TradingView symbol search API — finds ALL coins including perpetuals
+var searchTimers=[null,null];
+ 
 function setupPS(idx){
-  var inp=document.getElementById('psi'+idx),drop=document.getElementById('psd'+idx),st=psS[idx];
-  inp.addEventListener('input',function(){var q=inp.value.trim().toLowerCase();st.fi=-1;if(!q){drop.classList.remove('open');return;}st.r=COINS.filter(function(c){return c.a.toLowerCase().includes(q)||c.n.toLowerCase().includes(q);}).slice(0,10);renderPS(idx);});
-  inp.addEventListener('keydown',function(e){if(!drop.classList.contains('open'))return;if(e.key==='ArrowDown'){e.preventDefault();st.fi=Math.min(st.fi+1,st.r.length-1);renderPS(idx);}if(e.key==='ArrowUp'){e.preventDefault();st.fi=Math.max(st.fi-1,-1);renderPS(idx);}if(e.key==='Enter'){var p=st.fi>=0?st.r[st.fi]:st.r[0];if(p)pickPanel(idx,p);}if(e.key==='Escape')drop.classList.remove('open');});
-  document.addEventListener('click',function(e){if(!document.getElementById('psw'+idx).contains(e.target))drop.classList.remove('open');});
+  var inp=document.getElementById('psi'+idx);
+  var drop=document.getElementById('psd'+idx);
+ 
+  inp.addEventListener('input',function(){
+    var q=inp.value.trim();
+    psS[idx].fi=-1;
+    if(!q){drop.classList.remove('open');return;}
+    // Debounce 250ms
+    clearTimeout(searchTimers[idx]);
+    searchTimers[idx]=setTimeout(function(){searchTV(q,idx);},250);
+  });
+ 
+  inp.addEventListener('keydown',function(e){
+    if(!drop.classList.contains('open'))return;
+    var items=drop.querySelectorAll('.pdrop-i');
+    if(e.key==='ArrowDown'){e.preventDefault();psS[idx].fi=Math.min(psS[idx].fi+1,items.length-1);highlightPS(idx);}
+    else if(e.key==='ArrowUp'){e.preventDefault();psS[idx].fi=Math.max(psS[idx].fi-1,-1);highlightPS(idx);}
+    else if(e.key==='Enter'){
+      var focused=drop.querySelector('.pdrop-i.foc')||drop.querySelector('.pdrop-i');
+      if(focused)focused.dispatchEvent(new MouseEvent('mousedown',{bubbles:true}));
+    }
+    else if(e.key==='Escape'){drop.classList.remove('open');inp.blur();}
+  });
+ 
+  document.addEventListener('click',function(e){
+    if(!document.getElementById('psw'+idx).contains(e.target))drop.classList.remove('open');
+  });
 }
-function renderPS(idx){
-  var st=psS[idx],drop=document.getElementById('psd'+idx);
-  if(!st.r.length){drop.innerHTML='<div style="padding:8px;text-align:center;color:var(--muted);font-size:10px;font-family:IBM Plex Mono,monospace;">Tidak ditemukan</div>';drop.classList.add('open');return;}
-  drop.innerHTML=st.r.map(function(c,i){return '<div class="pdrop-i'+(i===st.fi?' foc':'')+'" data-i="'+i+'"><span class="pdrop-s">'+c.a+'</span><span class="pdrop-n">'+c.n+'</span></div>';}).join('');
-  drop.querySelectorAll('.pdrop-i').forEach(function(el){el.addEventListener('mousedown',function(e){e.preventDefault();pickPanel(idx,psS[idx].r[parseInt(el.dataset.i)]);});});
+ 
+function highlightPS(idx){
+  var drop=document.getElementById('psd'+idx);
+  drop.querySelectorAll('.pdrop-i').forEach(function(el,i){
+    el.classList.toggle('foc',i===psS[idx].fi);
+  });
+}
+ 
+async function searchTV(q,idx){
+  var drop=document.getElementById('psd'+idx);
+  drop.innerHTML='<div style="padding:8px;text-align:center;color:var(--muted);font-size:10px;font-family:IBM Plex Mono,monospace;"><span class="loading-spin"></span></div>';
   drop.classList.add('open');
+ 
+  try{
+    // TradingView symbol search API
+    var url='https://symbol-search.tradingview.com/symbol_search/v3/?text='+encodeURIComponent(q)+'&hl=1&exchange=&lang=en&search_type=undefined&domain=production&sort_by_country=ID';
+    var r=await fetch(url);
+    var d=await r.json();
+    var symbols=d.symbols||[];
+ 
+    if(!symbols.length){
+      drop.innerHTML='<div style="padding:10px;text-align:center;color:var(--muted);font-size:10px;font-family:IBM Plex Mono,monospace;">Tidak ditemukan</div>';
+      return;
+    }
+ 
+    // Show top 12 results
+    var items=symbols.slice(0,12);
+    drop.innerHTML=items.map(function(s,i){
+      var sym=s.symbol||s.ticker||'';
+      var desc=s.description||s.full_name||'';
+      var exch=s.exchange||s.prefix||'';
+      var type=s.type||'';
+      var typeColor=type==='crypto'?'var(--accent)':type==='futures'||type==='swap'?'var(--orange)':type==='spot'?'var(--accent2)':'var(--muted)';
+      var typeLabel=type==='swap'||sym.includes('.P')?'PERP':type==='futures'?'FUT':type==='crypto'||type==='spot'?'SPOT':type.toUpperCase().slice(0,4)||'—';
+      // Clean HTML tags from hl
+      var cleanSym=(s.symbol||'').replace(/<[^>]*>/g,'');
+      var cleanDesc=(desc||'').replace(/<[^>]*>/g,'').slice(0,35);
+      return '<div class="pdrop-i" data-sym="'+cleanSym+'" data-exch="'+(exch||'BINANCE')+'" data-type="'+(type||'')+'" data-desc="'+cleanDesc.replace(/"/g,'')+'">'
+        +'<span class="pdrop-s" style="font-size:11px;min-width:90px;">'+cleanSym+'</span>'
+        +'<span class="pdrop-n" style="flex:1;font-size:10px;">'+cleanDesc+'</span>'
+        +'<span style="font-family:IBM Plex Mono,monospace;font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(0,0,0,.2);color:'+typeColor+';">'+typeLabel+'</span>'
+        +'<span style="font-family:IBM Plex Mono,monospace;font-size:8px;color:var(--muted);margin-left:4px;min-width:48px;text-align:right;">'+exch+'</span>'
+        +'</div>';
+    }).join('');
+ 
+    drop.querySelectorAll('.pdrop-i').forEach(function(el){
+      el.addEventListener('mousedown',function(e){
+        e.preventDefault();
+        var sym=el.dataset.sym;
+        var exch=el.dataset.exch||'BINANCE';
+        var desc=el.dataset.desc||sym;
+        pickPanelTV(idx,sym,exch,desc);
+      });
+    });
+ 
+  }catch(err){
+    // Fallback to local COINS list if TV API fails
+    var q2=document.getElementById('psi'+idx).value.trim().toLowerCase();
+    var local=COINS.filter(function(c){return c.a.toLowerCase().includes(q2)||c.n.toLowerCase().includes(q2);}).slice(0,10);
+    if(!local.length){
+      drop.innerHTML='<div style="padding:10px;text-align:center;color:var(--muted);font-size:10px;font-family:IBM Plex Mono,monospace;">Tidak ditemukan</div>';
+      return;
+    }
+    drop.innerHTML=local.map(function(c,i){
+      return '<div class="pdrop-i" data-sym="'+c.sym+'" data-exch="BINANCE" data-desc="'+c.n+'">'
+        +'<span class="pdrop-s">'+c.a+'</span>'
+        +'<span class="pdrop-n">'+c.n+'</span>'
+        +'<span style="font-family:IBM Plex Mono,monospace;font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(46,196,160,.1);color:var(--accent);">SPOT</span>'
+        +'</div>';
+    }).join('');
+    drop.querySelectorAll('.pdrop-i').forEach(function(el){
+      el.addEventListener('mousedown',function(e){e.preventDefault();pickPanelTV(idx,el.dataset.sym,'BINANCE',el.dataset.desc);});
+    });
+  }
 }
-function pickPanel(idx,c){panels[idx].sym=c.sym;panels[idx].disp=c.a+'/USDT';document.getElementById('p'+idx+'nm').textContent=c.a+'/USDT';document.getElementById('psi'+idx).value='';document.getElementById('psd'+idx).classList.remove('open');loadPanel(idx);addHist(c);}
+ 
+function pickPanelTV(idx,sym,exch,desc){
+  // Build display name
+  var disp=sym;
+  if(sym.endsWith('.P'))disp=sym.replace('.P','')+' PERP';
+  else if(sym.endsWith('USDT'))disp=sym.replace('USDT','/USDT');
+  else if(sym.endsWith('BTC'))disp=sym.replace('BTC','/BTC');
+  else if(sym.endsWith('USD'))disp=sym.replace('USD','/USD');
+ 
+  // Build TV symbol string — e.g. BINANCE:BTCUSDT or BYBIT:BTCUSDT.P
+  var tvSym=(exch&&exch!=='—'?exch+':':'')+sym;
+ 
+  // Extract base symbol for Binance data API
+  // Strip exchange prefix and clean for Binance
+  var binanceSym=sym.replace('.P','').replace(/[^A-Z0-9]/gi,'').toUpperCase();
+  if(!binanceSym.endsWith('USDT')&&!binanceSym.endsWith('BTC')&&!binanceSym.endsWith('ETH')&&!binanceSym.endsWith('USD')){
+    binanceSym=binanceSym+'USDT';
+  }
+ 
+  panels[idx].sym=binanceSym;
+  panels[idx].disp=disp;
+  panels[idx].tvSym=tvSym; // store full TV symbol
+ 
+  document.getElementById('p'+idx+'nm').textContent=disp;
+  document.getElementById('psi'+idx).value='';
+  document.getElementById('psd'+idx).classList.remove('open');
+  document.getElementById('dp'+idx+'-pair').textContent=disp;
+ 
+  // Load TV chart with correct exchange:symbol
+  document.getElementById('if'+idx).src=tvUrlFull(tvSym,panels[idx].tf);
+ 
+  // Update data panel
+  fetchTicker(idx);
+  loadDataPanel(idx);
+  updateFavBtn(idx);
+  addHist({sym:binanceSym,a:sym.replace('USDT','').replace('.P',''),n:desc||sym});
+  if(idx===0)document.getElementById('mtf-coin').textContent=disp;
+}
+ 
 setupPS(0);setupPS(1);
  
-// Global search
+// Header search → panel 0
 var gs=document.getElementById('gs'),gd=document.getElementById('gd');
-gs.addEventListener('input',function(){var q=gs.value.trim().toLowerCase();gFi=-1;if(!q){gd.classList.remove('open');return;}gR=COINS.filter(function(c){return c.a.toLowerCase().includes(q)||c.n.toLowerCase().includes(q)||c.sym.toLowerCase().includes(q);}).slice(0,10);renderGS();});
-gs.addEventListener('keydown',function(e){if(!gd.classList.contains('open'))return;if(e.key==='ArrowDown'){e.preventDefault();gFi=Math.min(gFi+1,gR.length-1);renderGS();}if(e.key==='ArrowUp'){e.preventDefault();gFi=Math.max(gFi-1,-1);renderGS();}if(e.key==='Enter'){var p=gFi>=0?gR[gFi]:gR[0];if(p)pickG(p);}if(e.key==='Escape')gd.classList.remove('open');});
+var gsTimer=null;
+gs.addEventListener('input',function(){
+  var q=gs.value.trim();
+  if(!q){gd.classList.remove('open');return;}
+  clearTimeout(gsTimer);
+  gsTimer=setTimeout(async function(){
+    try{
+      var url='https://symbol-search.tradingview.com/symbol_search/v3/?text='+encodeURIComponent(q)+'&hl=1&exchange=&lang=en&search_type=undefined&domain=production&sort_by_country=ID';
+      var r=await fetch(url);var d=await r.json();var symbols=(d.symbols||[]).slice(0,10);
+      if(!symbols.length){gd.innerHTML='<div class="sd-empty">Tidak ditemukan</div>';gd.classList.add('open');return;}
+      gd.innerHTML=symbols.map(function(s,i){
+        var sym=(s.symbol||'').replace(/<[^>]*>/g,'');
+        var desc=(s.description||'').replace(/<[^>]*>/g,'').slice(0,30);
+        var exch=s.exchange||'BINANCE';
+        var type=s.type||'crypto';
+        var typeLabel=type==='swap'||sym.includes('.P')?'PERP':type==='futures'?'FUT':'SPOT';
+        var typeColor=sym.includes('.P')||type==='swap'?'var(--orange)':'var(--accent)';
+        return '<div class="sdi" data-sym="'+sym+'" data-exch="'+exch+'" data-desc="'+desc.replace(/"/g,'')+'">'
+          +'<span class="sdi-s" style="min-width:90px;">'+sym+'</span>'
+          +'<span class="sdi-n">'+desc+'</span>'
+          +'<span class="sdi-t" style="color:'+typeColor+'">'+typeLabel+'</span>'
+          +'<span style="font-family:IBM Plex Mono,monospace;font-size:8px;color:var(--muted);margin-left:4px;">'+exch+'</span>'
+          +'</div>';
+      }).join('');
+      gd.querySelectorAll('.sdi').forEach(function(el){
+        el.addEventListener('mousedown',function(e){e.preventDefault();pickPanelTV(0,el.dataset.sym,el.dataset.exch,el.dataset.desc);gs.value='';gd.classList.remove('open');});
+      });
+      gd.classList.add('open');
+    }catch(e){gd.classList.remove('open');}
+  },250);
+});
+gs.addEventListener('keydown',function(e){if(e.key==='Escape'){gd.classList.remove('open');gs.blur();}});
 document.addEventListener('click',function(e){if(!document.getElementById('gsw').contains(e.target))gd.classList.remove('open');});
-function renderGS(){if(!gR.length){gd.innerHTML='<div class="sd-empty">Tidak ditemukan</div>';gd.classList.add('open');return;}gd.innerHTML=gR.map(function(c,i){return '<div class="sdi'+(i===gFi?' foc':'')+'" data-i="'+i+'"><span class="sdi-s">'+c.a+'</span><span class="sdi-n">'+c.n+'</span><span class="sdi-t">'+c.t+'</span></div>';}).join('');gd.querySelectorAll('.sdi').forEach(function(el){el.addEventListener('mousedown',function(e){e.preventDefault();pickG(gR[parseInt(el.dataset.i)]);});});gd.classList.add('open');}
-function pickG(c){pickPanel(0,c);gs.value='';gd.classList.remove('open');}
+ 
+ 
  
 // ── TICKER ──
 async function fetchTicker(idx){
@@ -1162,30 +1316,6 @@ function rmAlert(id){alerts=alerts.filter(function(a){return a.id!==id;});localS
 function checkAlerts(sym,price){var changed=false;alerts.forEach(function(a){if(a.sym===sym&&!a.triggered){if((a.dir==='above'&&price>=a.price)||(a.dir==='below'&&price<=a.price)){a.triggered=true;changed=true;if(Notification&&Notification.permission==='granted'){new Notification('🔔 Alert!',{body:sym.replace('USDT','')+' $'+a.price+' ('+a.dir+')'});}}}});if(changed){localStorage.setItem('ti_alerts',JSON.stringify(alerts));renderAlerts();}}
 if(Notification&&Notification.permission==='default')Notification.requestPermission();
  
-// ── RISK CALC ──
-function calcRisk(){
-  var capital=parseFloat(document.getElementById('c-capital').value)||1000,riskPct=parseFloat(document.getElementById('c-risk').value)||1;
-  var entry=parseFloat(document.getElementById('c-entry').value),sl=parseFloat(document.getElementById('c-sl').value);
-  var tp1=parseFloat(document.getElementById('c-tp1').value),tp2=parseFloat(document.getElementById('c-tp2').value);
-  var dir=document.getElementById('c-dir').value;
-  if(!entry||!sl){alert('Isi Entry dan SL!');return;}
-  var riskUSDT=capital*(riskPct/100),slPct=Math.abs((entry-sl)/entry)*100;
-  var posSize=riskUSDT/(slPct/100),lev=posSize/capital;
-  var rr1=tp1?Math.abs(tp1-entry)/Math.abs(entry-sl):null,rr2=tp2?Math.abs(tp2-entry)/Math.abs(entry-sl):null;
-  var tp1P=tp1?posSize*Math.abs((tp1-entry)/entry)*(dir==='long'?1:-1):null;
-  var tp2P=tp2?posSize*Math.abs((tp2-entry)/entry)*(dir==='long'?1:-1):null;
-  var rrC=function(r){return r>=3?'rr-good':r>=2?'rr-ok':'rr-bad';};
-  var res=document.getElementById('calc-result');res.style.display='block';
-  res.innerHTML='<div class="calc-res-row"><span class="calc-res-label">Risk Amount</span><span class="calc-res-val" style="color:var(--red)">-$'+riskUSDT.toFixed(2)+'</span></div>'
-    +'<div class="calc-res-row"><span class="calc-res-label">Position Size</span><span class="calc-res-val">$'+posSize.toFixed(2)+'</span></div>'
-    +'<div class="calc-res-row"><span class="calc-res-label">Leverage</span><span class="calc-res-val" style="color:'+(lev>10?'var(--red)':lev>5?'var(--yellow)':'var(--accent2)')+'">'+lev.toFixed(1)+'x</span></div>'
-    +'<div class="calc-res-row"><span class="calc-res-label">SL Distance</span><span class="calc-res-val">'+slPct.toFixed(2)+'%</span></div>'
-    +(rr1?'<div class="calc-res-row"><span class="calc-res-label">R:R TP1</span><span class="calc-res-val '+rrC(rr1)+'">1:'+rr1.toFixed(2)+'</span></div>':'')
-    +(tp1P?'<div class="calc-res-row"><span class="calc-res-label">Profit TP1</span><span class="calc-res-val" style="color:var(--accent2)">+$'+tp1P.toFixed(2)+'</span></div>':'')
-    +(rr2?'<div class="calc-res-row"><span class="calc-res-label">R:R TP2</span><span class="calc-res-val '+rrC(rr2)+'">1:'+rr2.toFixed(2)+'</span></div>':'')
-    +(tp2P?'<div class="calc-res-row"><span class="calc-res-label">Profit TP2</span><span class="calc-res-val" style="color:var(--accent2)">+$'+tp2P.toFixed(2)+'</span></div>':'');
-}
- 
 // ── MTF ──
 async function loadMTF(){
   var sym=panels[0].sym;document.getElementById('mtf-coin').textContent=panels[0].disp;
@@ -1278,22 +1408,125 @@ async function loadHM(){
 }
 function pickHMC(sym){var c=coin(sym);pickPanel(0,c);goTab('chart');}
  
-// ── NEWS ──
-function loadNews(){
-  if(newsLoaded)return;newsLoaded=true;
-  document.getElementById('newslist').innerHTML=NEWS.map(function(n,i){
-    return '<div class="news-item" id="ni'+i+'" onclick="showNews('+i+')"><div class="ni-source">'+n.src+'<span class="ni-tag" style="color:'+n.tc+'">'+n.tag+'</span></div><div class="ni-title">'+n.title+'</div><div class="ni-time">'+n.time+'</div></div>';
+// ── COMPACT MODE ──
+var isCompact=false;
+function toggleCompact(){
+  isCompact=!isCompact;
+  document.getElementById('body').classList.toggle('compact',isCompact);
+  document.getElementById('compactbtn').textContent=isCompact?'⊞ Full':'⊡ Compact';
+  document.getElementById('compactbtn').title=isCompact?'Exit Compact Mode':'Compact Mode — sembunyikan data panel';
+}
+ 
+// ── RSS NEWS ──
+var newsLoaded=false,newsData=[];
+var RSS_SOURCES=[
+  {url:'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fcointelegraph.com%2Frss',name:'CoinTelegraph',color:'#3498db'},
+  {url:'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Ffeeds.feedburner.com%2FCoinDesk',name:'CoinDesk',color:'#ffd166'},
+  {url:'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fdecrypt.co%2Ffeed',name:'Decrypt',color:'#00e676'},
+  {url:'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fthedefiant.io%2Ffeed',name:'The Defiant',color:'#9b59b6'}
+];
+ 
+function timeAgo(dateStr){
+  var now=new Date(),then=new Date(dateStr);var diff=Math.floor((now-then)/1000);
+  if(diff<60)return diff+'s lalu';if(diff<3600)return Math.floor(diff/60)+'m lalu';
+  if(diff<86400)return Math.floor(diff/3600)+'j lalu';return Math.floor(diff/86400)+'h lalu';
+}
+ 
+function detectSentiment(title,desc){
+  var text=(title+' '+(desc||'')).toLowerCase();
+  var bullWords=['surge','rally','bullish','gain','rise','pump','ath','high','breakout','naik','bull','approval','adoption','etf','inflow'];
+  var bearWords=['crash','dump','bear','fall','plunge','drop','fear','bearish','turun','hack','ban','regulation','fine','sec','lawsuit'];
+  var b=bullWords.filter(function(w){return text.includes(w);}).length;
+  var br=bearWords.filter(function(w){return text.includes(w);}).length;
+  return b>br?'bull':br>b?'bear':'neu';
+}
+ 
+function detectTag(title){
+  var t=title.toUpperCase();
+  if(t.includes('BITCOIN')||t.includes('BTC'))return 'BTC';
+  if(t.includes('ETHEREUM')||t.includes('ETH'))return 'ETH';
+  if(t.includes('SOLANA')||t.includes('SOL'))return 'SOL';
+  if(t.includes('REGULATION')||t.includes('SEC')||t.includes('REGULASI'))return 'Regulasi';
+  if(t.includes('DEFI'))return 'DeFi';
+  if(t.includes('NFT'))return 'NFT';
+  if(t.includes('ALTCOIN'))return 'Altcoin';
+  if(t.includes('ETF'))return 'ETF';
+  if(t.includes('FED')||t.includes('MACRO')||t.includes('INFLATION'))return 'Macro';
+  return 'Crypto';
+}
+ 
+async function loadNews(){
+  if(newsLoaded&&newsData.length)return;
+  var list=document.getElementById('newslist');
+  list.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted);font-family:IBM Plex Mono,monospace;font-size:11px;"><span class="loading-spin"></span> Memuat berita RSS...</div>';
+  var allItems=[];
+  for(var i=0;i<RSS_SOURCES.length;i++){
+    try{
+      var r=await fetch(RSS_SOURCES[i].url);
+      if(!r.ok)continue;
+      var d=await r.json();
+      if(d.status==='ok'&&d.items){
+        d.items.slice(0,6).forEach(function(item){
+          allItems.push({
+            title:item.title,
+            body:(item.description||item.content||'').replace(/<[^>]*>/g,'').trim().slice(0,800),
+            link:item.link,
+            time:item.pubDate||item.published,
+            source:RSS_SOURCES[i].name,
+            color:RSS_SOURCES[i].color,
+            tag:detectTag(item.title),
+            sent:detectSentiment(item.title,item.description||'')
+          });
+        });
+      }
+    }catch(e){}
+  }
+ 
+  // If RSS fails, use fallback static news
+  if(!allItems.length){
+    allItems=STATIC_NEWS;
+  }
+ 
+  // Sort by time desc
+  allItems.sort(function(a,b){return new Date(b.time)-new Date(a.time);});
+  newsData=allItems;
+  newsLoaded=true;
+ 
+  list.innerHTML=newsData.map(function(n,i){
+    return '<div class="news-item" id="ni'+i+'" onclick="showNews('+i+')">'
+      +'<div class="ni-source">'+n.source+'<span class="ni-tag" style="color:'+n.color+'">'+n.tag+'</span></div>'
+      +'<div class="ni-title">'+n.title+'</div>'
+      +'<div class="ni-time">'+(n.time?timeAgo(n.time):n.timeLabel||'—')+'</div>'
+      +'</div>';
   }).join('');
 }
+ 
 function showNews(i){
   if(newsIdx>=0){var pr=document.getElementById('ni'+newsIdx);if(pr)pr.classList.remove('active');}
-  newsIdx=i;document.getElementById('ni'+i).classList.add('active');
-  var n=NEWS[i];var sC=n.sent;var sL=n.sent==='bull'?'📈 Bullish Signal':n.sent==='bear'?'📉 Bearish Signal':'➡️ Neutral';
-  document.getElementById('newsdetail').innerHTML='<div class="nd-source">'+n.src+'<span class="nd-tag" style="color:'+n.tc+'">'+n.tag+'</span></div>'
-    +'<div class="nd-title">'+n.title+'</div><div class="nd-time">'+n.time+'</div>'
-    +'<div class="nd-body">'+n.body.split('\n\n').map(function(p){return '<p>'+p+'</p>';}).join('')+'</div>'
+  newsIdx=i;var ni=document.getElementById('ni'+i);if(ni)ni.classList.add('active');
+  var n=newsData[i];
+  var sC=n.sent||'neu';
+  var sL=sC==='bull'?'📈 Bullish Signal':sC==='bear'?'📉 Bearish Signal':'➡️ Neutral';
+  var bodyHtml=(n.body||'').split('\n').filter(function(p){return p.trim();}).map(function(p){return '<p>'+p+'</p>';}).join('');
+  if(!bodyHtml)bodyHtml='<p style="color:var(--muted)">Klik sumber untuk baca artikel lengkap.</p>';
+  document.getElementById('newsdetail').innerHTML=
+    '<div class="nd-source">'+n.source+'<span class="nd-tag" style="color:'+(n.color||'var(--accent)')+'">'+n.tag+'</span>'
+    +(n.link?'<a href="'+n.link+'" target="_blank" style="margin-left:10px;font-family:IBM Plex Mono,monospace;font-size:9px;color:var(--accent);text-decoration:none;">↗ Baca Lengkap</a>':'')
+    +'</div>'
+    +'<div class="nd-title">'+n.title+'</div>'
+    +'<div class="nd-time">'+(n.time?timeAgo(n.time):n.timeLabel||'—')+'</div>'
+    +'<div class="nd-body">'+bodyHtml+'</div>'
     +'<div class="nd-sentiment '+sC+'">'+sL+'</div>';
 }
+ 
+// Fallback static news if RSS fails
+var STATIC_NEWS=[
+  {source:'CoinDesk',tag:'BTC',color:'#ffd166',time:'',timeLabel:'2 jam lalu',title:'Bitcoin Tembus Resistance Kritis, Analis Targetkan $120.000',body:'Bitcoin berhasil menembus level resistance kritis di $95.000 setelah konsolidasi panjang. Analis memproyeksikan target berikutnya di $110.000-$120.000.\n\nFaktor pendorong: arus masuk ETF Bitcoin spot terus meningkat, BlackRock dan Fidelity mencatat inflow $800 juta dalam sepekan.\n\nDari sisi teknikal, RSI harian berada di 62 — zona bullish tanpa overbought.',sent:'bull'},
+  {source:'The Block',tag:'ETH',color:'#2ec4a0',time:'',timeLabel:'4 jam lalu',title:'Ethereum ETF Staking Dapat Persetujuan Awal SEC',body:'SEC memberikan persetujuan awal untuk proposal staking dalam produk ETF Ethereum.\n\nJika disetujui penuh, investor ETF akan mendapatkan yield dari staking secara otomatis.\n\nHarga ETH naik 8% dalam 24 jam setelah berita ini.',sent:'bull'},
+  {source:'Decrypt',tag:'SOL',color:'#9945ff',time:'',timeLabel:'6 jam lalu',title:'Solana DeFi TVL Tembus $12 Miliar',body:'Total Value Locked di ekosistem DeFi Solana melampaui $12 miliar.\n\nJupiter, Raydium, dan Marinade Finance mencatat volume transaksi rekor.\n\nKecepatan 65.000 TPS dengan biaya di bawah $0.001 jadi daya tarik utama.',sent:'bull'},
+  {source:'Bloomberg',tag:'Macro',color:'#6b9990',time:'',timeLabel:'8 jam lalu',title:'The Fed Pertimbangkan Pemangkasan Suku Bunga Q3 2025',body:'Federal Reserve mengindikasikan kemungkinan pemangkasan suku bunga dua kali pada Q3 2025.\n\nBagi pasar kripto, ini historically menjadi katalis positif karena meningkatkan risk appetite.\n\nTotal market cap kripto naik $200 miliar dalam 24 jam.',sent:'bull'},
+  {source:'Reuters',tag:'Institusi',color:'#ffd166',time:'',timeLabel:'1 hari lalu',title:'BlackRock dan Fidelity Catat Inflow ETF BTC Terbesar',body:'ETF Bitcoin spot di AS menerima inflow rekor: BlackRock $1.2 miliar dan Fidelity $780 juta dalam satu pekan.\n\nTotal AUM gabungan seluruh ETF Bitcoin spot AS melampaui $60 miliar.\n\nPartisipasi institusional yang terus meningkat ini dianggap sinyal bullish jangka panjang.',sent:'bull'}
+];
  
 // ── HISTORY ──
 function addHist(c){var e={sym:c.sym,a:c.a,n:c.n,time:new Date().toLocaleString('id-ID')};hist=hist.filter(function(h){return h.sym!==c.sym;});hist.unshift(e);if(hist.length>20)hist=hist.slice(0,20);localStorage.setItem('ti_h',JSON.stringify(hist));}
