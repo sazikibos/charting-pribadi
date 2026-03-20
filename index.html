@@ -398,7 +398,6 @@ body.compact #compactbtn{background:rgba(46,196,160,.12);border-color:var(--acce
         <span class="pprice" id="p0pr">—</span>
         <span class="pchg up" id="p0ch">—</span>
         <div class="sp"></div>
-        <div class="psw" id="psw0"><span class="psi-ico">&#128269;</span><input type="text" class="psi" id="psi0" placeholder="Search coin, perp..." autocomplete="off"/><div class="psd" id="psd0"></div></div>
         <div class="tfs" id="tf0">
           <button class="tfb" data-tf="1">1m</button><button class="tfb" data-tf="3">3m</button><button class="tfb" data-tf="5">5m</button><button class="tfb" data-tf="15">15m</button><button class="tfb" data-tf="60">1H</button><button class="tfb" data-tf="240">4H</button><button class="tfb on" data-tf="D">1D</button><button class="tfb" data-tf="W">1W</button>
         </div>
@@ -408,7 +407,20 @@ body.compact #compactbtn{background:rgba(46,196,160,.12);border-color:var(--acce
       <div class="tvwrap"><iframe id="if0" src="" frameborder="0" scrolling="no"></iframe></div>
       <div class="data-panel" id="dp0">
         <div class="dp-toggle" onclick="toggleDP(0)">
-          <div class="dp-toggle-title">&#128200; FUTURES DATA &amp; SIGNAL — <span id="dp0-pair" style="color:var(--accent)">BTC/USDT</span><span class="loading-spin" id="dp0-spin" style="display:none;margin-left:8px;"></span></div>
+          <div class="dp-toggle-title">
+            &#128200; DATA &amp; SIGNAL —
+            <div class="dp-coin-sel" id="dpcs0" onclick="event.stopPropagation()">
+              <span style="color:var(--muted);font-size:8px;">COIN:</span>
+              <div style="position:relative;display:inline-flex;align-items:center;">
+                <input type="text" id="dp0-inp" value="BTCUSDT" placeholder="e.g. WLDUSDT"
+                  style="background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;padding:2px 24px 2px 7px;width:110px;outline:none;cursor:pointer;"
+                  onclick="this.select()" onkeydown="dpKeydown(event,0)" onblur="dpBlur(0)"/>
+                <button onclick="dpRefresh(0)" style="position:absolute;right:4px;background:none;border:none;color:var(--accent);cursor:pointer;font-size:12px;padding:0;" title="Refresh data">&#8635;</button>
+                <div id="dp0-drop" style="position:absolute;top:calc(100% + 4px);left:0;min-width:200px;background:var(--card);border:1px solid var(--border);border-radius:6px;z-index:400;display:none;box-shadow:0 8px 20px rgba(0,0,0,.6);max-height:200px;overflow-y:auto;"></div>
+              </div>
+            </div>
+            <span class="loading-spin" id="dp0-spin" style="display:none;margin-left:4px;"></span>
+          </div>
           <span class="dp-arrow">&#9650;</span>
         </div>
         <div class="dp-body">
@@ -427,7 +439,6 @@ body.compact #compactbtn{background:rgba(46,196,160,.12);border-color:var(--acce
         <span class="pprice" id="p1pr">—</span>
         <span class="pchg up" id="p1ch">—</span>
         <div class="sp"></div>
-        <div class="psw" id="psw1"><span class="psi-ico">&#128269;</span><input type="text" class="psi" id="psi1" placeholder="Search coin, perp..." autocomplete="off"/><div class="psd" id="psd1"></div></div>
         <div class="tfs" id="tf1">
           <button class="tfb" data-tf="1">1m</button><button class="tfb" data-tf="3">3m</button><button class="tfb" data-tf="5">5m</button><button class="tfb" data-tf="15">15m</button><button class="tfb" data-tf="60">1H</button><button class="tfb on" data-tf="240">4H</button><button class="tfb" data-tf="D">1D</button><button class="tfb" data-tf="W">1W</button>
         </div>
@@ -437,7 +448,20 @@ body.compact #compactbtn{background:rgba(46,196,160,.12);border-color:var(--acce
       <div class="tvwrap"><iframe id="if1" src="" frameborder="0" scrolling="no"></iframe></div>
       <div class="data-panel" id="dp1">
         <div class="dp-toggle" onclick="toggleDP(1)">
-          <div class="dp-toggle-title">&#128200; FUTURES DATA &amp; SIGNAL — <span id="dp1-pair" style="color:var(--accent)">ETH/USDT</span><span class="loading-spin" id="dp1-spin" style="display:none;margin-left:8px;"></span></div>
+          <div class="dp-toggle-title">
+            &#128200; DATA &amp; SIGNAL —
+            <div class="dp-coin-sel" id="dpcs1" onclick="event.stopPropagation()">
+              <span style="color:var(--muted);font-size:8px;">COIN:</span>
+              <div style="position:relative;display:inline-flex;align-items:center;">
+                <input type="text" id="dp1-inp" value="ETHUSDT" placeholder="e.g. SOLUSDT"
+                  style="background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--accent);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;padding:2px 24px 2px 7px;width:110px;outline:none;cursor:pointer;"
+                  onclick="this.select()" onkeydown="dpKeydown(event,1)" onblur="dpBlur(1)"/>
+                <button onclick="dpRefresh(1)" style="position:absolute;right:4px;background:none;border:none;color:var(--accent);cursor:pointer;font-size:12px;padding:0;" title="Refresh data">&#8635;</button>
+                <div id="dp1-drop" style="position:absolute;top:calc(100% + 4px);left:0;min-width:200px;background:var(--card);border:1px solid var(--border);border-radius:6px;z-index:400;display:none;box-shadow:0 8px 20px rgba(0,0,0,.6);max-height:200px;overflow-y:auto;"></div>
+              </div>
+            </div>
+            <span class="loading-spin" id="dp1-spin" style="display:none;margin-left:4px;"></span>
+          </div>
           <span class="dp-arrow">&#9650;</span>
         </div>
         <div class="dp-body">
@@ -786,14 +810,9 @@ function setLayout(lay){
 function toggleDP(idx){document.getElementById('dp'+idx).classList.toggle('dp-collapsed');}
  
 // ── TV ──
-function tvUrl(sym,tf){
-  var tvSym=panels[0]&&panels[0].tvSym?panels[0].tvSym:'BINANCE:'+sym;
-  return tvUrlFull(tvSym,tf);
-}
 function tvUrlFull(tvSym,tf){
-  // If no exchange prefix, default to BINANCE
   if(tvSym.indexOf(':')<0)tvSym='BINANCE:'+tvSym;
-  return 'https://www.tradingview.com/widgetembed/?frameElementId=tv&symbol='+encodeURIComponent(tvSym)+'&interval='+tf+'&theme=dark&style=1&locale=en&toolbar_bg=0c1210&hide_side_toolbar=0&allow_symbol_change=0&save_image=0&timezone=Asia%2FJakarta&withdateranges=1';
+  return 'https://www.tradingview.com/widgetembed/?frameElementId=tv&symbol='+encodeURIComponent(tvSym)+'&interval='+tf+'&theme=dark&style=1&locale=en&toolbar_bg=0c1210&hide_side_toolbar=0&allow_symbol_change=1&save_image=0&timezone=Asia%2FJakarta&withdateranges=1';
 }
 function loadPanel(idx){
   var p=panels[idx];
@@ -807,193 +826,128 @@ for(var pi=0;pi<2;pi++){(function(i){document.getElementById('tf'+i).querySelect
 function toggleFS(idx){document.getElementById('cp'+idx).classList.toggle('fs');}
  
  
-// ── UNIFIED TV-CONNECTED SEARCH ──
-// Queries TradingView symbol search API — finds ALL coins including perpetuals
-var searchTimers=[null,null];
  
-function setupPS(idx){
-  var inp=document.getElementById('psi'+idx);
-  var drop=document.getElementById('psd'+idx);
+// ── DATA PANEL COIN SELECTOR ──
+// Independent from chart — user types any Binance symbol to update data below
+var dpTimers=[null,null];
  
-  inp.addEventListener('input',function(){
-    var q=inp.value.trim();
-    psS[idx].fi=-1;
-    if(!q){drop.classList.remove('open');return;}
-    // Debounce 250ms
-    clearTimeout(searchTimers[idx]);
-    searchTimers[idx]=setTimeout(function(){searchTV(q,idx);},250);
-  });
- 
-  inp.addEventListener('keydown',function(e){
-    if(!drop.classList.contains('open'))return;
-    var items=drop.querySelectorAll('.pdrop-i');
-    if(e.key==='ArrowDown'){e.preventDefault();psS[idx].fi=Math.min(psS[idx].fi+1,items.length-1);highlightPS(idx);}
-    else if(e.key==='ArrowUp'){e.preventDefault();psS[idx].fi=Math.max(psS[idx].fi-1,-1);highlightPS(idx);}
-    else if(e.key==='Enter'){
-      var focused=drop.querySelector('.pdrop-i.foc')||drop.querySelector('.pdrop-i');
-      if(focused)focused.dispatchEvent(new MouseEvent('mousedown',{bubbles:true}));
-    }
-    else if(e.key==='Escape'){drop.classList.remove('open');inp.blur();}
-  });
- 
-  document.addEventListener('click',function(e){
-    if(!document.getElementById('psw'+idx).contains(e.target))drop.classList.remove('open');
-  });
-}
- 
-function highlightPS(idx){
-  var drop=document.getElementById('psd'+idx);
-  drop.querySelectorAll('.pdrop-i').forEach(function(el,i){
-    el.classList.toggle('foc',i===psS[idx].fi);
-  });
-}
- 
-async function searchTV(q,idx){
-  var drop=document.getElementById('psd'+idx);
-  drop.innerHTML='<div style="padding:8px;text-align:center;color:var(--muted);font-size:10px;font-family:IBM Plex Mono,monospace;"><span class="loading-spin"></span></div>';
-  drop.classList.add('open');
- 
-  try{
-    // Use allorigins proxy to bypass CORS
-    var tvUrl='https://symbol-search.tradingview.com/symbol_search/v3/?text='+encodeURIComponent(q)+'&hl=0&exchange=&lang=en&search_type=undefined&domain=production&sort_by_country=ID';
-    var proxyUrl='https://api.allorigins.win/get?url='+encodeURIComponent(tvUrl);
-    var r=await fetch(proxyUrl);
-    var outer=await r.json();
-    var d=JSON.parse(outer.contents);
-    var symbols=d.symbols||[];
- 
-    if(!symbols.length){
-      drop.innerHTML='<div style="padding:10px;text-align:center;color:var(--muted);font-size:10px;font-family:IBM Plex Mono,monospace;">Tidak ditemukan</div>';
-      return;
-    }
- 
-    // Show top 12 results
-    var items=symbols.slice(0,12);
-    drop.innerHTML=items.map(function(s,i){
-      var sym=s.symbol||s.ticker||'';
-      var desc=s.description||s.full_name||'';
-      var exch=s.exchange||s.prefix||'';
-      var type=s.type||'';
-      var typeColor=type==='crypto'?'var(--accent)':type==='futures'||type==='swap'?'var(--orange)':type==='spot'?'var(--accent2)':'var(--muted)';
-      var typeLabel=type==='swap'||sym.includes('.P')?'PERP':type==='futures'?'FUT':type==='crypto'||type==='spot'?'SPOT':type.toUpperCase().slice(0,4)||'—';
-      // Clean HTML tags from hl
-      var cleanSym=(s.symbol||'').replace(/<[^>]*>/g,'');
-      var cleanDesc=(desc||'').replace(/<[^>]*>/g,'').slice(0,35);
-      return '<div class="pdrop-i" data-sym="'+cleanSym+'" data-exch="'+(exch||'BINANCE')+'" data-type="'+(type||'')+'" data-desc="'+cleanDesc.replace(/"/g,'')+'">'
-        +'<span class="pdrop-s" style="font-size:11px;min-width:90px;">'+cleanSym+'</span>'
-        +'<span class="pdrop-n" style="flex:1;font-size:10px;">'+cleanDesc+'</span>'
-        +'<span style="font-family:IBM Plex Mono,monospace;font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(0,0,0,.2);color:'+typeColor+';">'+typeLabel+'</span>'
-        +'<span style="font-family:IBM Plex Mono,monospace;font-size:8px;color:var(--muted);margin-left:4px;min-width:48px;text-align:right;">'+exch+'</span>'
-        +'</div>';
-    }).join('');
- 
-    drop.querySelectorAll('.pdrop-i').forEach(function(el){
-      el.addEventListener('mousedown',function(e){
-        e.preventDefault();
-        var sym=el.dataset.sym;
-        var exch=el.dataset.exch||'BINANCE';
-        var desc=el.dataset.desc||sym;
-        pickPanelTV(idx,sym,exch,desc);
-      });
-    });
- 
-  }catch(err){
-    // Fallback to local COINS list if TV API fails
-    var q2=document.getElementById('psi'+idx).value.trim().toLowerCase();
-    var local=COINS.filter(function(c){return c.a.toLowerCase().includes(q2)||c.n.toLowerCase().includes(q2);}).slice(0,10);
-    if(!local.length){
-      drop.innerHTML='<div style="padding:10px;text-align:center;color:var(--muted);font-size:10px;font-family:IBM Plex Mono,monospace;">Tidak ditemukan</div>';
-      return;
-    }
-    drop.innerHTML=local.map(function(c,i){
-      return '<div class="pdrop-i" data-sym="'+c.sym+'" data-exch="BINANCE" data-desc="'+c.n+'">'
-        +'<span class="pdrop-s">'+c.a+'</span>'
-        +'<span class="pdrop-n">'+c.n+'</span>'
-        +'<span style="font-family:IBM Plex Mono,monospace;font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(46,196,160,.1);color:var(--accent);">SPOT</span>'
-        +'</div>';
-    }).join('');
-    drop.querySelectorAll('.pdrop-i').forEach(function(el){
-      el.addEventListener('mousedown',function(e){e.preventDefault();pickPanelTV(idx,el.dataset.sym,'BINANCE',el.dataset.desc);});
-    });
+function dpKeydown(e,idx){
+  if(e.key==='Enter'){
+    e.preventDefault();
+    dpApply(idx);
+  }else if(e.key==='Escape'){
+    document.getElementById('dp'+idx+'-drop').style.display='none';
+  }else{
+    // Show suggestions from local COINS list while typing
+    clearTimeout(dpTimers[idx]);
+    dpTimers[idx]=setTimeout(function(){dpSuggest(idx);},200);
   }
 }
  
-function pickPanelTV(idx,sym,exch,desc){
-  // Build display name
-  var disp=sym;
-  if(sym.endsWith('.P'))disp=sym.replace('.P','')+' PERP';
-  else if(sym.endsWith('USDT'))disp=sym.replace('USDT','/USDT');
-  else if(sym.endsWith('BTC'))disp=sym.replace('BTC','/BTC');
-  else if(sym.endsWith('USD'))disp=sym.replace('USD','/USD');
+function dpSuggest(idx){
+  var inp=document.getElementById('dp'+idx+'-inp');
+  var drop=document.getElementById('dp'+idx+'-drop');
+  var q=inp.value.trim().toLowerCase();
+  if(!q){drop.style.display='none';return;}
+  var matches=COINS.filter(function(c){
+    return c.a.toLowerCase().startsWith(q)||c.sym.toLowerCase().startsWith(q)||c.n.toLowerCase().includes(q);
+  }).slice(0,10);
+  if(!matches.length){drop.style.display='none';return;}
+  drop.innerHTML=matches.map(function(c){
+    return '<div style="display:flex;align-items:center;gap:8px;padding:7px 11px;cursor:pointer;border-bottom:1px solid rgba(26,46,40,.3);transition:background .15s;font-size:11px;" '
+      +'onmouseover="this.style.background=\'rgba(46,196,160,.08)\'" onmouseout="this.style.background=\'\'" '
+      +'onmousedown="event.preventDefault();dpPick('+idx+',\''+c.sym+'\',\''+c.a+'\')">'
+      +'<span style="font-family:IBM Plex Mono,monospace;font-weight:600;min-width:72px;">'+c.a+'</span>'
+      +'<span style="color:var(--muted);font-size:10px;flex:1;">'+c.n+'</span>'
+      +'<span style="font-family:IBM Plex Mono,monospace;font-size:8px;padding:1px 5px;border-radius:3px;background:rgba(46,196,160,.1);color:var(--accent);">SPOT</span>'
+      +'</div>';
+  }).join('');
+  drop.style.display='block';
+}
  
-  // Build TV symbol string — e.g. BINANCE:BTCUSDT or BYBIT:BTCUSDT.P
-  var tvSym=(exch&&exch!=='—'?exch+':':'')+sym;
+function dpPick(idx,sym,abbr){
+  var inp=document.getElementById('dp'+idx+'-inp');
+  var drop=document.getElementById('dp'+idx+'-drop');
+  inp.value=sym;
+  drop.style.display='none';
+  dpApply(idx);
+}
  
-  // Extract base symbol for Binance data API
-  // Strip exchange prefix and clean for Binance
-  var binanceSym=sym.replace('.P','').replace(/[^A-Z0-9]/gi,'').toUpperCase();
-  if(!binanceSym.endsWith('USDT')&&!binanceSym.endsWith('BTC')&&!binanceSym.endsWith('ETH')&&!binanceSym.endsWith('USD')){
-    binanceSym=binanceSym+'USDT';
+function dpBlur(idx){
+  // Delay hide so mousedown fires first
+  setTimeout(function(){
+    document.getElementById('dp'+idx+'-drop').style.display='none';
+  },200);
+}
+ 
+function dpRefresh(idx){
+  dpApply(idx);
+}
+ 
+function dpApply(idx){
+  var raw=document.getElementById('dp'+idx+'-inp').value.trim().toUpperCase();
+  if(!raw)return;
+  // Clean: strip .P for perp, ensure USDT suffix for data fetch
+  var sym=raw.replace('.P','').replace(/[^A-Z0-9]/g,'');
+  if(!sym.endsWith('USDT')&&!sym.endsWith('BTC')&&!sym.endsWith('ETH')&&!sym.endsWith('BUSD')&&!sym.endsWith('USD')){
+    sym=sym+'USDT';
   }
- 
-  panels[idx].sym=binanceSym;
-  panels[idx].disp=disp;
-  panels[idx].tvSym=tvSym; // store full TV symbol
- 
+  document.getElementById('dp'+idx+'-inp').value=sym;
+  document.getElementById('dp'+idx+'-drop').style.display='none';
+  // Update panels data sym only (not chart)
+  panels[idx].sym=sym;
+  var disp=sym.endsWith('USDT')?sym.replace('USDT','/USDT'):sym;
   document.getElementById('p'+idx+'nm').textContent=disp;
-  document.getElementById('psi'+idx).value='';
-  document.getElementById('psd'+idx).classList.remove('open');
-  document.getElementById('dp'+idx+'-pair').textContent=disp;
- 
-  // Load TV chart with correct exchange:symbol
-  document.getElementById('if'+idx).src=tvUrlFull(tvSym,panels[idx].tf);
- 
-  // Update data panel
   fetchTicker(idx);
   loadDataPanel(idx);
-  updateFavBtn(idx);
-  addHist({sym:binanceSym,a:sym.replace('USDT','').replace('.P',''),n:desc||sym});
-  if(idx===0)document.getElementById('mtf-coin').textContent=disp;
 }
  
-setupPS(0);setupPS(1);
+// Close dropdowns on outside click
+document.addEventListener('click',function(e){
+  [0,1].forEach(function(i){
+    var cs=document.getElementById('dpcs'+i);
+    if(cs&&!cs.contains(e.target)){
+      var drop=document.getElementById('dp'+i+'-drop');
+      if(drop)drop.style.display='none';
+    }
+  });
+});
  
-// Header search → panel 0
+// Header search → load major coin to chart panel 0 + update data
 var gs=document.getElementById('gs'),gd=document.getElementById('gd');
-var gsTimer=null;
 gs.addEventListener('input',function(){
-  var q=gs.value.trim();
+  var q=gs.value.trim().toLowerCase();
   if(!q){gd.classList.remove('open');return;}
-  clearTimeout(gsTimer);
-  gsTimer=setTimeout(async function(){
-    try{
-      var tvUrl2='https://symbol-search.tradingview.com/symbol_search/v3/?text='+encodeURIComponent(q)+'&hl=0&exchange=&lang=en&search_type=undefined&domain=production&sort_by_country=ID';
-      var proxyUrl2='https://api.allorigins.win/get?url='+encodeURIComponent(tvUrl2);
-      var r=await fetch(proxyUrl2);
-      var outer2=await r.json();
-      var d=JSON.parse(outer2.contents);
-      var symbols=(d.symbols||[]).slice(0,10);
-      if(!symbols.length){gd.innerHTML='<div class="sd-empty">Tidak ditemukan</div>';gd.classList.add('open');return;}
-      gd.innerHTML=symbols.map(function(s,i){
-        var sym=(s.symbol||'').replace(/<[^>]*>/g,'');
-        var desc=(s.description||'').replace(/<[^>]*>/g,'').slice(0,30);
-        var exch=s.exchange||'BINANCE';
-        var type=s.type||'crypto';
-        var typeLabel=type==='swap'||sym.includes('.P')?'PERP':type==='futures'?'FUT':'SPOT';
-        var typeColor=sym.includes('.P')||type==='swap'?'var(--orange)':'var(--accent)';
-        return '<div class="sdi" data-sym="'+sym+'" data-exch="'+exch+'" data-desc="'+desc.replace(/"/g,'')+'">'
-          +'<span class="sdi-s" style="min-width:90px;">'+sym+'</span>'
-          +'<span class="sdi-n">'+desc+'</span>'
-          +'<span class="sdi-t" style="color:'+typeColor+'">'+typeLabel+'</span>'
-          +'<span style="font-family:IBM Plex Mono,monospace;font-size:8px;color:var(--muted);margin-left:4px;">'+exch+'</span>'
-          +'</div>';
-      }).join('');
-      gd.querySelectorAll('.sdi').forEach(function(el){
-        el.addEventListener('mousedown',function(e){e.preventDefault();pickPanelTV(0,el.dataset.sym,el.dataset.exch,el.dataset.desc);gs.value='';gd.classList.remove('open');});
-      });
-      gd.classList.add('open');
-    }catch(e){gd.classList.remove('open');}
-  },250);
+  var matches=COINS.filter(function(c){
+    return c.a.toLowerCase().includes(q)||c.n.toLowerCase().includes(q)||c.sym.toLowerCase().includes(q);
+  }).slice(0,10);
+  if(!matches.length){gd.innerHTML='<div class="sd-empty">Tidak ditemukan</div>';gd.classList.add('open');return;}
+  gd.innerHTML=matches.map(function(c,i){
+    return '<div class="sdi" data-sym="'+c.sym+'" data-a="'+c.a+'">'
+      +'<span class="sdi-s">'+c.a+'</span>'
+      +'<span class="sdi-n">'+c.n+'</span>'
+      +'<span class="sdi-t">'+c.t+'</span>'
+      +'</div>';
+  }).join('');
+  gd.querySelectorAll('.sdi').forEach(function(el){
+    el.addEventListener('mousedown',function(e){
+      e.preventDefault();
+      var sym=el.dataset.sym, a=el.dataset.a;
+      // Update chart
+      panels[0].sym=sym;
+      var tvSym='BINANCE:'+sym;
+      document.getElementById('if0').src=tvUrlFull(tvSym,panels[0].tf);
+      // Update data panel 0
+      document.getElementById('dp0-inp').value=sym;
+      document.getElementById('p0nm').textContent=a+'/USDT';
+      fetchTicker(0);
+      loadDataPanel(0);
+      addHist({sym:sym,a:a,n:el.querySelector('.sdi-n').textContent});
+      gs.value='';
+      gd.classList.remove('open');
+    });
+  });
+  gd.classList.add('open');
 });
 gs.addEventListener('keydown',function(e){if(e.key==='Escape'){gd.classList.remove('open');gs.blur();}});
 document.addEventListener('click',function(e){if(!document.getElementById('gsw').contains(e.target))gd.classList.remove('open');});
