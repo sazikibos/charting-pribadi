@@ -36,37 +36,37 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .page.active{display:block;}
  
 /* PANEL */
-.panel{border:1px solid var(--brd2);margin:6px;background:var(--bg2);}
-.ph{background:var(--bg3);border-bottom:1px solid var(--brd2);padding:5px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
-.pt{font-size:10px;font-weight:700;color:var(--or);letter-spacing:.1em;text-transform:uppercase;flex:1;}
+.panel{border:1px solid var(--brd2);margin:4px 6px;background:var(--bg2);}
+.ph{background:var(--bg3);border-bottom:1px solid var(--brd2);padding:4px 8px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.pt{font-size:11px;font-weight:700;color:var(--or);letter-spacing:.06em;text-transform:uppercase;flex:1;}
 .ptag{font-size:9px;padding:1px 6px;font-weight:700;white-space:nowrap;}
 .req{background:var(--re);color:#000;}
 .opt{background:var(--am);color:#000;}
-.pb{padding:8px;}
+.pb{padding:6px;}
  
-.sub-sec{margin-bottom:10px;}
+.sub-sec{margin-bottom:6px;}
 .sub-sec:last-child{margin-bottom:0;}
-.sub-label{font-size:9px;color:var(--or);letter-spacing:.1em;text-transform:uppercase;padding:4px 0 6px;border-bottom:1px solid var(--brd);margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+.sub-label{font-size:10px;color:var(--or);letter-spacing:.05em;text-transform:uppercase;padding:3px 0 5px;border-bottom:1px solid var(--brd);margin-bottom:5px;display:flex;align-items:center;gap:5px;}
 .sub-label::before{content:'▸';color:var(--or2);}
-.hint{font-size:9px;color:var(--dim);letter-spacing:.05em;margin-bottom:7px;line-height:1.5;}
+.hint{font-size:10px;color:var(--dim);letter-spacing:.03em;margin-bottom:5px;line-height:1.4;}
  
 /* GRIDS */
-.ug2{display:grid;grid-template-columns:1fr 1fr;gap:3px;}
-.ug3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;}
-.ug4{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;}
+.ug2{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.ug3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;}
+.ug4{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
  
 /* UPLOAD SLOT */
-.us{position:relative;background:var(--bg);border:1px solid var(--brd2);aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:border-color .15s;}
+.us{position:relative;background:var(--bg);border:1px solid var(--brd2);aspect-ratio:3/2;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:border-color .15s;}
 .us:hover{border-color:var(--or2);}
 .us.filled{border-color:var(--or);}
 .us input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 .upr{position:absolute;inset:0;object-fit:cover;width:100%;height:100%;display:none;}
 .us.filled .upr{display:block;}
 .us.filled .uph{display:none;}
-.uph{display:flex;flex-direction:column;align-items:center;gap:3px;pointer-events:none;padding:4px;}
-.uph-icon{font-size:13px;opacity:.3;}
-.uph-label{font-size:9px;font-weight:700;color:var(--or);letter-spacing:.06em;text-align:center;}
-.uph-sub{font-size:7px;color:var(--dim);letter-spacing:.04em;text-align:center;}
+.uph{display:flex;flex-direction:column;align-items:center;gap:2px;pointer-events:none;padding:3px;}
+.uph-icon{font-size:11px;opacity:.3;}
+.uph-label{font-size:10px;font-weight:700;color:var(--or);letter-spacing:.04em;text-align:center;}
+.uph-sub{font-size:8px;color:var(--dim);letter-spacing:.02em;text-align:center;}
 .ubadge{position:absolute;top:3px;right:3px;background:var(--or);color:#000;font-size:8px;font-weight:700;width:14px;height:14px;display:none;align-items:center;justify-content:center;z-index:2;}
 .us.filled .ubadge{display:flex;}
 .udel{position:absolute;top:3px;left:3px;background:var(--re);color:#fff;font-size:8px;width:14px;height:14px;display:none;align-items:center;justify-content:center;z-index:3;cursor:pointer;}
@@ -135,7 +135,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .mclose{background:rgba(0,0,0,.2);border:none;color:#000;font-size:13px;width:24px;height:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .minner{padding:8px;}
 .mshots{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:8px;}
-.mshot{aspect-ratio:1/1;object-fit:cover;width:100%;border:1px solid var(--brd2);}
+.mshot{aspect-ratio:3/2;object-fit:cover;width:100%;border:1px solid var(--brd2);}
 .msum{background:var(--bg);border:1px solid var(--brd2);padding:10px;font-size:10px;line-height:1.8;white-space:pre-wrap;color:var(--wh2);margin-bottom:6px;max-height:240px;overflow-y:auto;}
 .mcopy{width:100%;padding:11px;background:var(--or);border:none;color:#000;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.15em;cursor:pointer;transition:all .15s;}
 .mcopy:hover{background:var(--am);}
@@ -212,18 +212,13 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
     <div class="pb">
       <div class="hint">EMA 5/10/30 · VOLUME · CVD · OPEN INTEREST · SPOT CVD harus terlihat di semua TF</div>
       <div class="sub-sec">
-        <div class="sub-label">1W + 1D — Struktur &amp; Bias Macro</div>
-        <div class="ug2">
-          <div class="us" id="sl-1w"><input type="file" accept="image/*" onchange="hu(this,'sl-1w','pv-1w')"><img class="upr" id="pv-1w"><div class="uph"><div class="uph-icon">▦</div><div class="uph-label">1W</div><div class="uph-sub">WEEKLY</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-1w','pv-1w')">✕</div></div>
-          <div class="us" id="sl-1d"><input type="file" accept="image/*" onchange="hu(this,'sl-1d','pv-1d')"><img class="upr" id="pv-1d"><div class="uph"><div class="uph-icon">▦</div><div class="uph-label">1D</div><div class="uph-sub">DAILY</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-1d','pv-1d')">✕</div></div>
-        </div>
-      </div>
-      <div class="sub-sec">
-        <div class="sub-label">4H + 1H + 15M — Momentum &amp; Entry Timing</div>
-        <div class="ug3">
-          <div class="us" id="sl-4h"><input type="file" accept="image/*" onchange="hu(this,'sl-4h','pv-4h')"><img class="upr" id="pv-4h"><div class="uph"><div class="uph-icon">▦</div><div class="uph-label">4H</div><div class="uph-sub">4 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-4h','pv-4h')">✕</div></div>
-          <div class="us" id="sl-1h"><input type="file" accept="image/*" onchange="hu(this,'sl-1h','pv-1h')"><img class="upr" id="pv-1h"><div class="uph"><div class="uph-icon">▦</div><div class="uph-label">1H</div><div class="uph-sub">1 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-1h','pv-1h')">✕</div></div>
-          <div class="us" id="sl-15m"><input type="file" accept="image/*" onchange="hu(this,'sl-15m','pv-15m')"><img class="upr" id="pv-15m"><div class="uph"><div class="uph-icon">▦</div><div class="uph-label">15M</div><div class="uph-sub">15 MENIT</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-15m','pv-15m')">✕</div></div>
+        <div class="sub-label">1W · 1D · 4H · 1H · 15M — Semua Timeframe</div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:2px;">
+          <div class="us" id="sl-1w"><input type="file" accept="image/*" onchange="hu(this,'sl-1w','pv-1w')"><img class="upr" id="pv-1w"><div class="uph"><div class="uph-label">1W</div><div class="uph-sub">WEEKLY</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-1w','pv-1w')">✕</div></div>
+          <div class="us" id="sl-1d"><input type="file" accept="image/*" onchange="hu(this,'sl-1d','pv-1d')"><img class="upr" id="pv-1d"><div class="uph"><div class="uph-label">1D</div><div class="uph-sub">DAILY</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-1d','pv-1d')">✕</div></div>
+          <div class="us" id="sl-4h"><input type="file" accept="image/*" onchange="hu(this,'sl-4h','pv-4h')"><img class="upr" id="pv-4h"><div class="uph"><div class="uph-label">4H</div><div class="uph-sub">4 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-4h','pv-4h')">✕</div></div>
+          <div class="us" id="sl-1h"><input type="file" accept="image/*" onchange="hu(this,'sl-1h','pv-1h')"><img class="upr" id="pv-1h"><div class="uph"><div class="uph-label">1H</div><div class="uph-sub">1 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-1h','pv-1h')">✕</div></div>
+          <div class="us" id="sl-15m"><input type="file" accept="image/*" onchange="hu(this,'sl-15m','pv-15m')"><img class="upr" id="pv-15m"><div class="uph"><div class="uph-label">15M</div><div class="uph-sub">15 MNT</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-15m','pv-15m')">✕</div></div>
         </div>
       </div>
     </div>
@@ -234,10 +229,10 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
     <div class="ph"><span class="pt">02 // COINGLASS — STANDARD DATA</span><span class="ptag req">REQUIRED</span></div>
     <div class="pb">
       <div class="hint">Heatmap · Funding Rate Current · Long/Short Ratio Current</div>
-      <div class="ug3">
-        <div class="us" id="sl-hm"><input type="file" accept="image/*" onchange="hu(this,'sl-hm','pv-hm')"><img class="upr" id="pv-hm"><div class="uph"><div class="uph-icon">◈</div><div class="uph-label" style="font-size:8px">HEATMAP</div><div class="uph-sub">LIQ MAP</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-hm','pv-hm')">✕</div></div>
-        <div class="us" id="sl-fr"><input type="file" accept="image/*" onchange="hu(this,'sl-fr','pv-fr')"><img class="upr" id="pv-fr"><div class="uph"><div class="uph-icon">◈</div><div class="uph-label" style="font-size:8px">FUNDING</div><div class="uph-sub">CURRENT</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-fr','pv-fr')">✕</div></div>
-        <div class="us" id="sl-ls"><input type="file" accept="image/*" onchange="hu(this,'sl-ls','pv-ls')"><img class="upr" id="pv-ls"><div class="uph"><div class="uph-icon">◈</div><div class="uph-label" style="font-size:8px">L/S RATIO</div><div class="uph-sub">CURRENT</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-ls','pv-ls')">✕</div></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
+        <div class="us" id="sl-hm"><input type="file" accept="image/*" onchange="hu(this,'sl-hm','pv-hm')"><img class="upr" id="pv-hm"><div class="uph"><div class="uph-label">HEATMAP</div><div class="uph-sub">LIQ MAP</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-hm','pv-hm')">✕</div></div>
+        <div class="us" id="sl-fr"><input type="file" accept="image/*" onchange="hu(this,'sl-fr','pv-fr')"><img class="upr" id="pv-fr"><div class="uph"><div class="uph-label">FUNDING</div><div class="uph-sub">CURRENT</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-fr','pv-fr')">✕</div></div>
+        <div class="us" id="sl-ls"><input type="file" accept="image/*" onchange="hu(this,'sl-ls','pv-ls')"><img class="upr" id="pv-ls"><div class="uph"><div class="uph-label">L/S RATIO</div><div class="uph-sub">CURRENT</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-ls','pv-ls')">✕</div></div>
       </div>
     </div>
   </div>
@@ -249,38 +244,19 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
       <div class="hint">Data untuk deteksi PUMP dari bottom &amp; DUMP dari top. Seller/buyer exhaustion signals.</div>
  
       <div class="sub-sec">
-        <div class="sub-label">Funding Rate HISTORY — Deteksi Ekstrem Berkepanjangan</div>
-        <div class="hint">Chart history funding rate (bukan hanya angka current). Dari Coinglass → Funding Rate → pilih chart view.</div>
-        <div class="ug2">
-          <div class="us" id="sl-frh1"><input type="file" accept="image/*" onchange="hu(this,'sl-frh1','pv-frh1')"><img class="upr" id="pv-frh1"><div class="uph"><div class="uph-icon">📉</div><div class="uph-label" style="font-size:8px">FUNDING</div><div class="uph-sub">HISTORY 7D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-frh1','pv-frh1')">✕</div></div>
-          <div class="us" id="sl-frh2"><input type="file" accept="image/*" onchange="hu(this,'sl-frh2','pv-frh2')"><img class="upr" id="pv-frh2"><div class="uph"><div class="uph-icon">📉</div><div class="uph-label" style="font-size:8px">FUNDING</div><div class="uph-sub">HISTORY 30D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-frh2','pv-frh2')">✕</div></div>
+        <div class="sub-label">Funding History · L/S History · Liq History · Vol Profile</div>
+        <div class="hint">Funding &amp; L/S History: Coinglass → chart view. Vol Profile: TradingView indikator.</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:2px;">
+          <div class="us" id="sl-frh1"><input type="file" accept="image/*" onchange="hu(this,'sl-frh1','pv-frh1')"><img class="upr" id="pv-frh1"><div class="uph"><div class="uph-label">FUND.H</div><div class="uph-sub">7D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-frh1','pv-frh1')">✕</div></div>
+          <div class="us" id="sl-frh2"><input type="file" accept="image/*" onchange="hu(this,'sl-frh2','pv-frh2')"><img class="upr" id="pv-frh2"><div class="uph"><div class="uph-label">FUND.H</div><div class="uph-sub">30D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-frh2','pv-frh2')">✕</div></div>
+          <div class="us" id="sl-lsh1"><input type="file" accept="image/*" onchange="hu(this,'sl-lsh1','pv-lsh1')"><img class="upr" id="pv-lsh1"><div class="uph"><div class="uph-label">L/S.H</div><div class="uph-sub">7D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-lsh1','pv-lsh1')">✕</div></div>
+          <div class="us" id="sl-lsh2"><input type="file" accept="image/*" onchange="hu(this,'sl-lsh2','pv-lsh2')"><img class="upr" id="pv-lsh2"><div class="uph"><div class="uph-label">L/S.H</div><div class="uph-sub">30D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-lsh2','pv-lsh2')">✕</div></div>
         </div>
-      </div>
- 
-      <div class="sub-sec">
-        <div class="sub-label">Long/Short Ratio HISTORY — Deteksi Euphoria &amp; Kepanikan</div>
-        <div class="hint">Chart history L/S ratio. Terlalu banyak long = rawan dump. Terlalu banyak short = rawan pump.</div>
-        <div class="ug2">
-          <div class="us" id="sl-lsh1"><input type="file" accept="image/*" onchange="hu(this,'sl-lsh1','pv-lsh1')"><img class="upr" id="pv-lsh1"><div class="uph"><div class="uph-icon">⚖️</div><div class="uph-label" style="font-size:8px">L/S HISTORY</div><div class="uph-sub">7D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-lsh1','pv-lsh1')">✕</div></div>
-          <div class="us" id="sl-lsh2"><input type="file" accept="image/*" onchange="hu(this,'sl-lsh2','pv-lsh2')"><img class="upr" id="pv-lsh2"><div class="uph"><div class="uph-icon">⚖️</div><div class="uph-label" style="font-size:8px">L/S HISTORY</div><div class="uph-sub">30D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-lsh2','pv-lsh2')">✕</div></div>
-        </div>
-      </div>
- 
-      <div class="sub-sec">
-        <div class="sub-label">Liquidation History — Deteksi Squeeze Awal</div>
-        <div class="hint">Total long/short yang sudah dilikuidasi 24H-7D. Short liq spike = squeeze dimulai.</div>
-        <div class="ug2">
-          <div class="us" id="sl-liqh1"><input type="file" accept="image/*" onchange="hu(this,'sl-liqh1','pv-liqh1')"><img class="upr" id="pv-liqh1"><div class="uph"><div class="uph-icon">💥</div><div class="uph-label" style="font-size:8px">LIQ HISTORY</div><div class="uph-sub">24H</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-liqh1','pv-liqh1')">✕</div></div>
-          <div class="us" id="sl-liqh2"><input type="file" accept="image/*" onchange="hu(this,'sl-liqh2','pv-liqh2')"><img class="upr" id="pv-liqh2"><div class="uph"><div class="uph-icon">💥</div><div class="uph-label" style="font-size:8px">LIQ HISTORY</div><div class="uph-sub">7D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-liqh2','pv-liqh2')">✕</div></div>
-        </div>
-      </div>
- 
-      <div class="sub-sec">
-        <div class="sub-label">Volume Profile — POC &amp; High Volume Node</div>
-        <div class="hint">TradingView → indikator "Volume Profile". Tampilkan di chart 1D atau 4H. POC = magnet harga terkuat.</div>
-        <div class="ug2">
-          <div class="us" id="sl-vp1d"><input type="file" accept="image/*" onchange="hu(this,'sl-vp1d','pv-vp1d')"><img class="upr" id="pv-vp1d"><div class="uph"><div class="uph-icon">📊</div><div class="uph-label" style="font-size:8px">VOL PROFILE</div><div class="uph-sub">1D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-vp1d','pv-vp1d')">✕</div></div>
-          <div class="us" id="sl-vp4h"><input type="file" accept="image/*" onchange="hu(this,'sl-vp4h','pv-vp4h')"><img class="upr" id="pv-vp4h"><div class="uph"><div class="uph-icon">📊</div><div class="uph-label" style="font-size:8px">VOL PROFILE</div><div class="uph-sub">4H</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-vp4h','pv-vp4h')">✕</div></div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;">
+          <div class="us" id="sl-liqh1"><input type="file" accept="image/*" onchange="hu(this,'sl-liqh1','pv-liqh1')"><img class="upr" id="pv-liqh1"><div class="uph"><div class="uph-label">LIQ.H</div><div class="uph-sub">24H</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-liqh1','pv-liqh1')">✕</div></div>
+          <div class="us" id="sl-liqh2"><input type="file" accept="image/*" onchange="hu(this,'sl-liqh2','pv-liqh2')"><img class="upr" id="pv-liqh2"><div class="uph"><div class="uph-label">LIQ.H</div><div class="uph-sub">7D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-liqh2','pv-liqh2')">✕</div></div>
+          <div class="us" id="sl-vp1d"><input type="file" accept="image/*" onchange="hu(this,'sl-vp1d','pv-vp1d')"><img class="upr" id="pv-vp1d"><div class="uph"><div class="uph-label">VOL.P</div><div class="uph-sub">1D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-vp1d','pv-vp1d')">✕</div></div>
+          <div class="us" id="sl-vp4h"><input type="file" accept="image/*" onchange="hu(this,'sl-vp4h','pv-vp4h')"><img class="upr" id="pv-vp4h"><div class="uph"><div class="uph-label">VOL.P</div><div class="uph-sub">4H</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-vp4h','pv-vp4h')">✕</div></div>
         </div>
       </div>
  
@@ -292,10 +268,10 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
     <div class="ph"><span class="pt">04 // BTC PRICE — MULTI TIMEFRAME</span><span class="ptag req">REQUIRED</span></div>
     <div class="pb">
       <div class="hint">1D = Trend macro · 4H = Momentum saat ini · 1H = Kondisi sekarang</div>
-      <div class="ug3">
-        <div class="us" id="sl-btc1d"><input type="file" accept="image/*" onchange="hu(this,'sl-btc1d','pv-btc1d')"><img class="upr" id="pv-btc1d"><div class="uph"><div class="uph-icon">₿</div><div class="uph-label" style="font-size:9px">BTC 1D</div><div class="uph-sub">DAILY</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btc1d','pv-btc1d')">✕</div></div>
-        <div class="us" id="sl-btc4h"><input type="file" accept="image/*" onchange="hu(this,'sl-btc4h','pv-btc4h')"><img class="upr" id="pv-btc4h"><div class="uph"><div class="uph-icon">₿</div><div class="uph-label" style="font-size:9px">BTC 4H</div><div class="uph-sub">4 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btc4h','pv-btc4h')">✕</div></div>
-        <div class="us" id="sl-btc1h"><input type="file" accept="image/*" onchange="hu(this,'sl-btc1h','pv-btc1h')"><img class="upr" id="pv-btc1h"><div class="uph"><div class="uph-icon">₿</div><div class="uph-label" style="font-size:9px">BTC 1H</div><div class="uph-sub">1 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btc1h','pv-btc1h')">✕</div></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
+        <div class="us" id="sl-btc1d"><input type="file" accept="image/*" onchange="hu(this,'sl-btc1d','pv-btc1d')"><img class="upr" id="pv-btc1d"><div class="uph"><div class="uph-label">BTC 1D</div><div class="uph-sub">DAILY</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btc1d','pv-btc1d')">✕</div></div>
+        <div class="us" id="sl-btc4h"><input type="file" accept="image/*" onchange="hu(this,'sl-btc4h','pv-btc4h')"><img class="upr" id="pv-btc4h"><div class="uph"><div class="uph-label">BTC 4H</div><div class="uph-sub">4 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btc4h','pv-btc4h')">✕</div></div>
+        <div class="us" id="sl-btc1h"><input type="file" accept="image/*" onchange="hu(this,'sl-btc1h','pv-btc1h')"><img class="upr" id="pv-btc1h"><div class="uph"><div class="uph-label">BTC 1H</div><div class="uph-sub">1 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btc1h','pv-btc1h')">✕</div></div>
       </div>
     </div>
   </div>
@@ -305,17 +281,12 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
     <div class="ph"><span class="pt">05 // DOMINANCE — BTC.D + USDT.D</span><span class="ptag req">REQUIRED</span></div>
     <div class="pb">
       <div class="sub-sec">
-        <div class="sub-label">BTC.D — Aliran Dana BTC vs Altcoin</div>
-        <div class="ug2">
-          <div class="us" id="sl-btcd1d"><input type="file" accept="image/*" onchange="hu(this,'sl-btcd1d','pv-btcd1d')"><img class="upr" id="pv-btcd1d"><div class="uph"><div class="uph-icon">◎</div><div class="uph-label" style="font-size:8px">BTC.D 1D</div><div class="uph-sub">DAILY</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btcd1d','pv-btcd1d')">✕</div></div>
-          <div class="us" id="sl-btcd4h"><input type="file" accept="image/*" onchange="hu(this,'sl-btcd4h','pv-btcd4h')"><img class="upr" id="pv-btcd4h"><div class="uph"><div class="uph-icon">◎</div><div class="uph-label" style="font-size:8px">BTC.D 4H</div><div class="uph-sub">4 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btcd4h','pv-btcd4h')">✕</div></div>
-        </div>
-      </div>
-      <div class="sub-sec">
-        <div class="sub-label">USDT.D — Flee to Safety Signal</div>
-        <div class="ug2">
-          <div class="us" id="sl-usdtd1d"><input type="file" accept="image/*" onchange="hu(this,'sl-usdtd1d','pv-usdtd1d')"><img class="upr" id="pv-usdtd1d"><div class="uph"><div class="uph-icon">$</div><div class="uph-label" style="font-size:8px">USDT.D 1D</div><div class="uph-sub">DAILY</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-usdtd1d','pv-usdtd1d')">✕</div></div>
-          <div class="us" id="sl-usdtd4h"><input type="file" accept="image/*" onchange="hu(this,'sl-usdtd4h','pv-usdtd4h')"><img class="upr" id="pv-usdtd4h"><div class="uph"><div class="uph-icon">$</div><div class="uph-label" style="font-size:8px">USDT.D 4H</div><div class="uph-sub">4 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-usdtd4h','pv-usdtd4h')">✕</div></div>
+        <div class="sub-label">BTC.D (1D · 4H) + USDT.D (1D · 4H)</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;">
+          <div class="us" id="sl-btcd1d"><input type="file" accept="image/*" onchange="hu(this,'sl-btcd1d','pv-btcd1d')"><img class="upr" id="pv-btcd1d"><div class="uph"><div class="uph-label">BTC.D</div><div class="uph-sub">1D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btcd1d','pv-btcd1d')">✕</div></div>
+          <div class="us" id="sl-btcd4h"><input type="file" accept="image/*" onchange="hu(this,'sl-btcd4h','pv-btcd4h')"><img class="upr" id="pv-btcd4h"><div class="uph"><div class="uph-label">BTC.D</div><div class="uph-sub">4H</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btcd4h','pv-btcd4h')">✕</div></div>
+          <div class="us" id="sl-usdtd1d"><input type="file" accept="image/*" onchange="hu(this,'sl-usdtd1d','pv-usdtd1d')"><img class="upr" id="pv-usdtd1d"><div class="uph"><div class="uph-label">USDT.D</div><div class="uph-sub">1D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-usdtd1d','pv-usdtd1d')">✕</div></div>
+          <div class="us" id="sl-usdtd4h"><input type="file" accept="image/*" onchange="hu(this,'sl-usdtd4h','pv-usdtd4h')"><img class="upr" id="pv-usdtd4h"><div class="uph"><div class="uph-label">USDT.D</div><div class="uph-sub">4H</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-usdtd4h','pv-usdtd4h')">✕</div></div>
         </div>
       </div>
     </div>
