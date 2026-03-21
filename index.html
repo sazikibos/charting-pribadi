@@ -3,163 +3,184 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>TRENOVA//TERMINAL v4</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>TRENOVA//TERMINAL</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#000;--bg2:#0a0a0a;--bg3:#111;--or:#ff6600;--or2:#cc5200;--or-d:rgba(255,102,0,0.08);--am:#ffaa00;--wh:#e0e0e0;--wh2:#999;--dim:#444;--dim2:#222;--gr:#00cc44;--re:#ff3333;--cy:#00aacc;--brd:#1a1a1a;--brd2:#282828;}
+:root{
+  --bg:#000;--bg2:#0a0a0a;--bg3:#111;
+  --or:#ff6600;--or2:#cc5200;--or-d:rgba(255,102,0,0.08);
+  --am:#ffaa00;--wh:#e0e0e0;--wh2:#888;--dim:#444;--dim2:#222;
+  --gr:#00cc44;--re:#ff3333;--brd:#1c1c1c;--brd2:#252525;
+}
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{background:var(--bg);color:var(--wh2);font-family:'IBM Plex Mono',monospace;font-size:11px;min-height:100%;overflow-x:hidden;}
-body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(0,0,0,0.12) 1px,rgba(0,0,0,0.12) 2px);pointer-events:none;z-index:9999;}
+html,body{background:var(--bg);color:var(--wh2);font-family:'IBM Plex Mono',monospace;font-size:12px;min-height:100%;}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 1px,rgba(0,0,0,0.1) 1px,rgba(0,0,0,0.1) 2px);pointer-events:none;z-index:9999;}
  
-.topbar{background:var(--or);height:22px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;position:sticky;top:0;z-index:200;}
-.tb-brand{font-weight:700;font-size:12px;color:#000;letter-spacing:.05em;}
-.tb-sub{font-size:10px;color:rgba(0,0,0,.5);margin-left:10px;}
+/* ── TOPBAR ── */
+.topbar{background:var(--or);height:26px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;position:sticky;top:0;z-index:200;}
+.tb-l{display:flex;align-items:center;gap:8px;}
+.tb-brand{font-weight:700;font-size:12px;color:#000;letter-spacing:.06em;}
+.tb-ver{font-size:9px;color:rgba(0,0,0,.5);background:rgba(0,0,0,.15);padding:1px 6px;}
+.tb-mode{font-size:9px;color:rgba(0,0,0,.7);background:rgba(0,0,0,.2);padding:1px 8px;font-weight:700;letter-spacing:.08em;}
 .tb-r{font-size:10px;color:rgba(0,0,0,.6);}
  
-.menubar{background:var(--bg3);border-bottom:1px solid var(--brd2);display:flex;height:28px;padding:0 4px;overflow-x:auto;scrollbar-width:none;}
+/* ── MENUBAR ── */
+.menubar{background:var(--bg3);border-bottom:1px solid var(--brd2);display:flex;height:28px;overflow-x:auto;scrollbar-width:none;}
 .menubar::-webkit-scrollbar{display:none;}
-.mi{padding:0 11px;height:28px;display:flex;align-items:center;font-size:10px;letter-spacing:.06em;color:var(--wh2);cursor:pointer;border:none;border-bottom:2px solid transparent;background:transparent;font-family:'IBM Plex Mono',monospace;white-space:nowrap;transition:all .1s;}
-.mi:hover{color:var(--or);background:var(--or-d);}
-.mi.active{color:var(--or);border-bottom:2px solid var(--or);background:var(--or-d);}
-.mc{margin-left:4px;background:var(--or);color:#000;font-size:9px;font-weight:700;padding:1px 4px;}
+.mi{padding:0 14px;height:28px;display:flex;align-items:center;font-size:10px;letter-spacing:.06em;color:var(--wh2);cursor:pointer;border:none;border-bottom:2px solid transparent;background:transparent;font-family:'IBM Plex Mono',monospace;white-space:nowrap;transition:all .1s;}
+.mi:hover,.mi.active{color:var(--or);border-bottom:2px solid var(--or);background:var(--or-d);}
+.mc{margin-left:4px;background:var(--or);color:#000;font-size:9px;font-weight:700;padding:1px 5px;}
  
-.sbar{background:var(--bg2);border-bottom:1px solid var(--brd);padding:4px 8px;display:flex;align-items:center;gap:12px;overflow-x:auto;scrollbar-width:none;}
+/* ── SBAR ── */
+.sbar{background:var(--bg2);border-bottom:1px solid var(--brd);padding:5px 12px;display:flex;align-items:center;gap:14px;overflow-x:auto;scrollbar-width:none;}
 .sbar::-webkit-scrollbar{display:none;}
-.si{display:flex;align-items:center;gap:4px;white-space:nowrap;font-size:10px;}
+.si{display:flex;align-items:center;gap:5px;white-space:nowrap;font-size:10px;}
 .sl{color:var(--dim);letter-spacing:.05em;}
 .sv{color:var(--wh);font-weight:600;}
 .sv.or{color:var(--or);}
 .sv.gr{color:var(--gr);}
 .ss{color:var(--dim2);}
  
+/* ── PAGE ── */
 .page{display:none;}
-.page.active{display:block;}
+.page.active{display:block;padding-bottom:30px;}
  
-/* PANEL */
-.panel{border:1px solid var(--brd2);margin:4px 6px;background:var(--bg2);}
-.ph{background:var(--bg3);border-bottom:1px solid var(--brd2);padding:4px 8px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
-.pt{font-size:11px;font-weight:700;color:var(--or);letter-spacing:.06em;text-transform:uppercase;flex:1;}
-.ptag{font-size:9px;padding:1px 6px;font-weight:700;white-space:nowrap;}
+/* ── PANEL ── */
+.panel{border:1px solid var(--brd2);margin:6px;background:var(--bg2);}
+.ph{background:var(--bg3);border-bottom:1px solid var(--brd2);padding:5px 10px;display:flex;align-items:center;justify-content:space-between;}
+.pt{font-size:10px;font-weight:700;color:var(--or);letter-spacing:.08em;text-transform:uppercase;}
+.ptag{font-size:9px;padding:1px 6px;font-weight:700;}
 .req{background:var(--re);color:#000;}
-.opt{background:var(--am);color:#000;}
-.pb{padding:6px;}
+.pb{padding:8px 10px;}
+.hint{font-size:10px;color:var(--dim);margin-bottom:7px;letter-spacing:.02em;line-height:1.5;}
  
-.sub-sec{margin-bottom:6px;}
-.sub-sec:last-child{margin-bottom:0;}
-.sub-label{font-size:10px;color:var(--or);letter-spacing:.05em;text-transform:uppercase;padding:3px 0 5px;border-bottom:1px solid var(--brd);margin-bottom:5px;display:flex;align-items:center;gap:5px;}
+/* ── PROGRESS ── */
+.prog-wrap{margin:6px;background:var(--bg3);border:1px solid var(--brd2);padding:8px 10px;}
+.prog-row{display:flex;justify-content:space-between;margin-bottom:6px;}
+.prog-lbl{font-size:10px;color:var(--dim);letter-spacing:.08em;}
+.prog-pct{font-size:11px;font-weight:700;color:var(--or);}
+.prog-track{height:3px;background:var(--brd2);margin-bottom:7px;}
+.prog-fill{height:100%;background:var(--or);transition:width .4s ease;box-shadow:0 0 6px var(--or);}
+.prog-steps{display:flex;gap:4px;flex-wrap:wrap;}
+.ps{font-size:9px;padding:2px 7px;border:1px solid var(--brd2);color:var(--dim);letter-spacing:.05em;transition:all .2s;}
+.ps.done{border-color:var(--or2);color:var(--or);background:var(--or-d);}
+ 
+/* ── SUBSECTION ── */
+.sub-label{font-size:9px;color:var(--or);letter-spacing:.1em;text-transform:uppercase;padding:4px 0 5px;border-bottom:1px solid var(--brd);margin-bottom:6px;display:flex;align-items:center;gap:5px;}
 .sub-label::before{content:'▸';color:var(--or2);}
-.hint{font-size:10px;color:var(--dim);letter-spacing:.03em;margin-bottom:5px;line-height:1.4;}
+.sub-sec{margin-bottom:8px;}
+.sub-sec:last-child{margin-bottom:0;}
  
-/* GRIDS */
-.ug2{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
-.ug3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;}
-.ug4{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
+/* ── CHECK ALL ── */
+.ck-all{display:flex;align-items:center;justify-content:space-between;padding:5px 10px;background:rgba(255,102,0,0.04);border-bottom:1px solid var(--brd2);}
+.ck-all-btn{font-size:9px;color:var(--or);background:transparent;border:1px solid var(--or2);padding:2px 8px;cursor:pointer;font-family:'IBM Plex Mono',monospace;letter-spacing:.05em;transition:all .15s;}
+.ck-all-btn:hover{background:var(--or-d);}
+.ck-count{font-size:9px;color:var(--dim);}
+.ck-count span{color:var(--wh);}
  
-/* UPLOAD SLOT */
-.us{position:relative;background:var(--bg);border:1px solid var(--brd2);aspect-ratio:3/2;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:border-color .15s;}
-.us:hover{border-color:var(--or2);}
-.us.filled{border-color:var(--or);}
+/* ── CHECKLIST ITEMS (mobile) ── */
+.ck-list{padding:0;}
+.ck-grp-label{padding:5px 10px 4px;font-size:9px;color:var(--or);letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--brd);background:rgba(255,102,0,0.03);display:flex;align-items:center;gap:4px;}
+.ck-grp-label::before{content:'▸';color:var(--or2);}
+.ck-item{display:flex;align-items:center;padding:8px 10px;border-bottom:1px solid var(--brd);cursor:pointer;transition:background .1s;-webkit-tap-highlight-color:transparent;user-select:none;}
+.ck-item:last-child{border-bottom:none;}
+.ck-item:active{background:var(--or-d);}
+.ck-item.checked{background:rgba(0,204,68,0.03);}
+.ck-box{width:18px;height:18px;border:1px solid var(--brd2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:10px;transition:all .15s;}
+.ck-item.checked .ck-box{background:var(--gr);border-color:var(--gr);}
+.ck-check{color:#000;font-size:10px;font-weight:700;display:none;}
+.ck-item.checked .ck-check{display:block;}
+.ck-label{flex:1;}
+.ck-name{font-size:11px;color:var(--wh);font-weight:600;}
+.ck-item.checked .ck-name{color:var(--gr);}
+.ck-desc{font-size:9px;color:var(--dim);margin-top:1px;}
+.ck-tf{font-size:10px;color:var(--or);font-weight:700;margin-left:8px;flex-shrink:0;}
+ 
+/* ── UPLOAD SLOTS (desktop) ── */
+.ug2{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+.ug3{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
+.ug4{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;}
+.ug5{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;}
+ 
+.us{position:relative;background:var(--bg);border:1px dashed var(--brd2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;transition:all .15s;height:100px;}
+.us:hover{border-color:var(--or2);background:var(--or-d);}
+.us.drag-over{border-color:var(--or);background:rgba(255,102,0,0.1);border-style:solid;}
+.us.filled{border-color:var(--or);border-style:solid;}
 .us input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 .upr{position:absolute;inset:0;object-fit:cover;width:100%;height:100%;display:none;}
 .us.filled .upr{display:block;}
 .us.filled .uph{display:none;}
-.uph{display:flex;flex-direction:column;align-items:center;gap:2px;pointer-events:none;padding:3px;}
-.uph-icon{font-size:11px;opacity:.3;}
-.uph-label{font-size:10px;font-weight:700;color:var(--or);letter-spacing:.04em;text-align:center;}
-.uph-sub{font-size:8px;color:var(--dim);letter-spacing:.02em;text-align:center;}
-.ubadge{position:absolute;top:3px;right:3px;background:var(--or);color:#000;font-size:8px;font-weight:700;width:14px;height:14px;display:none;align-items:center;justify-content:center;z-index:2;}
+.uph{display:flex;flex-direction:column;align-items:center;gap:3px;pointer-events:none;padding:6px;}
+.uph-label{font-size:11px;font-weight:700;color:var(--or);letter-spacing:.05em;}
+.uph-sub{font-size:9px;color:var(--dim);}
+.uph-hint{font-size:8px;color:var(--dim2);margin-top:1px;}
+.ubadge{position:absolute;top:4px;right:4px;background:var(--or);color:#000;font-size:8px;font-weight:700;padding:1px 5px;display:none;z-index:2;}
 .us.filled .ubadge{display:flex;}
-.udel{position:absolute;top:3px;left:3px;background:var(--re);color:#fff;font-size:8px;width:14px;height:14px;display:none;align-items:center;justify-content:center;z-index:3;cursor:pointer;}
+.udel{position:absolute;top:4px;left:4px;background:var(--re);color:#fff;font-size:8px;padding:1px 5px;display:none;z-index:3;cursor:pointer;}
 .us.filled .udel{display:flex;}
  
-/* PROGRESS */
-.prog-wrap{margin:6px;background:var(--bg3);border:1px solid var(--brd2);padding:8px 10px;}
-.prog-row{display:flex;justify-content:space-between;margin-bottom:6px;}
-.prog-lbl{font-size:10px;color:var(--dim);letter-spacing:.1em;}
-.prog-pct{font-size:11px;font-weight:700;color:var(--or);}
-.prog-track{height:3px;background:var(--brd2);margin-bottom:8px;}
-.prog-fill{height:100%;background:var(--or);transition:width .4s ease;box-shadow:0 0 6px var(--or);}
-.prog-steps{display:flex;gap:3px;flex-wrap:wrap;}
-.ps{font-size:9px;padding:2px 7px;border:1px solid var(--brd2);color:var(--dim);letter-spacing:.05em;transition:all .2s;}
-.ps.done{border-color:var(--or2);color:var(--or);background:var(--or-d);}
- 
-/* FORM */
-.fr{display:flex;align-items:center;border-bottom:1px solid var(--brd);padding:7px 0;gap:8px;}
+/* ── FORM ── */
+.fr{display:flex;align-items:center;border-bottom:1px solid var(--brd);padding:8px 10px;gap:10px;}
 .fr:last-child{border-bottom:none;}
-.fk{font-size:10px;color:var(--dim);letter-spacing:.06em;min-width:75px;flex-shrink:0;text-transform:uppercase;}
-.fi{flex:1;background:transparent;border:none;color:var(--wh);font-family:'IBM Plex Mono',monospace;font-size:11px;outline:none;caret-color:var(--or);}
+.fk{font-size:10px;color:var(--dim);letter-spacing:.06em;min-width:80px;text-transform:uppercase;}
+.fi{flex:1;background:transparent;border:none;color:var(--wh);font-family:'IBM Plex Mono',monospace;font-size:12px;outline:none;caret-color:var(--or);}
 .fi::placeholder{color:var(--dim);}
-.fs{flex:1;background:var(--bg);border:1px solid var(--brd2);color:var(--wh);font-family:'IBM Plex Mono',monospace;font-size:11px;outline:none;padding:4px 6px;-webkit-appearance:none;}
+.fs{flex:1;background:var(--bg);border:1px solid var(--brd2);color:var(--wh);font-family:'IBM Plex Mono',monospace;font-size:12px;outline:none;padding:4px 6px;-webkit-appearance:none;max-width:180px;}
  
-/* EXEC */
-.exec-btn{width:calc(100% - 12px);margin:0 6px 6px;padding:13px;background:var(--or);color:#000;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.2em;border:none;cursor:pointer;transition:all .15s;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;}
-.exec-btn:hover:not(:disabled){background:var(--am);box-shadow:0 0 20px rgba(255,102,0,.4);}
+/* ── EXEC ── */
+.exec-btn{width:calc(100% - 12px);margin:0 6px 6px;padding:13px;background:var(--or);color:#000;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.18em;border:none;cursor:pointer;transition:all .15s;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;}
+.exec-btn:hover:not(:disabled){background:var(--am);box-shadow:0 0 20px rgba(255,102,0,.35);}
 .exec-btn:disabled{background:var(--brd2);color:var(--dim);cursor:not-allowed;}
  
-/* OUTPUT */
+/* ── OUTPUT ── */
 .out-panel{margin:0 6px 6px;border:1px solid var(--or2);background:var(--bg);display:none;}
 .out-panel.show{display:block;}
 .out-hdr{background:var(--or);padding:5px 10px;display:flex;align-items:center;justify-content:space-between;}
-.out-hdr-txt{font-size:9px;font-weight:700;color:#000;letter-spacing:.06em;}
-.out-body{padding:10px;font-size:10px;line-height:1.8;color:var(--wh2);white-space:pre-wrap;max-height:320px;overflow-y:auto;border-bottom:1px solid var(--brd2);}
+.out-hdr-txt{font-size:10px;font-weight:700;color:#000;letter-spacing:.06em;}
+.out-body{padding:10px;font-size:10px;line-height:1.9;color:var(--wh2);white-space:pre-wrap;max-height:300px;overflow-y:auto;border-bottom:1px solid var(--brd2);}
 .out-acts{display:grid;grid-template-columns:1fr 1fr;}
 .ob{padding:10px;background:var(--bg3);border:none;border-right:1px solid var(--brd2);color:var(--wh2);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.08em;cursor:pointer;transition:all .15s;text-transform:uppercase;}
 .ob:last-child{border-right:none;}
-.ob:hover{background:var(--or-d);color:var(--or);}
+.ob:hover,.ob:active{background:var(--or-d);color:var(--or);}
  
-/* HISTORY */
-.hist-hdr{margin:6px;background:var(--bg3);border:1px solid var(--brd2);padding:8px 10px;display:flex;align-items:center;justify-content:space-between;}
-.hist-ttl{font-size:11px;font-weight:700;color:var(--or);letter-spacing:.1em;}
+/* ── HISTORY ── */
+.hist-hdr{margin:6px;background:var(--bg3);border:1px solid var(--brd2);padding:7px 10px;display:flex;align-items:center;justify-content:space-between;}
+.hist-ttl{font-size:11px;font-weight:700;color:var(--or);letter-spacing:.08em;}
 .hist-clr{font-size:9px;color:var(--dim);background:transparent;border:1px solid var(--brd2);padding:3px 8px;cursor:pointer;font-family:'IBM Plex Mono',monospace;transition:all .15s;}
 .hist-clr:hover{border-color:var(--re);color:var(--re);}
-.hist-empty{margin:40px 6px;text-align:center;color:var(--dim);font-size:11px;letter-spacing:.1em;line-height:2.2;}
-.hist-tbl{margin:0 6px 6px;border:1px solid var(--brd2);}
-.h-thead{background:var(--bg3);display:grid;grid-template-columns:1fr 90px 36px;border-bottom:1px solid var(--brd2);}
-.h-th{padding:6px 8px;font-size:9px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;border-right:1px solid var(--brd);}
-.h-th:last-child{border-right:none;}
-.h-row{display:grid;grid-template-columns:1fr 90px 36px;border-bottom:1px solid var(--brd);cursor:pointer;transition:background .1s;}
-.h-row:last-child{border-bottom:none;}
-.h-row:hover{background:var(--or-d);}
-.h-td{padding:7px 8px;font-size:10px;color:var(--wh2);border-right:1px solid var(--brd);display:flex;align-items:center;overflow:hidden;}
-.h-td:last-child{border-right:none;justify-content:center;}
-.h-pair{font-weight:700;color:var(--wh);letter-spacing:.04em;}
-.h-del{background:transparent;border:none;color:var(--dim);cursor:pointer;font-size:13px;transition:color .1s;font-family:'IBM Plex Mono',monospace;}
-.h-del:hover{color:var(--re);}
+.hist-empty{margin:0 6px;padding:40px;text-align:center;color:var(--dim);font-size:11px;letter-spacing:.08em;line-height:2.2;border:1px solid var(--brd2);}
+.hist-card{background:var(--bg2);border:1px solid var(--brd2);margin:0 6px 6px;cursor:pointer;transition:border-color .1s;}
+.hist-card:hover{border-color:var(--or2);}
+.hist-card-top{padding:8px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--brd);}
+.hist-lev{font-size:13px;font-weight:700;color:var(--am);}
+.hist-del{background:transparent;border:none;color:var(--dim);font-size:13px;cursor:pointer;padding:2px 6px;transition:color .1s;}
+.hist-del:hover{color:var(--re);}
+.hist-meta{padding:6px 10px;font-size:10px;color:var(--dim);display:flex;gap:14px;}
  
-/* MODAL */
-.mbg{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:500;display:none;align-items:flex-end;}
+/* ── GUIDE ── */
+.guide-panel{margin:6px;border:1px solid var(--brd2);background:var(--bg2);}
+.guide-ph{background:var(--bg3);border-bottom:1px solid var(--brd2);padding:5px 10px;}
+.guide-title{font-size:10px;font-weight:700;color:var(--or);letter-spacing:.08em;text-transform:uppercase;}
+.guide-body{padding:10px;font-size:11px;line-height:1.9;color:var(--dim);}
+.guide-body b{color:var(--wh);}
+.guide-body .gr{color:var(--gr);}
+.guide-body .re{color:var(--re);}
+.guide-body .or{color:var(--or);}
+.guide-body .am{color:var(--am);}
+ 
+/* ── MODAL ── */
+.mbg{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:500;display:none;align-items:flex-end;}
 .mbg.show{display:flex;}
-.mbox{background:var(--bg2);border-top:2px solid var(--or);width:100%;max-height:88vh;overflow-y:auto;}
+.mbox{background:var(--bg2);border-top:2px solid var(--or);width:100%;max-height:85vh;overflow-y:auto;}
 .mtop{background:var(--or);padding:6px 10px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;}
-.mtop-ttl{font-size:11px;font-weight:700;color:#000;letter-spacing:.06em;}
+.mtop-ttl{font-size:11px;font-weight:700;color:#000;}
 .mclose{background:rgba(0,0,0,.2);border:none;color:#000;font-size:13px;width:24px;height:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.minner{padding:8px;}
+.minner{padding:10px;}
 .mshots{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:8px;}
-.mshot{aspect-ratio:3/2;object-fit:cover;width:100%;border:1px solid var(--brd2);}
-.msum{background:var(--bg);border:1px solid var(--brd2);padding:10px;font-size:10px;line-height:1.8;white-space:pre-wrap;color:var(--wh2);margin-bottom:6px;max-height:240px;overflow-y:auto;}
-.mcopy{width:100%;padding:11px;background:var(--or);border:none;color:#000;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.15em;cursor:pointer;transition:all .15s;}
+.mshot{aspect-ratio:16/9;object-fit:cover;width:100%;border:1px solid var(--brd2);}
+.msum{background:var(--bg);border:1px solid var(--brd2);padding:10px;font-size:10px;line-height:1.9;white-space:pre-wrap;color:var(--wh2);margin-bottom:8px;max-height:260px;overflow-y:auto;}
+.mcopy{width:100%;padding:12px;background:var(--or);border:none;color:#000;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.12em;cursor:pointer;}
 .mcopy:hover{background:var(--am);}
- 
-/* GUIDE PAGE */
-.guide-sec{margin:6px;border:1px solid var(--brd2);background:var(--bg2);}
-.guide-hdr{background:var(--bg3);border-bottom:1px solid var(--brd2);padding:5px 10px;}
-.guide-title{font-size:10px;font-weight:700;color:var(--or);letter-spacing:.1em;text-transform:uppercase;}
-.guide-body{padding:10px;font-size:10px;line-height:1.9;color:var(--wh2);}
-.guide-row{display:flex;gap:8px;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid var(--brd);}
-.guide-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-.guide-icon{font-size:14px;flex-shrink:0;width:20px;text-align:center;}
-.guide-text{}
-.guide-label{color:var(--or);font-weight:700;letter-spacing:.06em;margin-bottom:2px;}
-.guide-desc{color:var(--dim);font-size:9px;line-height:1.6;}
-.signal-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;}
-.signal-box{background:var(--bg);border:1px solid var(--brd2);padding:8px;}
-.signal-box.long{border-top:2px solid var(--gr);}
-.signal-box.short{border-top:2px solid var(--re);}
-.signal-title{font-size:9px;font-weight:700;letter-spacing:.1em;margin-bottom:6px;}
-.signal-title.gr{color:var(--gr);}
-.signal-title.re{color:var(--re);}
-.signal-item{font-size:9px;color:var(--dim);margin-bottom:3px;display:flex;gap:5px;line-height:1.4;}
-.signal-item::before{content:'→';color:var(--or2);flex-shrink:0;}
  
 ::-webkit-scrollbar{width:3px;height:3px;}
 ::-webkit-scrollbar-track{background:var(--bg);}
@@ -170,7 +191,11 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 <body>
  
 <div class="topbar">
-  <div><span class="tb-brand">TRENOVA//TERMINAL</span><span class="tb-sub">TRADE ANALYZER v4.0</span></div>
+  <div class="tb-l">
+    <span class="tb-brand">TRENOVA//TERMINAL</span>
+    <span class="tb-ver">v4</span>
+    <span class="tb-mode" id="tb-mode">DETECTING...</span>
+  </div>
   <div class="tb-r" id="clock">--:--:--</div>
 </div>
  
@@ -181,133 +206,215 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 </div>
  
 <div class="sbar">
-  <div class="si"><span class="sl">STATUS</span><span class="sv or" id="s-txt">AWAITING INPUT</span></div>
+  <div class="si"><span class="sl">STATUS</span><span class="sv or" id="s-txt">AWAITING</span></div>
   <span class="ss">│</span>
-  <div class="si"><span class="sl">SECTION</span><span class="sv" id="s-pct">0/6</span></div>
+  <div class="si"><span class="sl">SECTION</span><span class="sv" id="s-pct">0/5</span></div>
   <span class="ss">│</span>
-  <div class="si"><span class="sl">FILES</span><span class="sv" id="s-files">0/21</span></div>
+  <div class="si"><span class="sl">DATA</span><span class="sv" id="s-files">0/23</span></div>
+  <span class="ss">│</span>
+  <div class="si"><span class="sl">MODE</span><span class="sv gr" id="s-mode">—</span></div>
 </div>
  
-<div class="terminal-body">
- 
-<!-- ══ FORM PAGE ══ -->
+<!-- ══════════════════════ FORM PAGE ══════════════════════ -->
 <div class="page active" id="page-form">
  
   <div class="prog-wrap">
     <div class="prog-row"><span class="prog-lbl">DATA COMPLETENESS</span><span class="prog-pct" id="prog-pct">0%</span></div>
     <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
     <div class="prog-steps">
-      <span class="ps" id="s1">[1] CHART KOIN</span>
+      <span class="ps" id="s1">[1] CHART</span>
       <span class="ps" id="s2">[2] COINGLASS</span>
       <span class="ps" id="s3">[3] EXHAUSTION</span>
-      <span class="ps" id="s4">[4] BTC PRICE</span>
+      <span class="ps" id="s4">[4] BTC</span>
       <span class="ps" id="s5">[5] DOMINANCE</span>
-      <span class="ps" id="s6">[6] POSITION</span>
     </div>
   </div>
  
-  <!-- 01 CHART KOIN -->
+  <!-- ── PANEL 01: CHART ── -->
   <div class="panel">
-    <div class="ph"><span class="pt">01 // CHART KOIN — MULTI TIMEFRAME</span><span class="ptag req">REQUIRED</span></div>
-    <div class="pb">
-      <div class="hint">EMA 5/10/30 · VOLUME · CVD · OPEN INTEREST · SPOT CVD harus terlihat di semua TF</div>
-      <div class="sub-sec">
-        <div class="sub-label">1W · 1D · 4H · 1H · 15M — Semua Timeframe</div>
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:2px;">
-          <div class="us" id="sl-1w"><input type="file" accept="image/*" onchange="hu(this,'sl-1w','pv-1w')"><img class="upr" id="pv-1w"><div class="uph"><div class="uph-label">1W</div><div class="uph-sub">WEEKLY</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-1w','pv-1w')">✕</div></div>
-          <div class="us" id="sl-1d"><input type="file" accept="image/*" onchange="hu(this,'sl-1d','pv-1d')"><img class="upr" id="pv-1d"><div class="uph"><div class="uph-label">1D</div><div class="uph-sub">DAILY</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-1d','pv-1d')">✕</div></div>
-          <div class="us" id="sl-4h"><input type="file" accept="image/*" onchange="hu(this,'sl-4h','pv-4h')"><img class="upr" id="pv-4h"><div class="uph"><div class="uph-label">4H</div><div class="uph-sub">4 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-4h','pv-4h')">✕</div></div>
-          <div class="us" id="sl-1h"><input type="file" accept="image/*" onchange="hu(this,'sl-1h','pv-1h')"><img class="upr" id="pv-1h"><div class="uph"><div class="uph-label">1H</div><div class="uph-sub">1 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-1h','pv-1h')">✕</div></div>
-          <div class="us" id="sl-15m"><input type="file" accept="image/*" onchange="hu(this,'sl-15m','pv-15m')"><img class="upr" id="pv-15m"><div class="uph"><div class="uph-label">15M</div><div class="uph-sub">15 MNT</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-15m','pv-15m')">✕</div></div>
+    <div class="ph">
+      <span class="pt">01 // CHART KOIN — MULTI TIMEFRAME</span>
+      <span class="ptag req">REQUIRED</span>
+    </div>
+ 
+    <!-- DESKTOP: upload slots -->
+    <div id="desk-01" style="display:none">
+      <div class="pb">
+        <div class="hint">EMA 5/10/30 · Volume · CVD · OI · Spot CVD — drag & drop atau klik slot</div>
+        <div class="ug5">
+          <div class="us" id="sl-1w"><input type="file" accept="image/*" onchange="hu(this,'sl-1w','pv-1w')"><img class="upr" id="pv-1w"><div class="uph"><div class="uph-label">1W</div><div class="uph-sub">WEEKLY</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-1w','pv-1w')">✕</div></div>
+          <div class="us" id="sl-1d"><input type="file" accept="image/*" onchange="hu(this,'sl-1d','pv-1d')"><img class="upr" id="pv-1d"><div class="uph"><div class="uph-label">1D</div><div class="uph-sub">DAILY</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-1d','pv-1d')">✕</div></div>
+          <div class="us" id="sl-4h"><input type="file" accept="image/*" onchange="hu(this,'sl-4h','pv-4h')"><img class="upr" id="pv-4h"><div class="uph"><div class="uph-label">4H</div><div class="uph-sub">4 JAM</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-4h','pv-4h')">✕</div></div>
+          <div class="us" id="sl-1h"><input type="file" accept="image/*" onchange="hu(this,'sl-1h','pv-1h')"><img class="upr" id="pv-1h"><div class="uph"><div class="uph-label">1H</div><div class="uph-sub">1 JAM</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-1h','pv-1h')">✕</div></div>
+          <div class="us" id="sl-15m"><input type="file" accept="image/*" onchange="hu(this,'sl-15m','pv-15m')"><img class="upr" id="pv-15m"><div class="uph"><div class="uph-label">15M</div><div class="uph-sub">15 MENIT</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-15m','pv-15m')">✕</div></div>
         </div>
+      </div>
+    </div>
+ 
+    <!-- MOBILE: checklist -->
+    <div id="mob-01" style="display:none">
+      <div class="ck-all">
+        <span class="ck-count"><span id="c1-done">0</span>/5</span>
+        <button class="ck-all-btn" onclick="checkAll('mg1','c1',5)">CENTANG SEMUA</button>
+      </div>
+      <div class="ck-list" id="mg1">
+        <div class="ck-grp-label">Struktur Macro</div>
+        <div class="ck-item" onclick="toggle(this,'c1','mg1')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">1W — Weekly</div><div class="ck-desc">EMA + CVD + OI + Spot CVD terlihat</div></div><span class="ck-tf">1W</span></div>
+        <div class="ck-item" onclick="toggle(this,'c1','mg1')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">1D — Daily</div><div class="ck-desc">EMA + CVD + OI + Spot CVD terlihat</div></div><span class="ck-tf">1D</span></div>
+        <div class="ck-grp-label">Momentum & Entry</div>
+        <div class="ck-item" onclick="toggle(this,'c1','mg1')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">4H — 4 Jam</div><div class="ck-desc">EMA + CVD + OI + Spot CVD terlihat</div></div><span class="ck-tf">4H</span></div>
+        <div class="ck-item" onclick="toggle(this,'c1','mg1')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">1H — 1 Jam</div><div class="ck-desc">EMA + CVD + OI + Spot CVD terlihat</div></div><span class="ck-tf">1H</span></div>
+        <div class="ck-item" onclick="toggle(this,'c1','mg1')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">15M — 15 Menit</div><div class="ck-desc">EMA + CVD + OI + Spot CVD terlihat</div></div><span class="ck-tf">15M</span></div>
       </div>
     </div>
   </div>
  
-  <!-- 02 COINGLASS STANDARD -->
+  <!-- ── PANEL 02: COINGLASS ── -->
   <div class="panel">
     <div class="ph"><span class="pt">02 // COINGLASS — STANDARD DATA</span><span class="ptag req">REQUIRED</span></div>
-    <div class="pb">
-      <div class="hint">Heatmap · Funding Rate Current · Long/Short Ratio Current</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
-        <div class="us" id="sl-hm"><input type="file" accept="image/*" onchange="hu(this,'sl-hm','pv-hm')"><img class="upr" id="pv-hm"><div class="uph"><div class="uph-label">HEATMAP</div><div class="uph-sub">LIQ MAP</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-hm','pv-hm')">✕</div></div>
-        <div class="us" id="sl-fr"><input type="file" accept="image/*" onchange="hu(this,'sl-fr','pv-fr')"><img class="upr" id="pv-fr"><div class="uph"><div class="uph-label">FUNDING</div><div class="uph-sub">CURRENT</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-fr','pv-fr')">✕</div></div>
-        <div class="us" id="sl-ls"><input type="file" accept="image/*" onchange="hu(this,'sl-ls','pv-ls')"><img class="upr" id="pv-ls"><div class="uph"><div class="uph-label">L/S RATIO</div><div class="uph-sub">CURRENT</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-ls','pv-ls')">✕</div></div>
+    <div id="desk-02" style="display:none">
+      <div class="pb">
+        <div class="hint">Liquidation Heatmap · Funding Rate Current · Long/Short Ratio Current</div>
+        <div class="ug3">
+          <div class="us" id="sl-hm"><input type="file" accept="image/*" onchange="hu(this,'sl-hm','pv-hm')"><img class="upr" id="pv-hm"><div class="uph"><div class="uph-label">HEATMAP</div><div class="uph-sub">Liq Map</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-hm','pv-hm')">✕</div></div>
+          <div class="us" id="sl-fr"><input type="file" accept="image/*" onchange="hu(this,'sl-fr','pv-fr')"><img class="upr" id="pv-fr"><div class="uph"><div class="uph-label">FUNDING</div><div class="uph-sub">Current</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-fr','pv-fr')">✕</div></div>
+          <div class="us" id="sl-ls"><input type="file" accept="image/*" onchange="hu(this,'sl-ls','pv-ls')"><img class="upr" id="pv-ls"><div class="uph"><div class="uph-label">L/S RATIO</div><div class="uph-sub">Current</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-ls','pv-ls')">✕</div></div>
+        </div>
+      </div>
+    </div>
+    <div id="mob-02" style="display:none">
+      <div class="ck-all"><span class="ck-count"><span id="c2-done">0</span>/3</span><button class="ck-all-btn" onclick="checkAll('mg2','c2',3)">CENTANG SEMUA</button></div>
+      <div class="ck-list" id="mg2">
+        <div class="ck-item" onclick="toggle(this,'c2','mg2')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">Liquidation Heatmap</div><div class="ck-desc">Coinglass → Heatmap</div></div></div>
+        <div class="ck-item" onclick="toggle(this,'c2','mg2')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">Funding Rate Current</div><div class="ck-desc">Coinglass → Funding Rate</div></div></div>
+        <div class="ck-item" onclick="toggle(this,'c2','mg2')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">Long/Short Ratio Current</div><div class="ck-desc">Coinglass → L/S Ratio</div></div></div>
       </div>
     </div>
   </div>
  
-  <!-- 03 EXHAUSTION SIGNALS -->
+  <!-- ── PANEL 03: EXHAUSTION ── -->
   <div class="panel">
     <div class="ph"><span class="pt">03 // EXHAUSTION SIGNALS — REVERSAL DETECTOR</span><span class="ptag req">REQUIRED</span></div>
-    <div class="pb">
-      <div class="hint">Data untuk deteksi PUMP dari bottom &amp; DUMP dari top. Seller/buyer exhaustion signals.</div>
- 
-      <div class="sub-sec">
-        <div class="sub-label">Funding History · L/S History · Liq History · Vol Profile</div>
-        <div class="hint">Funding &amp; L/S History: Coinglass → chart view. Vol Profile: TradingView indikator.</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:2px;">
-          <div class="us" id="sl-frh1"><input type="file" accept="image/*" onchange="hu(this,'sl-frh1','pv-frh1')"><img class="upr" id="pv-frh1"><div class="uph"><div class="uph-label">FUND.H</div><div class="uph-sub">7D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-frh1','pv-frh1')">✕</div></div>
-          <div class="us" id="sl-frh2"><input type="file" accept="image/*" onchange="hu(this,'sl-frh2','pv-frh2')"><img class="upr" id="pv-frh2"><div class="uph"><div class="uph-label">FUND.H</div><div class="uph-sub">30D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-frh2','pv-frh2')">✕</div></div>
-          <div class="us" id="sl-lsh1"><input type="file" accept="image/*" onchange="hu(this,'sl-lsh1','pv-lsh1')"><img class="upr" id="pv-lsh1"><div class="uph"><div class="uph-label">L/S.H</div><div class="uph-sub">7D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-lsh1','pv-lsh1')">✕</div></div>
-          <div class="us" id="sl-lsh2"><input type="file" accept="image/*" onchange="hu(this,'sl-lsh2','pv-lsh2')"><img class="upr" id="pv-lsh2"><div class="uph"><div class="uph-label">L/S.H</div><div class="uph-sub">30D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-lsh2','pv-lsh2')">✕</div></div>
+    <div id="desk-03" style="display:none">
+      <div class="pb">
+        <div class="hint">Funding History · L/S History · Liq History · Volume Profile — drag & drop atau klik</div>
+        <div class="sub-sec">
+          <div class="sub-label">Funding History + L/S History</div>
+          <div class="ug4">
+            <div class="us" id="sl-frh1"><input type="file" accept="image/*" onchange="hu(this,'sl-frh1','pv-frh1')"><img class="upr" id="pv-frh1"><div class="uph"><div class="uph-label">FUND.H</div><div class="uph-sub">7D</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-frh1','pv-frh1')">✕</div></div>
+            <div class="us" id="sl-frh2"><input type="file" accept="image/*" onchange="hu(this,'sl-frh2','pv-frh2')"><img class="upr" id="pv-frh2"><div class="uph"><div class="uph-label">FUND.H</div><div class="uph-sub">30D</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-frh2','pv-frh2')">✕</div></div>
+            <div class="us" id="sl-lsh1"><input type="file" accept="image/*" onchange="hu(this,'sl-lsh1','pv-lsh1')"><img class="upr" id="pv-lsh1"><div class="uph"><div class="uph-label">L/S.H</div><div class="uph-sub">7D</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-lsh1','pv-lsh1')">✕</div></div>
+            <div class="us" id="sl-lsh2"><input type="file" accept="image/*" onchange="hu(this,'sl-lsh2','pv-lsh2')"><img class="upr" id="pv-lsh2"><div class="uph"><div class="uph-label">L/S.H</div><div class="uph-sub">30D</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-lsh2','pv-lsh2')">✕</div></div>
+          </div>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;">
-          <div class="us" id="sl-liqh1"><input type="file" accept="image/*" onchange="hu(this,'sl-liqh1','pv-liqh1')"><img class="upr" id="pv-liqh1"><div class="uph"><div class="uph-label">LIQ.H</div><div class="uph-sub">24H</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-liqh1','pv-liqh1')">✕</div></div>
-          <div class="us" id="sl-liqh2"><input type="file" accept="image/*" onchange="hu(this,'sl-liqh2','pv-liqh2')"><img class="upr" id="pv-liqh2"><div class="uph"><div class="uph-label">LIQ.H</div><div class="uph-sub">7D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-liqh2','pv-liqh2')">✕</div></div>
-          <div class="us" id="sl-vp1d"><input type="file" accept="image/*" onchange="hu(this,'sl-vp1d','pv-vp1d')"><img class="upr" id="pv-vp1d"><div class="uph"><div class="uph-label">VOL.P</div><div class="uph-sub">1D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-vp1d','pv-vp1d')">✕</div></div>
-          <div class="us" id="sl-vp4h"><input type="file" accept="image/*" onchange="hu(this,'sl-vp4h','pv-vp4h')"><img class="upr" id="pv-vp4h"><div class="uph"><div class="uph-label">VOL.P</div><div class="uph-sub">4H</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-vp4h','pv-vp4h')">✕</div></div>
+        <div class="sub-sec">
+          <div class="sub-label">Liquidation History + Volume Profile</div>
+          <div class="ug4">
+            <div class="us" id="sl-liqh1"><input type="file" accept="image/*" onchange="hu(this,'sl-liqh1','pv-liqh1')"><img class="upr" id="pv-liqh1"><div class="uph"><div class="uph-label">LIQ.H</div><div class="uph-sub">24H</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-liqh1','pv-liqh1')">✕</div></div>
+            <div class="us" id="sl-liqh2"><input type="file" accept="image/*" onchange="hu(this,'sl-liqh2','pv-liqh2')"><img class="upr" id="pv-liqh2"><div class="uph"><div class="uph-label">LIQ.H</div><div class="uph-sub">7D</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-liqh2','pv-liqh2')">✕</div></div>
+            <div class="us" id="sl-vp1d"><input type="file" accept="image/*" onchange="hu(this,'sl-vp1d','pv-vp1d')"><img class="upr" id="pv-vp1d"><div class="uph"><div class="uph-label">VOL.P</div><div class="uph-sub">1D</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-vp1d','pv-vp1d')">✕</div></div>
+            <div class="us" id="sl-vp4h"><input type="file" accept="image/*" onchange="hu(this,'sl-vp4h','pv-vp4h')"><img class="upr" id="pv-vp4h"><div class="uph"><div class="uph-label">VOL.P</div><div class="uph-sub">4H</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-vp4h','pv-vp4h')">✕</div></div>
+          </div>
         </div>
       </div>
- 
+    </div>
+    <div id="mob-03" style="display:none">
+      <div class="ck-all"><span class="ck-count"><span id="c3-done">0</span>/8</span><button class="ck-all-btn" onclick="checkAll('mg3','c3',8)">CENTANG SEMUA</button></div>
+      <div class="ck-list" id="mg3">
+        <div class="ck-grp-label">Funding Rate History</div>
+        <div class="ck-item" onclick="toggle(this,'c3','mg3')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">Funding History 7D</div><div class="ck-desc">Coinglass → chart history</div></div><span class="ck-tf">7D</span></div>
+        <div class="ck-item" onclick="toggle(this,'c3','mg3')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">Funding History 30D</div><div class="ck-desc">Coinglass → chart history</div></div><span class="ck-tf">30D</span></div>
+        <div class="ck-grp-label">L/S Ratio History</div>
+        <div class="ck-item" onclick="toggle(this,'c3','mg3')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">L/S Ratio History 7D</div><div class="ck-desc">Coinglass → L/S chart</div></div><span class="ck-tf">7D</span></div>
+        <div class="ck-item" onclick="toggle(this,'c3','mg3')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">L/S Ratio History 30D</div><div class="ck-desc">Coinglass → L/S chart</div></div><span class="ck-tf">30D</span></div>
+        <div class="ck-grp-label">Liquidation History</div>
+        <div class="ck-item" onclick="toggle(this,'c3','mg3')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">Liq History 24H</div><div class="ck-desc">Total long/short dilikuidasi</div></div><span class="ck-tf">24H</span></div>
+        <div class="ck-item" onclick="toggle(this,'c3','mg3')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">Liq History 7D</div><div class="ck-desc">Total long/short dilikuidasi</div></div><span class="ck-tf">7D</span></div>
+        <div class="ck-grp-label">Volume Profile</div>
+        <div class="ck-item" onclick="toggle(this,'c3','mg3')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">Volume Profile 1D</div><div class="ck-desc">TradingView → indikator VP</div></div><span class="ck-tf">1D</span></div>
+        <div class="ck-item" onclick="toggle(this,'c3','mg3')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">Volume Profile 4H</div><div class="ck-desc">TradingView → indikator VP</div></div><span class="ck-tf">4H</span></div>
+      </div>
     </div>
   </div>
  
-  <!-- 04 BTC PRICE -->
+  <!-- ── PANEL 04: BTC ── -->
   <div class="panel">
     <div class="ph"><span class="pt">04 // BTC PRICE — MULTI TIMEFRAME</span><span class="ptag req">REQUIRED</span></div>
-    <div class="pb">
-      <div class="hint">1D = Trend macro · 4H = Momentum saat ini · 1H = Kondisi sekarang</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;">
-        <div class="us" id="sl-btc1d"><input type="file" accept="image/*" onchange="hu(this,'sl-btc1d','pv-btc1d')"><img class="upr" id="pv-btc1d"><div class="uph"><div class="uph-label">BTC 1D</div><div class="uph-sub">DAILY</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btc1d','pv-btc1d')">✕</div></div>
-        <div class="us" id="sl-btc4h"><input type="file" accept="image/*" onchange="hu(this,'sl-btc4h','pv-btc4h')"><img class="upr" id="pv-btc4h"><div class="uph"><div class="uph-label">BTC 4H</div><div class="uph-sub">4 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btc4h','pv-btc4h')">✕</div></div>
-        <div class="us" id="sl-btc1h"><input type="file" accept="image/*" onchange="hu(this,'sl-btc1h','pv-btc1h')"><img class="upr" id="pv-btc1h"><div class="uph"><div class="uph-label">BTC 1H</div><div class="uph-sub">1 JAM</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btc1h','pv-btc1h')">✕</div></div>
-      </div>
-    </div>
-  </div>
- 
-  <!-- 05 DOMINANCE -->
-  <div class="panel">
-    <div class="ph"><span class="pt">05 // DOMINANCE — BTC.D + USDT.D</span><span class="ptag req">REQUIRED</span></div>
-    <div class="pb">
-      <div class="sub-sec">
-        <div class="sub-label">BTC.D (1D · 4H) + USDT.D (1D · 4H)</div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;">
-          <div class="us" id="sl-btcd1d"><input type="file" accept="image/*" onchange="hu(this,'sl-btcd1d','pv-btcd1d')"><img class="upr" id="pv-btcd1d"><div class="uph"><div class="uph-label">BTC.D</div><div class="uph-sub">1D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btcd1d','pv-btcd1d')">✕</div></div>
-          <div class="us" id="sl-btcd4h"><input type="file" accept="image/*" onchange="hu(this,'sl-btcd4h','pv-btcd4h')"><img class="upr" id="pv-btcd4h"><div class="uph"><div class="uph-label">BTC.D</div><div class="uph-sub">4H</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btcd4h','pv-btcd4h')">✕</div></div>
-          <div class="us" id="sl-usdtd1d"><input type="file" accept="image/*" onchange="hu(this,'sl-usdtd1d','pv-usdtd1d')"><img class="upr" id="pv-usdtd1d"><div class="uph"><div class="uph-label">USDT.D</div><div class="uph-sub">1D</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-usdtd1d','pv-usdtd1d')">✕</div></div>
-          <div class="us" id="sl-usdtd4h"><input type="file" accept="image/*" onchange="hu(this,'sl-usdtd4h','pv-usdtd4h')"><img class="upr" id="pv-usdtd4h"><div class="uph"><div class="uph-label">USDT.D</div><div class="uph-sub">4H</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-usdtd4h','pv-usdtd4h')">✕</div></div>
+    <div id="desk-04" style="display:none">
+      <div class="pb">
+        <div class="hint">1D = Trend macro · 4H = Momentum saat ini · 1H = Kondisi sekarang</div>
+        <div class="ug3">
+          <div class="us" id="sl-btc1d"><input type="file" accept="image/*" onchange="hu(this,'sl-btc1d','pv-btc1d')"><img class="upr" id="pv-btc1d"><div class="uph"><div class="uph-label">BTC 1D</div><div class="uph-sub">Daily</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btc1d','pv-btc1d')">✕</div></div>
+          <div class="us" id="sl-btc4h"><input type="file" accept="image/*" onchange="hu(this,'sl-btc4h','pv-btc4h')"><img class="upr" id="pv-btc4h"><div class="uph"><div class="uph-label">BTC 4H</div><div class="uph-sub">4 Jam</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btc4h','pv-btc4h')">✕</div></div>
+          <div class="us" id="sl-btc1h"><input type="file" accept="image/*" onchange="hu(this,'sl-btc1h','pv-btc1h')"><img class="upr" id="pv-btc1h"><div class="uph"><div class="uph-label">BTC 1H</div><div class="uph-sub">1 Jam</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btc1h','pv-btc1h')">✕</div></div>
         </div>
       </div>
     </div>
+    <div id="mob-04" style="display:none">
+      <div class="ck-all"><span class="ck-count"><span id="c4-done">0</span>/3</span><button class="ck-all-btn" onclick="checkAll('mg4','c4',3)">CENTANG SEMUA</button></div>
+      <div class="ck-list" id="mg4">
+        <div class="ck-item" onclick="toggle(this,'c4','mg4')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">BTC 1D</div><div class="ck-desc">Trend macro Bitcoin</div></div><span class="ck-tf">1D</span></div>
+        <div class="ck-item" onclick="toggle(this,'c4','mg4')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">BTC 4H</div><div class="ck-desc">Momentum BTC saat ini</div></div><span class="ck-tf">4H</span></div>
+        <div class="ck-item" onclick="toggle(this,'c4','mg4')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">BTC 1H</div><div class="ck-desc">Kondisi BTC sekarang</div></div><span class="ck-tf">1H</span></div>
+      </div>
+    </div>
   </div>
  
-  <!-- 06 POSITION INFO -->
+  <!-- ── PANEL 05: DOMINANCE ── -->
+  <div class="panel">
+    <div class="ph"><span class="pt">05 // DOMINANCE — BTC.D + USDT.D</span><span class="ptag req">REQUIRED</span></div>
+    <div id="desk-05" style="display:none">
+      <div class="pb">
+        <div class="hint">BTC.D = aliran dana · USDT.D = flee to safety — masing-masing 1D + 4H</div>
+        <div class="ug4">
+          <div class="us" id="sl-btcd1d"><input type="file" accept="image/*" onchange="hu(this,'sl-btcd1d','pv-btcd1d')"><img class="upr" id="pv-btcd1d"><div class="uph"><div class="uph-label">BTC.D 1D</div><div class="uph-sub">Daily</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btcd1d','pv-btcd1d')">✕</div></div>
+          <div class="us" id="sl-btcd4h"><input type="file" accept="image/*" onchange="hu(this,'sl-btcd4h','pv-btcd4h')"><img class="upr" id="pv-btcd4h"><div class="uph"><div class="uph-label">BTC.D 4H</div><div class="uph-sub">4 Jam</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-btcd4h','pv-btcd4h')">✕</div></div>
+          <div class="us" id="sl-usdtd1d"><input type="file" accept="image/*" onchange="hu(this,'sl-usdtd1d','pv-usdtd1d')"><img class="upr" id="pv-usdtd1d"><div class="uph"><div class="uph-label">USDT.D 1D</div><div class="uph-sub">Daily</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-usdtd1d','pv-usdtd1d')">✕</div></div>
+          <div class="us" id="sl-usdtd4h"><input type="file" accept="image/*" onchange="hu(this,'sl-usdtd4h','pv-usdtd4h')"><img class="upr" id="pv-usdtd4h"><div class="uph"><div class="uph-label">USDT.D 4H</div><div class="uph-sub">4 Jam</div><div class="uph-hint">drag & drop</div></div><div class="ubadge">✓</div><div class="udel" onclick="ru(event,'sl-usdtd4h','pv-usdtd4h')">✕</div></div>
+        </div>
+      </div>
+    </div>
+    <div id="mob-05" style="display:none">
+      <div class="ck-all"><span class="ck-count"><span id="c5-done">0</span>/4</span><button class="ck-all-btn" onclick="checkAll('mg5','c5',4)">CENTANG SEMUA</button></div>
+      <div class="ck-list" id="mg5">
+        <div class="ck-grp-label">BTC Dominance</div>
+        <div class="ck-item" onclick="toggle(this,'c5','mg5')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">BTC.D 1D</div><div class="ck-desc">Aliran dana BTC vs altcoin</div></div><span class="ck-tf">1D</span></div>
+        <div class="ck-item" onclick="toggle(this,'c5','mg5')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">BTC.D 4H</div><div class="ck-desc">Aliran dana BTC vs altcoin</div></div><span class="ck-tf">4H</span></div>
+        <div class="ck-grp-label">USDT Dominance</div>
+        <div class="ck-item" onclick="toggle(this,'c5','mg5')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">USDT.D 1D</div><div class="ck-desc">Flee to safety signal</div></div><span class="ck-tf">1D</span></div>
+        <div class="ck-item" onclick="toggle(this,'c5','mg5')"><div class="ck-box"><span class="ck-check">✓</span></div><div class="ck-label"><div class="ck-name">USDT.D 4H</div><div class="ck-desc">Flee to safety signal</div></div><span class="ck-tf">4H</span></div>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- ── POSITION INFO ── -->
   <div class="panel">
     <div class="ph"><span class="pt">06 // POSITION INFO</span><span class="ptag req">REQUIRED</span></div>
-    <div class="pb">
-      <div class="fr"><span class="fk">LEVERAGE</span><select class="fs" id="ip-lev" onchange="up()"><option value="">SELECT...</option><option>3x</option><option>5x</option><option>10x</option><option>15x</option><option>20x</option><option>25x</option><option>50x</option><option>75x</option><option>100x</option></select></div>
-      <div class="fr"><span class="fk">MODAL</span><input class="fi" id="ip-modal" type="number" placeholder="Jumlah USDT..."><span style="color:var(--dim);font-size:10px">USDT</span></div>
+    <div style="padding:0;">
+      <div class="fr">
+        <span class="fk">LEVERAGE</span>
+        <select class="fs" id="ip-lev" onchange="up()">
+          <option value="">SELECT...</option>
+          <option>3x</option><option>5x</option><option>10x</option>
+          <option>15x</option><option>20x</option><option>25x</option>
+          <option>50x</option><option>75x</option><option>100x</option>
+        </select>
+      </div>
+      <div class="fr">
+        <span class="fk">MODAL</span>
+        <input class="fi" id="ip-modal" type="number" placeholder="Jumlah USDT...">
+        <span style="color:var(--dim);font-size:10px;margin-left:4px">USDT</span>
+      </div>
     </div>
   </div>
  
   <button class="exec-btn" id="exec-btn" onclick="gen()" disabled>
-    <span>▶</span> EXECUTE — GENERATE SUMMARY
+    ▶ EXECUTE — GENERATE SUMMARY
   </button>
  
   <div class="out-panel" id="out-panel">
     <div class="out-hdr">
-      <span class="out-hdr-txt">▶ READY — COPY TEXT + KIRIM SEMUA SCREENSHOT KE CLAUDE</span>
+      <span class="out-hdr-txt">▶ READY — COPY & KIRIM KE CLAUDE</span>
       <span style="font-size:9px;color:rgba(0,0,0,.6)" id="out-time"></span>
     </div>
     <div class="out-body" id="out-body"></div>
@@ -319,7 +426,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
  
 </div>
  
-<!-- ══ HISTORY PAGE ══ -->
+<!-- ══════════════════════ HISTORY PAGE ══════════════════════ -->
 <div class="page" id="page-history">
   <div class="hist-hdr">
     <span class="hist-ttl">ANALYSIS HISTORY LOG</span>
@@ -328,68 +435,48 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
   <div id="hist-body"></div>
 </div>
  
-<!-- ══ GUIDE PAGE ══ -->
+<!-- ══════════════════════ GUIDE PAGE ══════════════════════ -->
 <div class="page" id="page-guide">
- 
-  <div class="guide-sec">
-    <div class="guide-hdr"><div class="guide-title">REVERSAL HUNTING — SIGNAL GUIDE</div></div>
+  <div class="guide-panel">
+    <div class="guide-ph"><div class="guide-title">⬆ PUMP SIGNALS — Seller Exhaustion (Long)</div></div>
     <div class="guide-body">
-      <div style="font-size:9px;color:var(--dim);margin-bottom:10px;letter-spacing:.05em;">Deteksi PUMP dari bottom &amp; DUMP dari top menggunakan exhaustion signals</div>
-      <div class="signal-grid">
-        <div class="signal-box long">
-          <div class="signal-title gr">⬆ PUMP SIGNALS (Long)</div>
-          <div class="signal-item">CVD divergence bullish (harga LL, CVD HL)</div>
-          <div class="signal-item">Funding rate negatif ekstrem berhari-hari</div>
-          <div class="signal-item">OI spike besar di area low</div>
-          <div class="signal-item">Short L/S ratio sangat tinggi (over-short)</div>
-          <div class="signal-item">Volume climax / selling climax candle</div>
-          <div class="signal-item">Liquidity sweep bawah + rejection kuat</div>
-          <div class="signal-item">Demand zone Weekly pertama kali ditest</div>
-          <div class="signal-item">USDT.D turun / BTC.D turun</div>
-          <div class="signal-item">Short liquidation mulai spike</div>
-        </div>
-        <div class="signal-box short">
-          <div class="signal-title re">⬇ DUMP SIGNALS (Short)</div>
-          <div class="signal-item">CVD divergence bearish (harga HH, CVD LH)</div>
-          <div class="signal-item">Funding rate positif ekstrem berhari-hari</div>
-          <div class="signal-item">OI spike besar di area high</div>
-          <div class="signal-item">Long L/S ratio sangat tinggi (euphoria)</div>
-          <div class="signal-item">Volume climax / buying climax candle</div>
-          <div class="signal-item">Liquidity sweep atas + rejection kuat</div>
-          <div class="signal-item">Supply zone Weekly pertama kali ditest</div>
-          <div class="signal-item">USDT.D naik / BTC.D naik</div>
-          <div class="signal-item">Long liquidation mulai spike</div>
-        </div>
-      </div>
+      <div>→ CVD divergence bullish <b>(harga LL, CVD HL)</b></div>
+      <div>→ Funding rate <b class="re">negatif ekstrem</b> berhari-hari</div>
+      <div>→ OI spike besar di <b>area low</b></div>
+      <div>→ L/S ratio terlalu banyak short <b>(over-short)</b></div>
+      <div>→ <b>Volume climax</b> / selling climax candle</div>
+      <div>→ Liquidity sweep bawah + <b>rejection kuat</b></div>
+      <div>→ Demand zone Weekly <b>pertama kali ditest</b></div>
+      <div>→ USDT.D turun / BTC.D turun</div>
+      <div>→ <b>Short liquidation</b> mulai spike</div>
     </div>
   </div>
- 
-  <div class="guide-sec">
-    <div class="guide-hdr"><div class="guide-title">HIERARKI ANALISA — URUTAN PRIORITAS</div></div>
+  <div class="guide-panel">
+    <div class="guide-ph"><div class="guide-title">⬇ DUMP SIGNALS — Buyer Exhaustion (Short)</div></div>
     <div class="guide-body">
-      <div class="guide-row"><div class="guide-icon">①</div><div class="guide-text"><div class="guide-label">MAKRO (BTC + DOMINANCE)</div><div class="guide-desc">Layer paling override. Kalau BTC bearish + USDT.D naik, semua setup long altcoin menjadi high risk.</div></div></div>
-      <div class="guide-row"><div class="guide-icon">②</div><div class="guide-text"><div class="guide-label">EXHAUSTION SIGNALS</div><div class="guide-desc">Funding history + L/S history + liq history + volume profile. Deteksi kapan seller/buyer sudah habis.</div></div></div>
-      <div class="guide-row"><div class="guide-icon">③</div><div class="guide-text"><div class="guide-label">STRUKTUR KOIN (1W → 1D → 4H)</div><div class="guide-desc">Tentukan bias dominan koin tersebut. Weekly adalah yang paling kuat dan paling override.</div></div></div>
-      <div class="guide-row"><div class="guide-icon">④</div><div class="guide-text"><div class="guide-label">ORDER FLOW (CVD + OI)</div><div class="guide-desc">Konfirmasi siapa yang dominan — buyer atau seller. CVD divergence = sinyal reversal terkuat.</div></div></div>
-      <div class="guide-row"><div class="guide-icon">⑤</div><div class="guide-text"><div class="guide-label">LIKUIDITAS (HEATMAP)</div><div class="guide-desc">Market bergerak menuju likuiditas terbesar. Baca heatmap untuk tahu arah hunt berikutnya.</div></div></div>
-      <div class="guide-row"><div class="guide-icon">⑥</div><div class="guide-text"><div class="guide-label">TIMING ENTRY (1H + 15M)</div><div class="guide-desc">Setelah bias ditentukan, baru masuk di timeframe kecil dengan konfirmasi candle yang jelas.</div></div></div>
+      <div>→ CVD divergence bearish <b>(harga HH, CVD LH)</b></div>
+      <div>→ Funding rate <b class="gr">positif ekstrem</b> berhari-hari</div>
+      <div>→ OI spike besar di <b>area high</b></div>
+      <div>→ L/S ratio terlalu banyak long <b>(euphoria)</b></div>
+      <div>→ <b>Volume climax</b> / buying climax candle</div>
+      <div>→ Liquidity sweep atas + <b>rejection kuat</b></div>
+      <div>→ Supply zone Weekly <b>pertama kali ditest</b></div>
+      <div>→ USDT.D naik / BTC.D naik</div>
+      <div>→ <b>Long liquidation</b> mulai spike</div>
     </div>
   </div>
- 
-  <div class="guide-sec">
-    <div class="guide-hdr"><div class="guide-title">KEYAKINAN ENTRY — PROBABILITY SCORING</div></div>
+  <div class="guide-panel">
+    <div class="guide-ph"><div class="guide-title">PROBABILITY SCORING</div></div>
     <div class="guide-body">
-      <div class="guide-row"><div class="guide-icon" style="color:var(--gr)">80-90%</div><div class="guide-text"><div class="guide-label" style="color:var(--gr)">ENTRY — Sizing penuh (2-3% modal)</div><div class="guide-desc">7-9 sinyal exhaustion terpenuhi + makro mendukung + struktur alignment sempurna</div></div></div>
-      <div class="guide-row"><div class="guide-icon" style="color:var(--am)">65-79%</div><div class="guide-text"><div class="guide-label" style="color:var(--am)">ENTRY — Sizing kecil (1-1.5% modal)</div><div class="guide-desc">5-6 sinyal terpenuhi. Setup valid tapi ada beberapa konfirmasi yang belum ideal.</div></div></div>
-      <div class="guide-row"><div class="guide-icon" style="color:var(--or)">50-64%</div><div class="guide-text"><div class="guide-label" style="color:var(--or)">ENTRY — Sizing minimal (0.5% modal)</div><div class="guide-desc">3-4 sinyal terpenuhi. Probabilitas tipis. SL sangat ketat atau tunggu konfirmasi tambahan.</div></div></div>
-      <div class="guide-row"><div class="guide-icon" style="color:var(--re)">&lt;50%</div><div class="guide-text"><div class="guide-label" style="color:var(--re)">SKIP — Jangan entry</div><div class="guide-desc">Kurang dari 3 sinyal. Probabilitas terlalu rendah. Market belum kasih setup yang layak.</div></div></div>
+      <div><b class="gr">80–95%</b> → 7–9 sinyal ON → Entry sizing penuh (2–3% modal)</div>
+      <div><b class="am">65–79%</b> → 5–6 sinyal ON → Entry sizing kecil (1–1.5% modal)</div>
+      <div><b class="or">50–64%</b> → 3–4 sinyal ON → Entry sizing minimal (0.5% modal)</div>
+      <div><b class="re">&lt;50%</b>  → &lt;3 sinyal ON → <b>SKIP — jangan entry</b></div>
     </div>
   </div>
- 
 </div>
  
-</div><!-- terminal-body -->
- 
+<!-- MODAL -->
 <div class="mbg" id="mbg" onclick="cmOut(event)">
   <div class="mbox">
     <div class="mtop"><span class="mtop-ttl" id="m-ttl">DETAIL</span><button class="mclose" onclick="cm()">✕</button></div>
@@ -398,72 +485,133 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 </div>
  
 <script>
-let F={};
-let hist=JSON.parse(localStorage.getItem('trv4')||'[]');
-let outTxt='';
+// ── DEVICE DETECTION ──
+const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || window.innerWidth < 768;
+let isDesktop = !isMobile;
  
-const REQ=[
-  'sl-1w','sl-1d','sl-4h','sl-1h','sl-15m',
-  'sl-hm','sl-fr','sl-ls',
-  'sl-frh1','sl-frh2','sl-lsh1','sl-lsh2','sl-liqh1','sl-liqh2','sl-vp1d','sl-vp4h',
-  'sl-btc1d','sl-btc4h','sl-btc1h',
-  'sl-btcd1d','sl-btcd4h',
-  'sl-usdtd1d','sl-usdtd4h'
-];
+// ── STATE ──
+const TOTAL = 23;
+let F = {}; // desktop files
+let ckCounts = {c1:0,c2:0,c3:0,c4:0,c5:0}; // mobile counts
+const ckMax = {c1:5,c2:3,c3:8,c4:3,c5:4};
+let hist = JSON.parse(localStorage.getItem('trv_v4')||'[]');
+let outTxt = '';
  
-const SEC={
-  s1:['sl-1w','sl-1d','sl-4h','sl-1h','sl-15m'],
-  s2:['sl-hm','sl-fr','sl-ls'],
-  s3:['sl-frh1','sl-frh2','sl-lsh1','sl-lsh2','sl-liqh1','sl-liqh2','sl-vp1d','sl-vp4h'],
-  s4:['sl-btc1d','sl-btc4h','sl-btc1h'],
-  s5:['sl-btcd1d','sl-btcd4h','sl-usdtd1d','sl-usdtd4h']
-};
+const REQ_DESK = ['sl-1w','sl-1d','sl-4h','sl-1h','sl-15m','sl-hm','sl-fr','sl-ls','sl-frh1','sl-frh2','sl-lsh1','sl-lsh2','sl-liqh1','sl-liqh2','sl-vp1d','sl-vp4h','sl-btc1d','sl-btc4h','sl-btc1h','sl-btcd1d','sl-btcd4h','sl-usdtd1d','sl-usdtd4h'];
+const SEC_DESK = {s1:['sl-1w','sl-1d','sl-4h','sl-1h','sl-15m'],s2:['sl-hm','sl-fr','sl-ls'],s3:['sl-frh1','sl-frh2','sl-lsh1','sl-lsh2','sl-liqh1','sl-liqh2','sl-vp1d','sl-vp4h'],s4:['sl-btc1d','sl-btc4h','sl-btc1h'],s5:['sl-btcd1d','sl-btcd4h','sl-usdtd1d','sl-usdtd4h']};
  
+// ── INIT MODE ──
+function initMode(){
+  const mode = isMobile ? 'MOBILE' : 'DESKTOP';
+  document.getElementById('tb-mode').textContent = mode;
+  document.getElementById('s-mode').textContent = isMobile ? '📱 CHECKLIST' : '🖥️ DRAG & DROP';
+ 
+  // Show/hide correct UI per panel
+  [1,2,3,4,5].forEach(i=>{
+    const d = document.getElementById(`desk-0${i}`);
+    const m = document.getElementById(`mob-0${i}`);
+    if(d) d.style.display = isDesktop ? 'block' : 'none';
+    if(m) m.style.display = isMobile ? 'block' : 'none';
+  });
+ 
+  if(isDesktop) setupDragDrop();
+}
+ 
+// ── CLOCK ──
 function tick(){const n=new Date(),p=x=>String(x).padStart(2,'0');document.getElementById('clock').textContent=`${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())} WIB`;}
 setInterval(tick,1000);tick();
  
-function hu(input,sid,pid){
-  const f=input.files[0];if(!f)return;
+// ── DESKTOP: UPLOAD ──
+function hu(input,sid,pid){const f=input.files[0];if(!f)return;loadFile(f,sid,pid);}
+function loadFile(f,sid,pid){
   const r=new FileReader();
-  r.onload=e=>{document.getElementById(pid).src=e.target.result;document.getElementById(sid).classList.add('filled');F[sid]={name:f.name,data:e.target.result};up();};
+  r.onload=e=>{
+    document.getElementById(pid).src=e.target.result;
+    document.getElementById(sid).classList.add('filled');
+    F[sid]={name:f.name,data:e.target.result};
+    up();
+  };
   r.readAsDataURL(f);
 }
- 
 function ru(e,sid,pid){
   e.stopPropagation();
-  document.getElementById(pid).src='';document.getElementById(sid).classList.remove('filled');delete F[sid];
-  const inp=document.querySelector(`#${sid} input`);if(inp)inp.value='';up();
+  document.getElementById(pid).src='';
+  document.getElementById(sid).classList.remove('filled');
+  delete F[sid];
+  const inp=document.querySelector(`#${sid} input`);if(inp)inp.value='';
+  up();
+}
+function setupDragDrop(){
+  document.querySelectorAll('.us').forEach(slot=>{
+    const sid=slot.id;
+    const pid='pv-'+sid.replace('sl-','');
+    slot.addEventListener('dragover',e=>{e.preventDefault();slot.classList.add('drag-over');});
+    slot.addEventListener('dragleave',()=>slot.classList.remove('drag-over'));
+    slot.addEventListener('drop',e=>{
+      e.preventDefault();slot.classList.remove('drag-over');
+      const f=e.dataTransfer.files[0];
+      if(f&&f.type.startsWith('image/')) loadFile(f,sid,pid);
+    });
+  });
 }
  
+// ── MOBILE: CHECKLIST ──
+function toggle(el,grp,gid){
+  el.classList.toggle('checked');
+  ckCounts[grp]=document.querySelectorAll(`#${gid} .ck-item.checked`).length;
+  document.getElementById(`${grp}-done`).textContent=ckCounts[grp];
+  up();
+}
+function checkAll(gid,grp,max){
+  const items=document.querySelectorAll(`#${gid} .ck-item`);
+  const allChecked=[...items].every(i=>i.classList.contains('checked'));
+  items.forEach(i=>i.classList.toggle('checked',!allChecked));
+  ckCounts[grp]=allChecked?0:max;
+  document.getElementById(`${grp}-done`).textContent=ckCounts[grp];
+  up();
+}
+ 
+// ── PROGRESS (unified) ──
 function up(){
-  const s1ok=SEC.s1.every(s=>F[s]);
-  const s2ok=SEC.s2.every(s=>F[s]);
-  const s3ok=SEC.s3.every(s=>F[s]);
-  const s4ok=SEC.s4.every(s=>F[s]);
-  const s5ok=SEC.s5.every(s=>F[s]);
-  const lev=document.getElementById('ip-lev').value;
-  const s6ok=!!lev;
+  let s1ok,s2ok,s3ok,s4ok,s5ok,total;
  
-  ['s1','s2','s3','s4','s5'].forEach((id,i)=>document.getElementById(id).classList.toggle('done',[s1ok,s2ok,s3ok,s4ok,s5ok][i]));
-  document.getElementById('s6').classList.toggle('done',!!s6ok);
+  if(isDesktop){
+    s1ok=SEC_DESK.s1.every(s=>F[s]);
+    s2ok=SEC_DESK.s2.every(s=>F[s]);
+    s3ok=SEC_DESK.s3.every(s=>F[s]);
+    s4ok=SEC_DESK.s4.every(s=>F[s]);
+    s5ok=SEC_DESK.s5.every(s=>F[s]);
+    total=REQ_DESK.filter(s=>F[s]).length;
+    document.getElementById('s-files').textContent=`${total}/${TOTAL}`;
+  } else {
+    s1ok=ckCounts.c1===ckMax.c1;
+    s2ok=ckCounts.c2===ckMax.c2;
+    s3ok=ckCounts.c3===ckMax.c3;
+    s4ok=ckCounts.c4===ckMax.c4;
+    s5ok=ckCounts.c5===ckMax.c5;
+    total=Object.values(ckCounts).reduce((a,b)=>a+b,0);
+    document.getElementById('s-files').textContent=`${total}/${TOTAL}`;
+  }
  
-  const done=[s1ok,s2ok,s3ok,s4ok,s5ok,!!s6ok].filter(Boolean).length;
-  const pct=Math.round(done/6*100);
+  ['s1','s2','s3','s4','s5'].forEach((id,i)=>
+    document.getElementById(id).classList.toggle('done',[s1ok,s2ok,s3ok,s4ok,s5ok][i])
+  );
+ 
+  const done=[s1ok,s2ok,s3ok,s4ok,s5ok].filter(Boolean).length;
+  const pct=Math.round(done/5*100);
   document.getElementById('prog-fill').style.width=pct+'%';
   document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('s-pct').textContent=`${done}/5`;
  
-  const fd=REQ.filter(s=>F[s]).length;
-  document.getElementById('s-files').textContent=`${fd}/${REQ.length}`;
-  document.getElementById('s-pct').textContent=`${done}/6`;
- 
- 
-  const allOk=REQ.every(s=>F[s])&&s6ok;
+  const lev=document.getElementById('ip-lev').value;
+  const allOk=done===5&&lev;
   document.getElementById('exec-btn').disabled=!allOk;
-  document.getElementById('s-txt').textContent=allOk?'READY TO EXECUTE':`${pct}% COMPLETE`;
+  document.getElementById('s-txt').textContent=allOk?'READY':done===5&&!lev?'ISI LEVERAGE':`${TOTAL-total} DATA KURANG`;
   document.getElementById('s-txt').style.color=allOk?'var(--gr)':'var(--or)';
   updHC();
 }
  
+// ── GENERATE ──
 function gen(){
   const lev=document.getElementById('ip-lev').value;
   const modal=document.getElementById('ip-modal').value;
@@ -478,69 +626,54 @@ ANALISA REQUEST — ${ds} ${ts}
  
 LEVERAGE  : ${lev}${modal?`\nMODAL     : ${modal} USDT`:''}
  
-NOTE: Pair & harga terlihat langsung dari screenshot chart.
+NOTE: Pair & harga terlihat dari screenshot.
  
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SCREENSHOT TERLAMPIR:
+SCREENSHOT TERLAMPIR (23 files):
  
-[CHART ${pair} — 5 TIMEFRAME]
-✅ 1W  Weekly      (Struktur macro)
-✅ 1D  Daily       (Bias harian)
-✅ 4H  4 Jam       (Momentum)
-✅ 1H  1 Jam       (Entry timing)
-✅ 15M 15 Menit    (Eksekusi)
+[CHART KOIN — 5 TF]
+✅ 1W Weekly · 1D Daily
+✅ 4H · 1H · 15M
  
 [COINGLASS — STANDARD]
 ✅ Liquidation Heatmap
 ✅ Funding Rate Current
 ✅ Long/Short Ratio Current
  
-[EXHAUSTION SIGNALS — REVERSAL DETECTOR]
-✅ Funding Rate History 7D
-✅ Funding Rate History 30D
-✅ L/S Ratio History 7D
-✅ L/S Ratio History 30D
-✅ Liquidation History 24H
-✅ Liquidation History 7D
-✅ Volume Profile 1D
-✅ Volume Profile 4H
+[EXHAUSTION SIGNALS]
+✅ Funding History 7D + 30D
+✅ L/S History 7D + 30D
+✅ Liq History 24H + 7D
+✅ Volume Profile 1D + 4H
  
-[BTC PRICE — 3 TIMEFRAME]
-✅ BTC 1D  Trend macro
-✅ BTC 4H  Momentum saat ini
-✅ BTC 1H  Kondisi sekarang
+[BTC PRICE — 3 TF]
+✅ BTC 1D + 4H + 1H
  
-[BTC DOMINANCE]
-✅ BTC.D 1D  Trend dominance
-✅ BTC.D 4H  Aliran dana saat ini
- 
-[USDT DOMINANCE]
-✅ USDT.D 1D  Sentiment macro
-✅ USDT.D 4H  Flee to safety signal
+[DOMINANCE]
+✅ BTC.D 1D + 4H
+✅ USDT.D 1D + 4H
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  
 REQUEST — ANALISA LENGKAP:
  
-SKENARIO DETEKSI:
-→ Apakah ada tanda PUMP akan terjadi? (seller exhaustion)
-→ Apakah ada tanda DUMP akan terjadi? (buyer exhaustion)
-→ Atau tidak ada setup yang layak saat ini?
+SKENARIO:
+→ Ada tanda PUMP dari bottom? (seller exhaustion)
+→ Ada tanda DUMP dari top? (buyer exhaustion)
+→ Atau skip — tidak ada setup layak?
  
-DETAIL ANALISA:
+DETAIL:
 1.  BIAS MARKET    — arah dominan semua TF
-2.  EXHAUSTION     — sinyal seller/buyer exhaustion yang terdeteksi
-3.  REKOMENDASI    — long, short, atau skip? alasan lengkap
-4.  ENTRY PRICE    — harga entry terbaik & alasannya
+2.  EXHAUSTION     — sinyal yang terdeteksi (ON/OFF)
+3.  REKOMENDASI    — long / short / skip + alasan
+4.  ENTRY PRICE    — harga entry terbaik
 5.  STOP LOSS      — level SL yang aman
-6.  TAKE PROFIT    — TP1, TP2, TP3 realistis
-7.  SIZING         — % modal yang disarankan sesuai leverage yang digunakan
-8.  KEYAKINAN      — nyatakan dalam % (contoh: 78%)
-                     hitung dari sinyal exhaustion + makro + struktur TF
-9.  SQUEEZE        — potensi long/short squeeze?
-10. INVALIDASI     — kondisi yang membatalkan setup
-11. RISK/REWARD    — ratio R:R setup ini
-12. SINYAL COUNT   — X/9 sinyal exhaustion terpenuhi
-                     jelaskan sinyal mana ON dan mana OFF`;
+6.  TAKE PROFIT    — TP1, TP2, TP3
+7.  SIZING         — % modal yang disarankan
+8.  KEYAKINAN      — probabilitas dalam % (contoh: 78%)
+9.  SINYAL COUNT   — X/9 sinyal exhaustion ON
+10. SQUEEZE        — potensi long/short squeeze?
+11. INVALIDASI     — kondisi yang membatalkan setup
+12. RISK/REWARD    — ratio R:R`;
  
   document.getElementById('out-body').textContent=outTxt;
   document.getElementById('out-time').textContent=ts;
@@ -549,39 +682,69 @@ DETAIL ANALISA:
 }
  
 function copyOut(){
-  navigator.clipboard.writeText(outTxt).catch(()=>{const t=document.createElement('textarea');t.value=outTxt;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);});
-  const b=document.querySelectorAll('.ob')[0],o=b.textContent;b.textContent='✓ COPIED';setTimeout(()=>b.textContent=o,2000);
+  navigator.clipboard.writeText(outTxt).catch(()=>{
+    const t=document.createElement('textarea');t.value=outTxt;
+    document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);
+  });
+  const b=document.querySelectorAll('.ob')[0],o=b.textContent;
+  b.textContent='✓ COPIED!';setTimeout(()=>b.textContent=o,2000);
 }
  
+// ── HISTORY ──
 function saveHist(){
-  const e={id:Date.now(),lev:document.getElementById('ip-lev').value,modal:document.getElementById('ip-modal').value,summary:outTxt,date:new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}),time:new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}),shots:{...F}};
+  const e={
+    id:Date.now(),
+    lev:document.getElementById('ip-lev').value,
+    modal:document.getElementById('ip-modal').value,
+    mode:isMobile?'mobile':'desktop',
+    summary:outTxt,
+    date:new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}),
+    time:new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}),
+    shots:isDesktop?{...F}:{}
+  };
   hist.unshift(e);if(hist.length>30)hist=hist.slice(0,30);
-  localStorage.setItem('trv4',JSON.stringify(hist));
-  const b=document.querySelectorAll('.ob')[1];b.textContent='✓ SAVED';setTimeout(()=>b.textContent='⊞ SAVE HISTORY',2000);updHC();
+  localStorage.setItem('trv_v4',JSON.stringify(hist));
+  const b=document.querySelectorAll('.ob')[1];
+  b.textContent='✓ SAVED!';setTimeout(()=>b.textContent='⊞ SAVE HISTORY',2000);
+  updHC();
 }
  
-function updHC(){const el=document.getElementById('hc');if(hist.length>0){el.textContent=hist.length;el.style.display='inline';}else el.style.display='none';}
+function updHC(){
+  const el=document.getElementById('hc');
+  if(hist.length>0){el.textContent=hist.length;el.style.display='inline';}
+  else el.style.display='none';
+}
  
 function renderHist(){
   const b=document.getElementById('hist-body');
-  if(!hist.length){b.innerHTML=`<div class="hist-empty">NO RECORDS FOUND<br><span style="font-size:9px;color:var(--dim)">SAVE AN ANALYSIS TO SEE IT HERE</span></div>`;return;}
-  b.innerHTML=`<div class="hist-tbl"><div class="h-thead" style="grid-template-columns:1fr 90px 36px"><div class="h-th">LEVERAGE</div><div class="h-th">DATE/TIME</div><div class="h-th">DEL</div></div>${hist.map(h=>`<div class="h-row" data-id="${h.id}" style="grid-template-columns:1fr 90px 36px"><div class="h-td" style="color:var(--am)">${h.lev||'—'}</div><div class="h-td" style="flex-direction:column;align-items:flex-start;gap:1px;font-size:9px;color:var(--dim)"><span>${h.date}</span><span>${h.time}</span></div><div class="h-td"><button class="h-del" onclick="delH(event,${h.id})">✕</button></div></div>`).join('')}</div>`;
-  document.querySelectorAll('.h-row').forEach((row,i)=>{row.addEventListener('click',e=>{if(!e.target.classList.contains('h-del'))om(hist[i]);});});
+  if(!hist.length){b.innerHTML=`<div class="hist-empty">NO RECORDS FOUND<br><span style="font-size:10px">Belum ada history tersimpan</span></div>`;return;}
+  b.innerHTML=hist.map(h=>`
+    <div class="hist-card" onclick="om(${h.id})">
+      <div class="hist-card-top">
+        <span class="hist-lev">${h.lev||'—'} <span style="font-size:10px;color:var(--dim);font-weight:400">${h.modal?'· '+h.modal+' USDT':''}</span></span>
+        <button class="hist-del" onclick="delH(event,${h.id})">✕</button>
+      </div>
+      <div class="hist-meta">
+        <span>${h.date} ${h.time}</span>
+        <span style="color:var(--or)">${h.mode==='mobile'?'📱 mobile':'🖥️ desktop'}</span>
+      </div>
+    </div>`).join('');
 }
  
-function delH(e,id){e.stopPropagation();hist=hist.filter(h=>h.id!==id);localStorage.setItem('trv4',JSON.stringify(hist));renderHist();updHC();}
-function clearAll(){if(!confirm('Clear semua history?'))return;hist=[];localStorage.setItem('trv4','[]');renderHist();updHC();}
+function delH(e,id){e.stopPropagation();hist=hist.filter(h=>h.id!==id);localStorage.setItem('trv_v4',JSON.stringify(hist));renderHist();updHC();}
+function clearAll(){if(!confirm('Clear semua history?'))return;hist=[];localStorage.setItem('trv_v4','[]');renderHist();updHC();}
  
-function om(entry){
-  document.getElementById('m-ttl').textContent=`${entry.pair} // ${entry.date} ${entry.time}`;
+function om(id){
+  const entry=hist.find(h=>h.id===id);if(!entry)return;
+  document.getElementById('m-ttl').textContent=`${entry.lev} — ${entry.date} ${entry.time}`;
   const shots=Object.values(entry.shots||{});
-  const sh=shots.length?`<div class="mshots">${shots.slice(0,12).map(s=>`<img class="mshot" src="${s.data}">`).join('')}</div>`:`<div style="font-size:10px;color:var(--dim);padding:8px;margin-bottom:8px">NO SCREENSHOTS</div>`;
+  const sh=shots.length?`<div class="mshots">${shots.slice(0,12).map(s=>`<img class="mshot" src="${s.data}">`).join('')}</div>`:'';
   const sum=entry.summary.replace(/\\/g,'\\\\').replace(/`/g,'\\`').replace(/\$/g,'\\$');
   document.getElementById('m-inner').innerHTML=`${sh}<div class="msum">${entry.summary}</div><button class="mcopy" onclick="ct(\`${sum}\`)">⧉ COPY SUMMARY</button>`;
   document.getElementById('mbg').classList.add('show');
 }
  
-function ct(t){navigator.clipboard.writeText(t).catch(()=>{});const b=document.querySelector('.mcopy');b.textContent='✓ COPIED';setTimeout(()=>b.textContent='⧉ COPY SUMMARY',2000);}
+function ct(t){navigator.clipboard.writeText(t).catch(()=>{});const b=document.querySelector('.mcopy');b.textContent='✓ COPIED!';setTimeout(()=>b.textContent='⧉ COPY SUMMARY',2000);}
 function cm(){document.getElementById('mbg').classList.remove('show');}
 function cmOut(e){if(e.target.id==='mbg')cm();}
  
@@ -593,6 +756,8 @@ function switchTab(tab,el){
   if(tab==='history')renderHist();
 }
  
+// ── INIT ──
+initMode();
 updHC();
 </script>
 </body>
